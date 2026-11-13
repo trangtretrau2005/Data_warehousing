@@ -1,0 +1,16 @@
+/* Template: names depend on the native cube authored by Chi.
+   Use Browser/metadata to replace names before execution; this is not evidence.
+   Suggested hierarchy names below must be configured in the project. */
+SELECT
+ {[Measures].[Sales], [Measures].[Budget Sales], [Measures].[Profit]} ON COLUMNS,
+ NON EMPTY [Dim Location].[Geography].[State].Members ON ROWS
+FROM [Coffee Performance]
+WHERE ([Dim Date].[Date Key].&[20120101], [Dim Location].[Market].&[Central]);
+
+/* Roll-up: same slice and leaf measure, compare with SQL SUM=10346. */
+SELECT {[Measures].[Sales], [Measures].[Budget Sales]} ON COLUMNS
+FROM [Coffee Performance]
+WHERE ([Dim Date].[Date Key].&[20120101], [Dim Location].[Market].&[Central]);
+
+/* Dice/pivot: choose Jan2012, Central+East, Coffee product type.
+   Move ProductName between rows/columns in Browser; total remains 4768. */

@@ -1,0 +1,2 @@
+# Main installation contract is pyproject.toml; this file supports pip -r.
+-e .[dev]

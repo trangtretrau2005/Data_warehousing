@@ -1,0 +1,42 @@
+# Local environments and secrets
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.tmp/
+.work/
+# Generated data: recreate using CLI; raw source is versioned
+data/warehouse/*
+!data/warehouse/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+# Evidence is opt-in, documented in results/README.md
+results/**
+!results/README.md
+!results/templates/
+!results/templates/**
+!results/examples/
+!results/examples/**
+# Tool/editor local state
+.vs/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+*.user
+*.suo
+~$*.docx

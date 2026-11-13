@@ -1,0 +1,1 @@
+experiment,variant,run_number,warmup,order,row_count,elapsed_ms,cpu_ms,logical_reads,storage_kb,write_elapsed_ms,parameters,plan_path,engine_version,machine
