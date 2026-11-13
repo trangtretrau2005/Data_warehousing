@@ -100,19 +100,26 @@ Các script không xóa kho hiện có. Benchmark mặc định nhân nguồn 50
 
 ## Làm chung trên Git
 
-Repository: `https://github.com/trangtretrau2005/Data_warehousing.git`. Mỗi người dùng nhánh riêng, mở PR vào `main`; hướng dẫn ở [CONTRIBUTING](CONTRIBUTING.md). Không đẩy `.env`, venv, kho cục bộ hoặc cache. Kết quả sinh ra được ignore; xem [quy ước chọn minh chứng](results/README.md).
+Repository: `https://github.com/trangtretrau2005/Data_warehousing.git`. Luồng làm chung: **`thanh` / `chi` / `trang` → `dev` chạy thử → `main` sau khi Trang xác nhận OK**. `main` được giữ nguyên trong giai đoạn phát triển. Hướng dẫn ở [CONTRIBUTING](CONTRIBUTING.md). Không đẩy `.env`, venv, kho cục bộ hoặc cache. Kết quả sinh ra được ignore; xem [quy ước chọn minh chứng](results/README.md).
 
-Ví dụ bắt đầu một phần việc mới của Thanh sau khi clone:
+Clone nhánh tích hợp để đọc bản hướng dẫn mới:
 
 ```powershell
-git switch main
-git pull --ff-only origin main
-git switch -c thanh/ch01-03-schema
+git clone --branch dev https://github.com/trangtretrau2005/Data_warehousing.git
+cd Data_warehousing
+```
+
+Ví dụ bắt đầu phần việc của Thanh trên nhánh đã tạo sẵn:
+
+```powershell
+git fetch origin
+git switch thanh
+git pull --ff-only origin thanh
 # Sửa file, chạy kiểm tra, rồi chọn file cần commit.
 git add docs/chapters/ch01_thanh.md
 git diff --cached
 git commit -m "docs: clarify business questions"
-git push -u origin thanh/ch01-03-schema
+git push origin thanh
 ```
 
-Chi và Trang dùng nhánh theo phần của mình. Sau khi push nhánh, mở Pull Request vào `main` để thành viên khác đọc và kiểm tra. Quyền collaborator và quy tắc bảo vệ nhánh do nhóm quản lý trên GitHub.
+Chi dùng nhánh `chi`, Trang dùng nhánh `trang`. Sau khi push, mở Pull Request với **base = `dev`**. Tích hợp và kiểm tra trên `dev`; chỉ chuyển sang `main` khi Trang chốt OK. Quyền collaborator và quy tắc bảo vệ nhánh do nhóm quản lý trên GitHub.
