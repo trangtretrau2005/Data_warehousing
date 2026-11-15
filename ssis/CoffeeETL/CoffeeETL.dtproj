@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DeploymentModel>Project</DeploymentModel>
+  <ProductVersion>16.0.1000.6</ProductVersion>
+  <SchemaVersion>9.0.1.0</SchemaVersion>
+  <ProjectGuid>{D4E5F6A7-5555-4444-9999-777777777777}</ProjectGuid>
+  <Database>
+    <Name>CoffeeETL.database</Name>
+    <FullPath>CoffeeETL.database</FullPath>
+  </Database>
+  <Packages>
+    <Package>
+      <Name>LoadCoffee.dtsx</Name>
+      <FullPath>LoadCoffee.dtsx</FullPath>
+    </Package>
+    <Package>
+      <Name>SCD_TN04.dtsx</Name>
+      <FullPath>SCD_TN04.dtsx</FullPath>
+    </Package>
+  </Packages>
+  <Configurations>
+    <Configuration>
+      <Name>Development</Name>
+      <Options>
+        <OutputPath>bin</OutputPath>
+        <TargetServerVersion>SQLServer2022</TargetServerVersion>
+      </Options>
+    </Configuration>
+  </Configurations>
+</Project>

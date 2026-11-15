@@ -1,0 +1,33 @@
+﻿<?xml version="1.0"?>
+<SSIS:Parameters xmlns:SSIS="www.microsoft.com/SqlServer/SSIS">
+  <SSIS:Parameter SSIS:Name="ServerName">
+    <SSIS:Properties>
+      <SSIS:Property SSIS:Name="ID">{A1B2C3D4-1111-4444-8888-111111111111}</SSIS:Property>
+      <SSIS:Property SSIS:Name="Description">SQL Server Instance Name</SSIS:Property>
+      <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+      <SSIS:Property SSIS:Name="Value">localhost</SSIS:Property>
+      <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+      <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
+    </SSIS:Properties>
+  </SSIS:Parameter>
+  <SSIS:Parameter SSIS:Name="DatabaseName">
+    <SSIS:Properties>
+      <SSIS:Property SSIS:Name="ID">{A1B2C3D4-2222-4444-8888-222222222222}</SSIS:Property>
+      <SSIS:Property SSIS:Name="Description">Target Data Warehouse Database</SSIS:Property>
+      <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+      <SSIS:Property SSIS:Name="Value">CoffeeDW</SSIS:Property>
+      <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+      <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
+    </SSIS:Properties>
+  </SSIS:Parameter>
+  <SSIS:Parameter SSIS:Name="SourceFilePath">
+    <SSIS:Properties>
+      <SSIS:Property SSIS:Name="ID">{A1B2C3D4-3333-4444-8888-333333333333}</SSIS:Property>
+      <SSIS:Property SSIS:Name="Description">Path to UTF-8 Coffee CSV file</SSIS:Property>
+      <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
+      <SSIS:Property SSIS:Name="Value">data/raw/Coffee.csv</SSIS:Property>
+      <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
+      <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
+    </SSIS:Properties>
+  </SSIS:Parameter>
+</SSIS:Parameters>

@@ -1,0 +1,934 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>CoffeeCube</ID>
+  <Name>CoffeeCube</Name>
+  <Description>Coffee DW Multidimensional OLAP Database (Chapter 5 / TN06)</Description>
+  <Dimensions>
+    <Dimension>
+      <ID>Dim Date</ID>
+      <Name>Dim Date</Name>
+      <Source xsi:type="DataSourceViewBinding">
+        <DataSourceViewID>CoffeeDW</DataSourceViewID>
+      </Source>
+      <Type>Time</Type>
+      <Attributes>
+        <Attribute>
+          <ID>Date Key</ID>
+          <Name>Date Key</Name>
+          <Usage>Key</Usage>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>Integer</DataType>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimDate</TableID>
+                <ColumnID>DateKey</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <NameColumn>
+            <DataType>WChar</DataType>
+            <DataSize>10</DataSize>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_DimDate</TableID>
+              <ColumnID>MonthStart</ColumnID>
+            </Source>
+          </NameColumn>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>Month</AttributeID>
+              <RelationshipType>Rigid</RelationshipType>
+              <Name>Month</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+          <OrderBy>Key</OrderBy>
+        </Attribute>
+        <Attribute>
+          <ID>Month</ID>
+          <Name>Month</Name>
+          <Type>Months</Type>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>Integer</DataType>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimDate</TableID>
+                <ColumnID>DateKey</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <NameColumn>
+            <DataType>WChar</DataType>
+            <DataSize>10</DataSize>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_DimDate</TableID>
+              <ColumnID>MonthStart</ColumnID>
+            </Source>
+          </NameColumn>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>Quarter</AttributeID>
+              <RelationshipType>Rigid</RelationshipType>
+              <Name>Quarter</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+          <OrderBy>Key</OrderBy>
+        </Attribute>
+        <Attribute>
+          <ID>Quarter</ID>
+          <Name>Quarter</Name>
+          <Type>Quarters</Type>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>SmallInt</DataType>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimDate</TableID>
+                <ColumnID>Year</ColumnID>
+              </Source>
+            </KeyColumn>
+            <KeyColumn>
+              <DataType>UnsignedTinyInt</DataType>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimDate</TableID>
+                <ColumnID>Quarter</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <NameColumn>
+            <DataType>WChar</DataType>
+            <DataSize>10</DataSize>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_DimDate</TableID>
+              <ColumnID>Quarter</ColumnID>
+            </Source>
+          </NameColumn>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>Year</AttributeID>
+              <RelationshipType>Rigid</RelationshipType>
+              <Name>Year</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+          <OrderBy>Key</OrderBy>
+        </Attribute>
+        <Attribute>
+          <ID>Year</ID>
+          <Name>Year</Name>
+          <Type>Years</Type>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>SmallInt</DataType>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimDate</TableID>
+                <ColumnID>Year</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <NameColumn>
+            <DataType>WChar</DataType>
+            <DataSize>10</DataSize>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_DimDate</TableID>
+              <ColumnID>Year</ColumnID>
+            </Source>
+          </NameColumn>
+          <OrderBy>Key</OrderBy>
+        </Attribute>
+      </Attributes>
+      <Hierarchies>
+        <Hierarchy>
+          <ID>Calendar</ID>
+          <Name>Calendar</Name>
+          <Levels>
+            <Level>
+              <ID>Year</ID>
+              <Name>Year</Name>
+              <SourceAttributeID>Year</SourceAttributeID>
+            </Level>
+            <Level>
+              <ID>Quarter</ID>
+              <Name>Quarter</Name>
+              <SourceAttributeID>Quarter</SourceAttributeID>
+            </Level>
+            <Level>
+              <ID>Month</ID>
+              <Name>Month</Name>
+              <SourceAttributeID>Month</SourceAttributeID>
+            </Level>
+          </Levels>
+        </Hierarchy>
+      </Hierarchies>
+    </Dimension>
+    <Dimension>
+      <ID>Dim Location</ID>
+      <Name>Dim Location</Name>
+      <Source xsi:type="DataSourceViewBinding">
+        <DataSourceViewID>CoffeeDW</DataSourceViewID>
+      </Source>
+      <Type>Geography</Type>
+      <Attributes>
+        <Attribute>
+          <ID>Location Key</ID>
+          <Name>Location Key</Name>
+          <Usage>Key</Usage>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>Integer</DataType>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimLocation</TableID>
+                <ColumnID>LocationKey</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <NameColumn>
+            <DataType>WChar</DataType>
+            <DataSize>20</DataSize>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_DimLocation</TableID>
+              <ColumnID>AreaCode</ColumnID>
+            </Source>
+          </NameColumn>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>Area Code</AttributeID>
+              <Name>Area Code</Name>
+            </AttributeRelationship>
+            <AttributeRelationship>
+              <AttributeID>Market Size</AttributeID>
+              <Name>Market Size</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+        </Attribute>
+        <Attribute>
+          <ID>Area Code</ID>
+          <Name>Area Code</Name>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>WChar</DataType>
+              <DataSize>20</DataSize>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimLocation</TableID>
+                <ColumnID>AreaCode</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>State</AttributeID>
+              <Name>State</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+        </Attribute>
+        <Attribute>
+          <ID>State</ID>
+          <Name>State</Name>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>WChar</DataType>
+              <DataSize>100</DataSize>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimLocation</TableID>
+                <ColumnID>State</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>Market</AttributeID>
+              <Name>Market</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+        </Attribute>
+        <Attribute>
+          <ID>Market</ID>
+          <Name>Market</Name>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>WChar</DataType>
+              <DataSize>40</DataSize>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimLocation</TableID>
+                <ColumnID>Market</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+        </Attribute>
+        <Attribute>
+          <ID>Market Size</ID>
+          <Name>Market Size</Name>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>WChar</DataType>
+              <DataSize>40</DataSize>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimLocation</TableID>
+                <ColumnID>MarketSize</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+        </Attribute>
+      </Attributes>
+      <Hierarchies>
+        <Hierarchy>
+          <ID>Geography</ID>
+          <Name>Geography</Name>
+          <Levels>
+            <Level>
+              <ID>Market</ID>
+              <Name>Market</Name>
+              <SourceAttributeID>Market</SourceAttributeID>
+            </Level>
+            <Level>
+              <ID>State</ID>
+              <Name>State</Name>
+              <SourceAttributeID>State</SourceAttributeID>
+            </Level>
+            <Level>
+              <ID>Area Code</ID>
+              <Name>Area Code</Name>
+              <SourceAttributeID>Area Code</SourceAttributeID>
+            </Level>
+          </Levels>
+        </Hierarchy>
+      </Hierarchies>
+    </Dimension>
+    <Dimension>
+      <ID>Dim Product</ID>
+      <Name>Dim Product</Name>
+      <Source xsi:type="DataSourceViewBinding">
+        <DataSourceViewID>CoffeeDW</DataSourceViewID>
+      </Source>
+      <Type>Products</Type>
+      <Attributes>
+        <Attribute>
+          <ID>Product Key</ID>
+          <Name>Product Key</Name>
+          <Usage>Key</Usage>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>Integer</DataType>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimProduct</TableID>
+                <ColumnID>ProductKey</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <NameColumn>
+            <DataType>WChar</DataType>
+            <DataSize>100</DataSize>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_DimProduct</TableID>
+              <ColumnID>ProductName</ColumnID>
+            </Source>
+          </NameColumn>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>Product Name</AttributeID>
+              <Name>Product Name</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+        </Attribute>
+        <Attribute>
+          <ID>Product Name</ID>
+          <Name>Product Name</Name>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>WChar</DataType>
+              <DataSize>100</DataSize>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimProduct</TableID>
+                <ColumnID>ProductName</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>Product Type</AttributeID>
+              <Name>Product Type</Name>
+            </AttributeRelationship>
+            <AttributeRelationship>
+              <AttributeID>Type</AttributeID>
+              <Name>Type</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+        </Attribute>
+        <Attribute>
+          <ID>Product Type</ID>
+          <Name>Product Type</Name>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>WChar</DataType>
+              <DataSize>40</DataSize>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimProduct</TableID>
+                <ColumnID>ProductType</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+          <AttributeRelationships>
+            <AttributeRelationship>
+              <AttributeID>Product Line</AttributeID>
+              <Name>Product Line</Name>
+            </AttributeRelationship>
+          </AttributeRelationships>
+        </Attribute>
+        <Attribute>
+          <ID>Product Line</ID>
+          <Name>Product Line</Name>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>WChar</DataType>
+              <DataSize>40</DataSize>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimProduct</TableID>
+                <ColumnID>ProductLine</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+        </Attribute>
+        <Attribute>
+          <ID>Type</ID>
+          <Name>Type</Name>
+          <KeyColumns>
+            <KeyColumn>
+              <DataType>WChar</DataType>
+              <DataSize>40</DataSize>
+              <Source xsi:type="ColumnBinding">
+                <TableID>dw_DimProduct</TableID>
+                <ColumnID>Type</ColumnID>
+              </Source>
+            </KeyColumn>
+          </KeyColumns>
+        </Attribute>
+      </Attributes>
+      <Hierarchies>
+        <Hierarchy>
+          <ID>Product Hierarchy</ID>
+          <Name>Product Hierarchy</Name>
+          <Levels>
+            <Level>
+              <ID>Product Line</ID>
+              <Name>Product Line</Name>
+              <SourceAttributeID>Product Line</SourceAttributeID>
+            </Level>
+            <Level>
+              <ID>Product Type</ID>
+              <Name>Product Type</Name>
+              <SourceAttributeID>Product Type</SourceAttributeID>
+            </Level>
+            <Level>
+              <ID>Product Name</ID>
+              <Name>Product Name</Name>
+              <SourceAttributeID>Product Name</SourceAttributeID>
+            </Level>
+          </Levels>
+        </Hierarchy>
+      </Hierarchies>
+    </Dimension>
+  </Dimensions>
+  <Cubes>
+    <Cube>
+      <ID>Coffee Performance</ID>
+      <Name>Coffee Performance</Name>
+      <Dimensions>
+        <Dimension>
+          <ID>Dim Date</ID>
+          <Name>Dim Date</Name>
+          <DimensionID>Dim Date</DimensionID>
+          <Attributes>
+            <Attribute>
+              <AttributeID>Date Key</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Month</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Quarter</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Year</AttributeID>
+            </Attribute>
+          </Attributes>
+          <Hierarchies>
+            <Hierarchy>
+              <HierarchyID>Calendar</HierarchyID>
+            </Hierarchy>
+          </Hierarchies>
+        </Dimension>
+        <Dimension>
+          <ID>Dim Location</ID>
+          <Name>Dim Location</Name>
+          <DimensionID>Dim Location</DimensionID>
+          <Attributes>
+            <Attribute>
+              <AttributeID>Location Key</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Area Code</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>State</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Market</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Market Size</AttributeID>
+            </Attribute>
+          </Attributes>
+          <Hierarchies>
+            <Hierarchy>
+              <HierarchyID>Geography</HierarchyID>
+            </Hierarchy>
+          </Hierarchies>
+        </Dimension>
+        <Dimension>
+          <ID>Dim Product</ID>
+          <Name>Dim Product</Name>
+          <DimensionID>Dim Product</DimensionID>
+          <Attributes>
+            <Attribute>
+              <AttributeID>Product Key</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Product Name</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Product Type</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Product Line</AttributeID>
+            </Attribute>
+            <Attribute>
+              <AttributeID>Type</AttributeID>
+            </Attribute>
+          </Attributes>
+          <Hierarchies>
+            <Hierarchy>
+              <HierarchyID>Product Hierarchy</HierarchyID>
+            </Hierarchy>
+          </Hierarchies>
+        </Dimension>
+      </Dimensions>
+      <MeasureGroups>
+        <MeasureGroup>
+          <ID>Fact Sales Performance</ID>
+          <Name>Fact Sales Performance</Name>
+          <Measures>
+            <Measure>
+              <ID>Sales</ID>
+              <Name>Sales</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>Sales</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Budget Sales</ID>
+              <Name>Budget Sales</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>BudgetSales</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Profit</ID>
+              <Name>Profit</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>Profit</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Budget Profit</ID>
+              <Name>Budget Profit</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>BudgetProfit</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>COGS</ID>
+              <Name>COGS</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>COGS</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Budget COGS</ID>
+              <Name>Budget COGS</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>BudgetCOGS</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Margin</ID>
+              <Name>Margin</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>Margin</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Budget Margin</ID>
+              <Name>Budget Margin</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>BudgetMargin</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Marketing</ID>
+              <Name>Marketing</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>Marketing</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Total Expenses</ID>
+              <Name>Total Expenses</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>TotalExpenses</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+            <Measure>
+              <ID>Inventory</ID>
+              <Name>Inventory</Name>
+              <Source>
+                <DataType>Currency</DataType>
+                <Source xsi:type="ColumnBinding">
+                  <TableID>dw_FactSalesPerformance</TableID>
+                  <ColumnID>Inventory</ColumnID>
+                </Source>
+              </Source>
+              <FormatString>#,##0.00</FormatString>
+            </Measure>
+          </Measures>
+          <StorageMode>Molap</StorageMode>
+          <ProcessingMode>Regular</ProcessingMode>
+          <Dimensions>
+            <Dimension xsi:type="RegularMeasureGroupDimension">
+              <CubeDimensionID>Dim Date</CubeDimensionID>
+              <Attributes>
+                <Attribute>
+                  <AttributeID>Date Key</AttributeID>
+                  <KeyColumns>
+                    <KeyColumn>
+                      <DataType>Integer</DataType>
+                      <Source xsi:type="ColumnBinding">
+                        <TableID>dw_FactSalesPerformance</TableID>
+                        <ColumnID>DateKey</ColumnID>
+                      </Source>
+                    </KeyColumn>
+                  </KeyColumns>
+                  <Type>Granularity</Type>
+                </Attribute>
+              </Attributes>
+            </Dimension>
+            <Dimension xsi:type="RegularMeasureGroupDimension">
+              <CubeDimensionID>Dim Location</CubeDimensionID>
+              <Attributes>
+                <Attribute>
+                  <AttributeID>Location Key</AttributeID>
+                  <KeyColumns>
+                    <KeyColumn>
+                      <DataType>Integer</DataType>
+                      <Source xsi:type="ColumnBinding">
+                        <TableID>dw_FactSalesPerformance</TableID>
+                        <ColumnID>LocationKey</ColumnID>
+                      </Source>
+                    </KeyColumn>
+                  </KeyColumns>
+                  <Type>Granularity</Type>
+                </Attribute>
+              </Attributes>
+            </Dimension>
+            <Dimension xsi:type="RegularMeasureGroupDimension">
+              <CubeDimensionID>Dim Product</CubeDimensionID>
+              <Attributes>
+                <Attribute>
+                  <AttributeID>Product Key</AttributeID>
+                  <KeyColumns>
+                    <KeyColumn>
+                      <DataType>Integer</DataType>
+                      <Source xsi:type="ColumnBinding">
+                        <TableID>dw_FactSalesPerformance</TableID>
+                        <ColumnID>ProductKey</ColumnID>
+                      </Source>
+                    </KeyColumn>
+                  </KeyColumns>
+                  <Type>Granularity</Type>
+                </Attribute>
+              </Attributes>
+            </Dimension>
+          </Dimensions>
+          <Partitions>
+            <Partition>
+              <ID>FactSalesPerformance</ID>
+              <Name>FactSalesPerformance</Name>
+              <Source xsi:type="TableBinding">
+                <DataSourceID>CoffeeDW</DataSourceID>
+                <DbSchemaName>dw</DbSchemaName>
+                <DbTableName>FactSalesPerformance</DbTableName>
+              </Source>
+              <StorageMode>Molap</StorageMode>
+              <ProcessingMode>Regular</ProcessingMode>
+            </Partition>
+          </Partitions>
+        </MeasureGroup>
+      </MeasureGroups>
+      <Source>
+        <DataSourceViewID>CoffeeDW</DataSourceViewID>
+      </Source>
+      <MdxScripts>
+        <MdxScript>
+          <ID>MdxScript</ID>
+          <Name>MdxScript</Name>
+          <Commands>
+            <Command>
+              <Text>CALCULATE;
+
+CREATE MEMBER CURRENTCUBE.[Measures].[Gap]
+ AS [Measures].[Sales] - [Measures].[Budget Sales],
+ FORMAT_STRING = "#,##0.00",
+ VISIBLE = 1;
+
+CREATE MEMBER CURRENTCUBE.[Measures].[Budget Achievement]
+ AS IIF(
+      IsEmpty([Measures].[Budget Sales]) OR [Measures].[Budget Sales] = 0,
+      NULL,
+      [Measures].[Sales] / [Measures].[Budget Sales]
+    ),
+ FORMAT_STRING = "Percent",
+ VISIBLE = 1;
+
+CREATE MEMBER CURRENTCUBE.[Measures].[Profit Margin]
+ AS IIF(
+      IsEmpty([Measures].[Sales]) OR [Measures].[Sales] = 0,
+      NULL,
+      [Measures].[Profit] / [Measures].[Sales]
+    ),
+ FORMAT_STRING = "Percent",
+ VISIBLE = 1;
+
+-- Semi-additive policy for Inventory across time: evaluate at latest selected month
+SCOPE ([Measures].[Inventory], [Dim Date].[Calendar].[Year].Members);
+    THIS = (TAIL(EXISTING [Dim Date].[Date Key].[Date Key].Members, 1).Item(0), [Measures].[Inventory]);
+END SCOPE;
+SCOPE ([Measures].[Inventory], [Dim Date].[Calendar].[Quarter].Members);
+    THIS = (TAIL(EXISTING [Dim Date].[Date Key].[Date Key].Members, 1).Item(0), [Measures].[Inventory]);
+END SCOPE;
+SCOPE ([Measures].[Inventory], [Dim Date].[Calendar].[All]);
+    THIS = (TAIL(EXISTING [Dim Date].[Date Key].[Date Key].Members, 1).Item(0), [Measures].[Inventory]);
+END SCOPE;</Text>
+            </Command>
+          </Commands>
+        </MdxScript>
+      </MdxScripts>
+    </Cube>
+  </Cubes>
+  <DataSources>
+    <DataSource xsi:type="RelationalDataSource">
+      <ID>CoffeeDW</ID>
+      <Name>CoffeeDW</Name>
+      <ConnectionString>Provider=SQLNCLI11.1;Data Source=localhost;Integrated Security=SSPI;Initial Catalog=CoffeeDW</ConnectionString>
+      <ImpersonationInfo>
+        <ImpersonationMode>ImpersonateServiceAccount</ImpersonationMode>
+      </ImpersonationInfo>
+      <Timeout>PT0S</Timeout>
+    </DataSource>
+  </DataSources>
+  <DataSourceViews>
+    <DataSourceView>
+      <ID>CoffeeDW</ID>
+      <Name>CoffeeDW</Name>
+      <DataSourceID>CoffeeDW</DataSourceID>
+      <Schema>
+        <xs:schema id="CoffeeDW" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+          <xs:element name="CoffeeDW" msdata:IsDataSet="true" msdata:Locale="">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="dw_DimDate" msprop:DbTableName="DimDate" msprop:FriendlyName="DimDate" msprop:TableType="Table" msprop:DbSchemaName="dw">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="DateKey" type="xs:int" />
+                      <xs:element name="MonthStart" type="xs:dateTime" />
+                      <xs:element name="Year" type="xs:short" />
+                      <xs:element name="Quarter" type="xs:unsignedByte" />
+                      <xs:element name="Month" type="xs:unsignedByte" />
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="dw_DimLocation" msprop:DbTableName="DimLocation" msprop:FriendlyName="DimLocation" msprop:TableType="Table" msprop:DbSchemaName="dw">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="LocationKey" type="xs:int" />
+                      <xs:element name="AreaCode">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:maxLength value="20" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="State">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:maxLength value="100" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="Market">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:maxLength value="40" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="MarketSize">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:maxLength value="40" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="dw_DimProduct" msprop:DbTableName="DimProduct" msprop:FriendlyName="DimProduct" msprop:TableType="Table" msprop:DbSchemaName="dw">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="ProductKey" type="xs:int" />
+                      <xs:element name="ProductName">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:maxLength value="100" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="ProductLine">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:maxLength value="40" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="ProductType">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:maxLength value="40" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                      <xs:element name="Type">
+                        <xs:simpleType>
+                          <xs:restriction base="xs:string">
+                            <xs:maxLength value="40" />
+                          </xs:restriction>
+                        </xs:simpleType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="dw_FactSalesPerformance" msprop:DbTableName="FactSalesPerformance" msprop:FriendlyName="FactSalesPerformance" msprop:TableType="Table" msprop:DbSchemaName="dw">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="DateKey" type="xs:int" />
+                      <xs:element name="LocationKey" type="xs:int" />
+                      <xs:element name="ProductKey" type="xs:int" />
+                      <xs:element name="Sales" type="xs:decimal" />
+                      <xs:element name="BudgetSales" type="xs:decimal" />
+                      <xs:element name="Profit" type="xs:decimal" />
+                      <xs:element name="BudgetProfit" type="xs:decimal" />
+                      <xs:element name="COGS" type="xs:decimal" />
+                      <xs:element name="BudgetCOGS" type="xs:decimal" />
+                      <xs:element name="Margin" type="xs:decimal" />
+                      <xs:element name="BudgetMargin" type="xs:decimal" />
+                      <xs:element name="Marketing" type="xs:decimal" />
+                      <xs:element name="Inventory" type="xs:decimal" />
+                      <xs:element name="TotalExpenses" type="xs:decimal" />
+                      <xs:element name="BatchID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" />
+                      <xs:element name="SourceRow" type="xs:int" />
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:choice>
+            </xs:complexType>
+            <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+              <xs:selector xpath=".//dw_DimDate" />
+              <xs:field xpath="DateKey" />
+            </xs:unique>
+            <xs:unique name="dw_DimLocation_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+              <xs:selector xpath=".//dw_DimLocation" />
+              <xs:field xpath="LocationKey" />
+            </xs:unique>
+            <xs:unique name="dw_DimProduct_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+              <xs:selector xpath=".//dw_DimProduct" />
+              <xs:field xpath="ProductKey" />
+            </xs:unique>
+            <xs:unique name="dw_FactSalesPerformance_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+              <xs:selector xpath=".//dw_FactSalesPerformance" />
+              <xs:field xpath="DateKey" />
+              <xs:field xpath="LocationKey" />
+              <xs:field xpath="ProductKey" />
+            </xs:unique>
+            <xs:keyref name="FK_Fact_DimProduct" refer="dw_DimProduct_Constraint1">
+              <xs:selector xpath=".//dw_FactSalesPerformance" />
+              <xs:field xpath="ProductKey" />
+            </xs:keyref>
+            <xs:keyref name="FK_Fact_DimLocation" refer="dw_DimLocation_Constraint1">
+              <xs:selector xpath=".//dw_FactSalesPerformance" />
+              <xs:field xpath="LocationKey" />
+            </xs:keyref>
+            <xs:keyref name="FK_Fact_DimDate" refer="Constraint1">
+              <xs:selector xpath=".//dw_FactSalesPerformance" />
+              <xs:field xpath="DateKey" />
+            </xs:keyref>
+          </xs:element>
+        </xs:schema>
+        <CoffeeDW xmlns="" />
+      </Schema>
+    </DataSourceView>
+  </DataSourceViews>
+</Database>

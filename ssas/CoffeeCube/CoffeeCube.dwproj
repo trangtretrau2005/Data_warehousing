@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0">
+  <ProductVersion>16.0.1000.6</ProductVersion>
+  <SchemaVersion>2.0</SchemaVersion>
+  <ProjectGuid>{8B4B2A52-6F3C-4E19-9D2B-44B7C2D1E505}</ProjectGuid>
+  <Database>
+    <Name>CoffeeCube</Name>
+    <FullPath>CoffeeCube.database</FullPath>
+  </Database>
+  <DataSources>
+    <ProjectItem>
+      <Name>CoffeeDW.ds</Name>
+      <FullPath>CoffeeDW.ds</FullPath>
+    </ProjectItem>
+  </DataSources>
+  <DataSourceViews>
+    <ProjectItem>
+      <Name>CoffeeDW.dsv</Name>
+      <FullPath>CoffeeDW.dsv</FullPath>
+    </ProjectItem>
+  </DataSourceViews>
+  <Dimensions>
+    <ProjectItem>
+      <Name>Dim Date.dim</Name>
+      <FullPath>Dim Date.dim</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Dim Location.dim</Name>
+      <FullPath>Dim Location.dim</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Dim Product.dim</Name>
+      <FullPath>Dim Product.dim</FullPath>
+    </ProjectItem>
+  </Dimensions>
+  <Cubes>
+    <ProjectItem>
+      <Name>Coffee Performance.cube</Name>
+      <FullPath>Coffee Performance.cube</FullPath>
+      <Dependencies>
+        <ProjectItem>
+          <Name>Dim Date.dim</Name>
+          <FullPath>Dim Date.dim</FullPath>
+        </ProjectItem>
+        <ProjectItem>
+          <Name>Dim Location.dim</Name>
+          <FullPath>Dim Location.dim</FullPath>
+        </ProjectItem>
+        <ProjectItem>
+          <Name>Dim Product.dim</Name>
+          <FullPath>Dim Product.dim</FullPath>
+        </ProjectItem>
+        <ProjectItem>
+          <Name>CoffeeDW.dsv</Name>
+          <FullPath>CoffeeDW.dsv</FullPath>
+        </ProjectItem>
+      </Dependencies>
+    </ProjectItem>
+  </Cubes>
+  <Configurations>
+    <Configuration>
+      <Name>Development</Name>
+      <Options>
+        <OutputPath>bin\</OutputPath>
+        <TargetServer>localhost</TargetServer>
+        <TargetDatabase>CoffeeCube</TargetDatabase>
+        <ProcessingOption>Default</ProcessingOption>
+        <TransactionOption>true</TransactionOption>
+      </Options>
+    </Configuration>
+  </Configurations>
+</Project>

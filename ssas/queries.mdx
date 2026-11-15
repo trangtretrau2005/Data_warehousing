@@ -1,16 +1,203 @@
-/* Template: names depend on the native cube authored by Chi.
-   Use Browser/metadata to replace names before execution; this is not evidence.
-   Suggested hierarchy names below must be configured in the project. */
+/* ============================================================================
+   SSAS Multidimensional MDX Queries — Coffee Performance Cube (Chapter 5 / TN06)
+   Project: ssas/CoffeeCube/CoffeeCube.dwproj
+   Cube:    [Coffee Performance]
+   Dimensions & Hierarchies:
+     - [Dim Date].[Calendar]          (Year -> Quarter -> Month, key at Month = DateKey YYYYMMDD)
+     - [Dim Date].[Date Key]          (Key attribute, e.g. &[20120101], &[20130801])
+     - [Dim Location].[Geography]     (Market -> State -> Area Code)
+     - [Dim Location].[Market]        (Attribute hierarchy)
+     - [Dim Location].[State]         (Attribute hierarchy)
+     - [Dim Product].[Product Hierarchy] (Product Line -> Product Type -> Product Name)
+     - [Dim Product].[Product Type]  (Attribute hierarchy)
+     - [Dim Product].[Product Name]  (Attribute hierarchy)
+   Measures:
+     - Base Sum: [Measures].[Sales], [Measures].[Budget Sales], [Measures].[Profit],
+                 [Measures].[COGS], [Measures].[Margin], [Measures].[Marketing],
+                 [Measures].[Total Expenses]
+     - Semi-additive snapshot: [Measures].[Inventory] (LastNonEmpty / latest selected month)
+     - Calculated: [Measures].[Gap] = Sales - Budget Sales
+                   [Measures].[Budget Achievement] = IIF(Budget Sales = 0, NULL, Sales / Budget Sales)
+                   [Measures].[Profit Margin] = IIF(Sales = 0, NULL, Profit / Sales)
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   1. Chapter 5.1 Overview: All 24 months by Market + All Markets total
+      Expected Sales / Budget Sales / Gap / Profit:
+        Central : 265,045 / 250,360 / +14,685 /  93,852
+        East    : 178,576 / 157,900 / +20,676 /  59,217
+        South   : 103,926 /  98,200 /  +5,726 /  32,478
+        West    : 272,264 / 239,700 / +32,564 /  73,996
+        Total   : 819,811 / 746,160 / +73,651 / 259,543
+   ---------------------------------------------------------------------------- */
 SELECT
- {[Measures].[Sales], [Measures].[Budget Sales], [Measures].[Profit]} ON COLUMNS,
- NON EMPTY [Dim Location].[Geography].[State].Members ON ROWS
+  {
+    [Measures].[Sales],
+    [Measures].[Budget Sales],
+    [Measures].[Gap],
+    [Measures].[Profit],
+    [Measures].[Budget Achievement],
+    [Measures].[Profit Margin]
+  } ON COLUMNS,
+  {
+    [Dim Location].[Market].[Market].Members,
+    [Dim Location].[Market].[All]
+  } ON ROWS
+FROM [Coffee Performance];
+
+/* ----------------------------------------------------------------------------
+   2. TN06 Slice & Drill-down (Report Section 5.4):
+      Month = 2012-01-01 (DateKey 20120101), Market = Central -> Drill down to State
+      Expected States (Sales / Budget Sales):
+        Colorado  : 1,958 / 1,870
+        Illinois  : 2,538 / 2,580
+        Iowa      : 2,029 / 1,810
+        Missouri  : 1,009 /   960
+        Ohio      : 1,471 / 1,470
+        Wisconsin : 1,341 / 1,280
+        Central   : 10,346 / 9,970 (Profit = 2,956, Gap = +376, Achievement = 103.77%)
+   ---------------------------------------------------------------------------- */
+SELECT
+  {
+    [Measures].[Sales],
+    [Measures].[Budget Sales],
+    [Measures].[Profit],
+    [Measures].[Gap],
+    [Measures].[Budget Achievement]
+  } ON COLUMNS,
+  NON EMPTY
+  {
+    DESCENDANTS(
+      [Dim Location].[Geography].[Market].&[Central],
+      [Dim Location].[Geography].[State],
+      SELF_AND_BEFORE
+    )
+  } ON ROWS
+FROM [Coffee Performance]
+WHERE ([Dim Date].[Date Key].&[20120101]);
+
+/* ----------------------------------------------------------------------------
+   3. TN06 Roll-up verification:
+      Same slice (2012-01-01, Central) rolled up to Market level.
+      Must match the sum of the 6 states above: Sales = 10,346, Budget Sales = 9,970.
+   ---------------------------------------------------------------------------- */
+SELECT
+  {
+    [Measures].[Sales],
+    [Measures].[Budget Sales],
+    [Measures].[Profit],
+    [Measures].[Gap],
+    [Measures].[Budget Achievement]
+  } ON COLUMNS
 FROM [Coffee Performance]
 WHERE ([Dim Date].[Date Key].&[20120101], [Dim Location].[Market].&[Central]);
 
-/* Roll-up: same slice and leaf measure, compare with SQL SUM=10346. */
-SELECT {[Measures].[Sales], [Measures].[Budget Sales]} ON COLUMNS
+/* ----------------------------------------------------------------------------
+   4. TN06 Slice & Drill-down (Handbook TN06 Worksheet):
+      Month = 2012-01-01 (DateKey 20120101), Market = West -> Drill down to State
+      Expected States (Sales / Budget Sales / Profit):
+        California : 3,602 / 3,450 / 1,034
+        Nevada     : 2,117 / 1,680 /   236
+        Oregon     : 1,741 / 1,590 /   444
+        Utah       : 1,388 / 1,320 /   237
+        Washington : 1,605 / 1,420 /   405
+        West Total : 10,453 / 9,460 / 2,356 (Achievement = 110.50%)
+   ---------------------------------------------------------------------------- */
+SELECT
+  {
+    [Measures].[Sales],
+    [Measures].[Budget Sales],
+    [Measures].[Profit],
+    [Measures].[Gap],
+    [Measures].[Budget Achievement]
+  } ON COLUMNS,
+  NON EMPTY
+  {
+    DESCENDANTS(
+      [Dim Location].[Geography].[Market].&[West],
+      [Dim Location].[Geography].[State],
+      SELF_AND_BEFORE
+    )
+  } ON ROWS
 FROM [Coffee Performance]
-WHERE ([Dim Date].[Date Key].&[20120101], [Dim Location].[Market].&[Central]);
+WHERE ([Dim Date].[Date Key].&[20120101]);
 
-/* Dice/pivot: choose Jan2012, Central+East, Coffee product type.
-   Move ProductName between rows/columns in Browser; total remains 4768. */
+/* ----------------------------------------------------------------------------
+   5. TN06 Dice (Report Section 5.5):
+      Month = 2012-01-01, Markets = {Central, East}, Product Type = Coffee
+      Expected Sales: Central = 2,663, East = 2,105, Total = 4,768.
+   ---------------------------------------------------------------------------- */
+SELECT
+  {
+    [Measures].[Sales],
+    [Measures].[Budget Sales],
+    [Measures].[Profit]
+  } ON COLUMNS,
+  {
+    [Dim Location].[Market].&[Central],
+    [Dim Location].[Market].&[East]
+  } ON ROWS
+FROM [Coffee Performance]
+WHERE (
+  [Dim Date].[Date Key].&[20120101],
+  [Dim Product].[Product Type].&[Coffee]
+);
+
+/* ----------------------------------------------------------------------------
+   6. TN06 Pivot (Report Section 5.5):
+      Same filter as query 5 (2012-01-01, Central + East, Coffee),
+      pivoting Product Name onto ROWS and Market onto COLUMNS.
+      Expected Product totals (Central + East = Total):
+        Amaretto          :   524 +    93 =   617
+        Colombian         : 1,117 + 1,812 = 2,929
+        Decaf Irish Cream : 1,022 +   200 = 1,222
+        Grand Total       : 2,663 + 2,105 = 4,768 (invariant under pivot)
+   ---------------------------------------------------------------------------- */
+SELECT
+  CROSSJOIN(
+    {[Dim Location].[Market].&[Central], [Dim Location].[Market].&[East]},
+    {[Measures].[Sales]}
+  ) ON COLUMNS,
+  NON EMPTY [Dim Product].[Product Name].[Product Name].Members ON ROWS
+FROM [Coffee Performance]
+WHERE (
+  [Dim Date].[Date Key].&[20120101],
+  [Dim Product].[Product Type].&[Coffee]
+);
+
+/* ----------------------------------------------------------------------------
+   7. Chapter 5.6 Diagnostic Slice & Ranking:
+      Month = 2013-08-01 (DateKey 20130801), Market = South
+      Total Sales = 4,601, Budget Sales = 4,610, Gap = -9.
+      Products ordered by signed Gap ascending:
+        Colombian (-268), Decaf Irish Cream (-105), Chamomile (+22), ...
+   ---------------------------------------------------------------------------- */
+SELECT
+  {
+    [Measures].[Sales],
+    [Measures].[Budget Sales],
+    [Measures].[Gap],
+    [Measures].[Profit]
+  } ON COLUMNS,
+  ORDER(
+    NON EMPTY [Dim Product].[Product Name].[Product Name].Members,
+    [Measures].[Gap],
+    BASC
+  ) ON ROWS
+FROM [Coffee Performance]
+WHERE (
+  [Dim Date].[Date Key].&[20130801],
+  [Dim Location].[Market].&[South]
+);
+
+/* ----------------------------------------------------------------------------
+   8. Semi-additive Inventory Check:
+      Evaluates ending inventory at the latest period (2013-12-01, DateKey 20131201)
+      without summing across months.
+      Expected: Central = 45,252, East = 31,529, South = 11,444, West = 58,933.
+   ---------------------------------------------------------------------------- */
+SELECT
+  {[Measures].[Inventory]} ON COLUMNS,
+  [Dim Location].[Market].[Market].Members ON ROWS
+FROM [Coffee Performance]
+WHERE ([Dim Date].[Date Key].&[20131201]);

@@ -1,0 +1,49 @@
+{
+  "experiment": "TN05",
+  "mart_market_period_groups": 96,
+  "mart_market_product_period_groups": 1008,
+  "max_abs_diff_market_period": {
+    "Sales": 0.0,
+    "BudgetSales": 0.0,
+    "Profit": 0.0,
+    "Gap": 0.0,
+    "BudgetAchievement": 0.0
+  },
+  "max_abs_diff_market_product_period": {
+    "Sales": 0.0,
+    "BudgetSales": 0.0,
+    "Profit": 0.0,
+    "Gap": 0.0
+  },
+  "drill_across_baseline": {
+    "groups": 96.0,
+    "sales": 819811.0,
+    "budget_sales": 746160.0
+  },
+  "fanout_antipattern": {
+    "sales": 819811.0,
+    "inflated_budget_sales": 36035260.0,
+    "west_jan2012_detail_rows": 56.0,
+    "west_jan2012_inflated_budget": 529760.0
+  },
+  "full_outer_join_missing_groups": [
+    {
+      "MonthStart": "2012-01-01",
+      "Market": "West",
+      "Sales": 10453.0,
+      "BudgetSales": null,
+      "Gap": null,
+      "MissingActual": 0,
+      "MissingBudget": 1
+    },
+    {
+      "MonthStart": "2014-01-01",
+      "Market": "West",
+      "Sales": null,
+      "BudgetSales": 1000.0,
+      "Gap": null,
+      "MissingActual": 1,
+      "MissingBudget": 0
+    }
+  ]
+}

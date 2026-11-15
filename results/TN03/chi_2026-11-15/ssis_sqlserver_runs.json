@@ -1,0 +1,192 @@
+{
+  "engine": "Microsoft SQL Server 2022 (16.0.1000.6 X64) + SSIS DTExec.exe (16.0.1000.6 64-bit)",
+  "server": "Chi-Chie (localhost)",
+  "database": "CoffeeDW",
+  "package": "ssis/CoffeeETL/LoadCoffee.dtsx",
+  "scd_package": "ssis/CoffeeETL/SCD_TN04.dtsx",
+  "batches": [
+    {
+      "step": "1_initial_23_months",
+      "batch": {
+        "BatchID": "A56DAA5A-2B66-47E0-BD54-AB4D26DFA88D",
+        "SourceFile": "history_23m.csv",
+        "SourceChecksum": "35526a8dccc62b0e064749ebef285767bd649417181e14234d75b34208c88525",
+        "Status": "COMPLETED",
+        "SourceCount": 4071,
+        "AcceptedCount": 4071,
+        "RejectedCount": 0,
+        "InsertedCount": 4071,
+        "UpdatedCount": 0,
+        "UnchangedCount": 0,
+        "SourceDelta": 0,
+        "AcceptedDelta": 0
+      },
+      "warehouse": {
+        "FactRows": 4071,
+        "FactSales": 784231.0,
+        "FactBudgetSales": 715340.0,
+        "FactProfit": 246454.0
+      },
+      "valid_batch_sales": 784231.0
+    },
+    {
+      "step": "2_incremental_2013_12",
+      "batch": {
+        "BatchID": "4EED60E8-74C2-4CEE-B50B-DDBEDBF95258",
+        "SourceFile": "new_201312.csv",
+        "SourceChecksum": "df3706c5ef395313fbc67fe368673a3205040e249c8800b01a936ddaaad16162",
+        "Status": "COMPLETED",
+        "SourceCount": 177,
+        "AcceptedCount": 177,
+        "RejectedCount": 0,
+        "InsertedCount": 177,
+        "UpdatedCount": 0,
+        "UnchangedCount": 0,
+        "SourceDelta": 0,
+        "AcceptedDelta": 0
+      },
+      "warehouse": {
+        "FactRows": 4248,
+        "FactSales": 819811.0,
+        "FactBudgetSales": 746160.0,
+        "FactProfit": 259543.0
+      },
+      "valid_batch_sales": 35580.0
+    },
+    {
+      "step": "3_replay_2013_12",
+      "batch": {
+        "BatchID": "11F7FFFF-DC0B-4B6E-A25B-25DC9272564E",
+        "SourceFile": "new_201312.csv",
+        "SourceChecksum": "df3706c5ef395313fbc67fe368673a3205040e249c8800b01a936ddaaad16162",
+        "Status": "COMPLETED",
+        "SourceCount": 177,
+        "AcceptedCount": 177,
+        "RejectedCount": 0,
+        "InsertedCount": 0,
+        "UpdatedCount": 0,
+        "UnchangedCount": 177,
+        "SourceDelta": 0,
+        "AcceptedDelta": 0
+      },
+      "warehouse": {
+        "FactRows": 4248,
+        "FactSales": 819811.0,
+        "FactBudgetSales": 746160.0,
+        "FactProfit": 259543.0
+      },
+      "valid_batch_sales": 35580.0
+    },
+    {
+      "step": "4_correction_plus_10",
+      "batch": {
+        "BatchID": "E412F96D-88CF-42CD-9765-7C16440716D1",
+        "SourceFile": "correction_plus10.csv",
+        "SourceChecksum": "d2546bc9766ce2aacba74b0bd870d34ed7159923bedc405af8ed489f991c970d",
+        "Status": "COMPLETED",
+        "SourceCount": 177,
+        "AcceptedCount": 177,
+        "RejectedCount": 0,
+        "InsertedCount": 0,
+        "UpdatedCount": 1,
+        "UnchangedCount": 176,
+        "SourceDelta": 0,
+        "AcceptedDelta": 0
+      },
+      "warehouse": {
+        "FactRows": 4248,
+        "FactSales": 819821.0,
+        "FactBudgetSales": 746160.0,
+        "FactProfit": 259543.0
+      },
+      "valid_batch_sales": 35590.0
+    },
+    {
+      "step": "5_invalid_8rows_batch",
+      "batch": {
+        "BatchID": "FDC68A75-53CA-4EA4-BA3F-571D144DD1FA",
+        "SourceFile": "invalid_8rows.csv",
+        "SourceChecksum": "080539ab5cad44928807e89683c9889558a21c5fd81922d47f5f78666feaa804",
+        "Status": "COMPLETED",
+        "SourceCount": 8,
+        "AcceptedCount": 6,
+        "RejectedCount": 2,
+        "InsertedCount": 0,
+        "UpdatedCount": 0,
+        "UnchangedCount": 6,
+        "SourceDelta": 0,
+        "AcceptedDelta": 0
+      },
+      "warehouse": {
+        "FactRows": 4248,
+        "FactSales": 819821.0,
+        "FactBudgetSales": 746160.0,
+        "FactProfit": 259543.0
+      },
+      "valid_batch_sales": 1139.0
+    },
+    {
+      "step": "6_full_source_load",
+      "batch": {
+        "BatchID": "325E810B-B722-4BC3-A11D-8A6CAD5F8B50",
+        "SourceFile": "Coffee.csv",
+        "SourceChecksum": "929bdcc7fd8f6bf21607618e7474df0683af6412b32b8c5af39a40e89b62ffce",
+        "Status": "COMPLETED",
+        "SourceCount": 4248,
+        "AcceptedCount": 4248,
+        "RejectedCount": 0,
+        "InsertedCount": 4248,
+        "UpdatedCount": 0,
+        "UnchangedCount": 0,
+        "SourceDelta": 0,
+        "AcceptedDelta": 0
+      },
+      "warehouse": {
+        "FactRows": 4248,
+        "FactSales": 819811.0,
+        "FactBudgetSales": 746160.0,
+        "FactProfit": 259543.0
+      },
+      "valid_batch_sales": 819811.0
+    },
+    {
+      "step": "7_full_source_replay",
+      "batch": {
+        "BatchID": "7907ADCB-A79D-4797-A8B9-853EF6517E71",
+        "SourceFile": "Coffee.csv",
+        "SourceChecksum": "929bdcc7fd8f6bf21607618e7474df0683af6412b32b8c5af39a40e89b62ffce",
+        "Status": "COMPLETED",
+        "SourceCount": 4248,
+        "AcceptedCount": 4248,
+        "RejectedCount": 0,
+        "InsertedCount": 0,
+        "UpdatedCount": 0,
+        "UnchangedCount": 4248,
+        "SourceDelta": 0,
+        "AcceptedDelta": 0
+      },
+      "warehouse": {
+        "FactRows": 4248,
+        "FactSales": 819811.0,
+        "FactBudgetSales": 746160.0,
+        "FactProfit": 259543.0
+      },
+      "valid_batch_sales": 819811.0
+    }
+  ],
+  "rejected_rows": [
+    {
+      "BatchID": "FDC68A75-53CA-4EA4-BA3F-571D144DD1FA",
+      "SourceRow": 2,
+      "Reason": "Sales: invalid numeric value",
+      "RawJson": "{\"Area Code\":\"719\",\"Date\":\"40909\",\"Market\":\"Central\",\"Market Size\":\"Major Market\",\"Product\":\"Amaretto\",\"Product Line\":\"Beans\",\"Product Type\":\"Coffee\",\"State\":\"Colorado\",\"Type\":\"Regular\",\"Budget COGS\":\"90\",\"Budget Margin\":\"130\",\"Budget Profit\":\"100\",\"Budget Sales\":\"220\",\"COGS\":\"89\",\"Inventory\":\"777\",\"Margin\":\"130\",\"Marketing\":\"24\",\"Profit\":\"94\",\"Sales\":\"abc\",\"Total Expenses\":\"36\"}"
+    },
+    {
+      "BatchID": "FDC68A75-53CA-4EA4-BA3F-571D144DD1FA",
+      "SourceRow": 3,
+      "Reason": "ProductName: required",
+      "RawJson": "{\"Area Code\":\"970\",\"Date\":\"40909\",\"Market\":\"Central\",\"Market Size\":\"Major Market\",\"Product\":\"\",\"Product Line\":\"Beans\",\"Product Type\":\"Coffee\",\"State\":\"Colorado\",\"Type\":\"Regular\",\"Budget COGS\":\"80\",\"Budget Margin\":\"110\",\"Budget Profit\":\"80\",\"Budget Sales\":\"190\",\"COGS\":\"83\",\"Inventory\":\"623\",\"Margin\":\"107\",\"Marketing\":\"27\",\"Profit\":\"68\",\"Sales\":\"190\",\"Total Expenses\":\"39\"}"
+    }
+  ],
+  "scd_dtexec_returncode": 0
+}
