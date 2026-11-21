@@ -51,6 +51,13 @@
   - Dòng bị loại trong `audit.RejectedRow` (Batch `FDC68A75-53CA-4EA4-BA3F-571D144DD1FA`):
     - `SourceRow = 2`: `Reason = "Sales: invalid numeric value"` (`"Sales":"abc"`, `"Area Code":"719"`, `"Product":"Amaretto"`).
     - `SourceRow = 3`: `Reason = "ProductName: required"` (`"Product":""`, `"Area Code":"970"`).
+  - **Ảnh minh chứng (`TN03_flow.png`, `TN03_audit.png`, `TN03_reject.png`):**
+
+![TN03_flow.png](TN03_flow.png)
+
+![TN03_audit.png](TN03_audit.png)
+
+![TN03_reject.png](TN03_reject.png)
 - **Nhận xét, giới hạn và quyết định:**
   - Cả 7 batch đều đạt `SourceDelta = 0` và `AcceptedDelta = 0`, `DTExec.exe` trả mã `DTSER_SUCCESS (0)`.
   - Trên kho đã có dữ liệu (Bước 5), 2 dòng bị loại trong batch mới không ghi đè bản hợp lệ đã nạp từ batch trước (`FactRows = 4.248`), trong khi tổng `Sales` của 6 dòng hợp lệ trong batch mới (`stg.CoffeeRaw WHERE RejectReason IS NULL`) đúng bằng `1.139`. Sau khi reset và chạy Bước 6–7, kho `CoffeeDW` giữ trạng thái chuẩn (`4.248` dòng, `Sales = 819.811`).

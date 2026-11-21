@@ -39,6 +39,13 @@
      - Xếp sản phẩm theo `Gap` có dấu tăng dần: `Colombian (1.102 / 1.370 / Gap -268)`, `Decaf Irish Cream (465 / 570 / Gap -105)`, `Chamomile (482 / 460 / Gap +22)`, `Lemon (+26)`, `Caffe Latte (+93)`, `Decaf Espresso (+109)`, `Caffe Mocha (+114)`.
   6. **Chính sách Inventory bán cộng (kỳ cuối `12/2013`):**
      - `Central = 45.252`, `East = 31.529`, `South = 11.444`, `West = 58.933`, Tổng kỳ cuối = `147.158`.
+  - **Ảnh minh chứng (`TN06_usage.png`, `TN06_browser.png`, `TN06_sql.png`):**
+
+![TN06_usage.png](TN06_usage.png)
+
+![TN06_browser.png](TN06_browser.png)
+
+![TN06_sql.png](TN06_sql.png)
 - **Lệnh chạy:**
   ```powershell
   .\.venv\Scripts\python learning/experiments/mart_olap.py

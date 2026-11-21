@@ -12,7 +12,7 @@ Người phụ trách: **Chi**. Dùng cùng kỳ và bộ lọc khi đối soát
 - [x] Tháng 01/2012 Central: Sales 10.346, Budget 9.970; cộng sáu bang phải khớp cấp Market.
 - [x] Dice Coffee tháng 01/2012: Central 2.663 + East 2.105 = 4.768; pivot giữ nguyên tổng lát cắt.
 - [x] Phân tích South tháng 08/2013: Sales 4.601, Budget 4.610, Gap −9; xếp sản phẩm theo Gap có dấu tăng dần.
-- [ ] Lưu ảnh DSV, Dimension Usage, Browser có bộ lọc, SQL và bảng đối soát nguồn–cube. *(Đã lưu đầy đủ bảng đối soát nguồn–SQL–MDX trong `results/TN06/chi_2026-11-15/experiment.md`; chờ chụp ảnh giao diện SSAS Browser & DSV khi mở trên dịch vụ SSAS).*
+- [x] Lưu ảnh DSV, Dimension Usage, Browser có bộ lọc, SQL và bảng đối soát nguồn–cube. *(Đã lưu đầy đủ ảnh `TN05_join.png`, `TN06_usage.png`, `TN06_browser.png`, `TN06_sql.png` và bảng đối soát nguồn–SQL–MDX trong `results/TN05/chi_2026-11-15/` và `results/TN06/chi_2026-11-15/`).*
 
 Trong lát cắt South 08/2013, Colombian có Gap −268, Decaf Irish Cream −105 và Chamomile +22 theo tài liệu nguồn. Sản phẩm dương có thể bù phần hụt của sản phẩm âm; tổng một vài dòng không đại diện tổng Market.
 
@@ -71,6 +71,8 @@ Thực nghiệm **TN05** (`learning/experiments/mart_olap.py`, `sql/sqlserver/10
 | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | `2012-01-01` | `West` | 10.453,0000 | `NULL` | `NULL` | 0 | 1 | Có doanh số thực tế, thiếu ngân sách (không thay `NULL` bằng `0`) |
 | `2014-01-01` | `West` | `NULL` | 1.000,0000 | `NULL` | 1 | 0 | Kỳ tương lai chỉ có kế hoạch/dự báo, chưa phát sinh thực tế |
+
+![TN05_join.png](../../results/TN05/chi_2026-11-15/TN05_join.png)
 
 ---
 
@@ -159,6 +161,12 @@ Khi lọc kỳ `2013-08-01` và thị trường `South` (`Sales = 4.601`, `Budge
 | **—** | **Tổng South 08/2013** | **4.601** | **4.610** | **−9** | **1.704** | **5 món vượt (+364) bù gần hết 2 món hụt (−373)** |
 
 - **Ý nghĩa nghiệp vụ:** Ở cấp toàn thị trường `South`, mức hụt `−9` trông rất nhỏ, nhưng khi mở xuống cấp sản phẩm, hai món `Colombian` (`−268`) và `Decaf Irish Cream` (`−105`) thực chất bị hụt tới `−373` đơn vị doanh số và được che lấp bởi 5 sản phẩm vượt kế hoạch (`+364`). Điều này chứng minh giá trị cốt lõi của tính năng drill-down đa chiều và quy tắc sắp xếp theo `Gap` có dấu tăng dần.
+
+![TN06_usage.png](../../results/TN06/chi_2026-11-15/TN06_usage.png)
+
+![TN06_browser.png](../../results/TN06/chi_2026-11-15/TN06_browser.png)
+
+![TN06_sql.png](../../results/TN06/chi_2026-11-15/TN06_sql.png)
 
 ---
 

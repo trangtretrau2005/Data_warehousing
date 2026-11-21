@@ -29,6 +29,9 @@
   ```
 - **Kết quả thô, đơn vị, ảnh và execution plan:**
   - Lưu tại [`tn05_summary.json`](tn05_summary.json), [`sqlserver_tn05_budget_demo.txt`](sqlserver_tn05_budget_demo.txt) và [`sqlserver_10_drill_across.txt`](sqlserver_10_drill_across.txt).
+  - **Ảnh minh chứng (`TN05_join.png`):**
+
+![TN05_join.png](TN05_join.png)
 - **Nhận xét, giới hạn và quyết định:**
   - Không bao giờ thay thế `NULL` của nhóm thiếu ở một phía bằng `0` vì thiếu ngân sách hoặc chưa phát sinh thực tế mang ý nghĩa "chưa có dữ liệu" chứ không phải bằng 0.
   - Hợp đồng mart (`mart.vw_Detail`, `mart.vw_MarketPeriod`, `mart.vw_MarketProductPeriod`) đã khớp 100% giữa SQLite và SQL Server 2022, sẵn sàng bàn giao cho Trang tích hợp dashboard và dự báo.

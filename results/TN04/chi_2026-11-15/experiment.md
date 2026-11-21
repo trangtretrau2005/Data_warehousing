@@ -44,6 +44,13 @@
     - `P01_Type3_Limit`: `P01 | Amaretto | CurrentType = Premium | PreviousType = Specialty`
     - `A01_Type2_Lookup`: `2012-06-01 -> SK 1 (Minor)`, `2012-07-01 -> SK 2 (Major)`
     - `A01_Type3_After2Changes`: `A01 | Tier = Pilot | PrevTier = Major`
+  - **Ảnh minh chứng (`TN04_versions.png`, `TN04_lookup.png`, `TN04_type3.png`):**
+
+![TN04_versions.png](TN04_versions.png)
+
+![TN04_lookup.png](TN04_lookup.png)
+
+![TN04_type3.png](TN04_type3.png)
 - **Nhận xét, giới hạn và quyết định:**
   - `Coffee.csv` gốc không có cột mã sản phẩm ổn định (chỉ có tên sản phẩm `Product`) và không có sự kiện đổi phân loại theo thời gian. Do đó, các chiều phục vụ chính (`dw.DimLocation`, `dw.DimProduct`) dùng chính sách `Type 1`, còn `Type 2` và `Type 3` được chứng minh trên bộ thử biệt lập có khóa nghiệp vụ ổn định (`P01`, `A01`).
 

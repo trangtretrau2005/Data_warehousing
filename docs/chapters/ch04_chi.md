@@ -11,7 +11,7 @@ Người phụ trách: **Chi**. Cần phân biệt chạy logic tham chiếu b�
 - [x] Kiểm tra tải tăng dần: 23 tháng đầu → thêm 12/2013 → phát lại 12/2013; kết quả cuối 4.248 dòng, Sales 819.811.
 - [x] TN04: SCD Type 1 sửa nhãn; Type 2 đóng/mở phiên bản trong cùng transaction; lookup trước và đúng biên hiệu lực.
 - [x] Kiểm tra không chồng khoảng, một dòng hiện hành và nạp lại sự kiện không tăng phiên bản; minh họa giới hạn Type 3.
-- [ ] Tạo và chạy package SSIS thật; chụp Control Flow/Data Flow, mã batch, số dòng và đường lỗi. *(Đã tạo và thực thi thành công package `ssis/CoffeeETL/LoadCoffee.dtsx` và `SCD_TN04.dtsx` bằng `DTExec.exe` 64-bit v16.0.1000.6 trên SQL Server 2022 `Chi-Chie`, thu đủ BatchID/audit/reject tại `results/TN03/chi_2026-11-15/`; chỉ còn mở `CoffeeETL.dtproj` trong Visual Studio SSDT để chụp ảnh màn hình Designer chèn vào Word).*
+- [x] Tạo và chạy package SSIS thật; chụp Control Flow/Data Flow, mã batch, số dòng và đường lỗi. *(Đã tạo và thực thi thành công package `ssis/CoffeeETL/LoadCoffee.dtsx` và `SCD_TN04.dtsx` bằng `DTExec.exe` 64-bit v16.0.1000.6 trên SQL Server 2022 `Chi-Chie`, lưu đủ ảnh `TN03_flow.png`, `TN03_audit.png`, `TN03_reject.png` và `TN04_versions.png`, `TN04_lookup.png`, `TN04_type3.png` tại `results/TN03/chi_2026-11-15/` và `results/TN04/chi_2026-11-15/`).*
 
 Ca dữ liệu lỗi nhỏ của báo cáo: lấy tám dòng đầu, sửa Sales dòng đầu thành `abc`, Product dòng thứ hai thành rỗng; kỳ vọng sáu dòng hợp lệ với Sales 1.139. Khi chạy trên kho đã có dữ liệu, một dòng bị loại ở batch mới vẫn có thể có bản hợp lệ từ batch trước; phải nêu trạng thái kho để diễn giải số tổng.
 
@@ -109,6 +109,12 @@ Trong tệp `Coffee.csv`, mỗi tên sản phẩm (`Product`) cố định ở m
   - `OverlappingIntervals = 0` (không có hai khoảng hiệu lực nào chồng lấn).
   - **Giới hạn Type 3:** Sau hai lần đổi (`Coffee` → `Specialty` → `Premium` với `P01`, hoặc `Minor` → `Major` → `Pilot` với `A01`), dòng Type 3 chỉ còn giữ `(CurrentType = 'Premium', PreviousType = 'Specialty')` và làm mất hoàn toàn lịch sử ban đầu `'Coffee'`. Do đó Type 2 là lựa chọn bắt buộc khi cần tái lập báo cáo lịch sử tại bất kỳ kỳ giao dịch nào.
 
+![TN04_versions.png](../../results/TN04/chi_2026-11-15/TN04_versions.png)
+
+![TN04_lookup.png](../../results/TN04/chi_2026-11-15/TN04_lookup.png)
+
+![TN04_type3.png](../../results/TN04/chi_2026-11-15/TN04_type3.png)
+
 ---
 
 ## 4.4 Thực nghiệm tải ban đầu, tải tăng dần, phát lại, sửa số và xử lý dòng lỗi (TN03)
@@ -139,3 +145,9 @@ Trong Lượt chạy 5 (`BatchID = FDC68A75-53CA-4EA4-BA3F-571D144DD1FA`, tệp 
 - **Diễn giải trạng thái kho khi nạp batch lỗi:**
   - Khi chạy `invalid_8rows.csv` vào một kho trống (như trong `learning/experiments/incremental.py` và `tests/test_pipeline.py`), kho sau nạp có đúng `6` dòng và `SUM(Sales) = 1.139`.
   - Khi chạy `invalid_8rows.csv` trên kho đã nạp sẵn dữ liệu lịch sử (Lượt 5 trên SQL Server), 2 dòng bị loại ở batch mới chỉ bị chặn không cho ghi đè vào fact, trong khi bản ghi hợp lệ của cùng grain từ batch trước vẫn được bảo toàn trên `dw.FactSalesPerformance`. Do đó, việc đối soát chất lượng batch tăng dần luôn phải kiểm tra đồng thời `audit.LoadBatch` (`SourceDelta = 0`, `AcceptedDelta = 0`) và tổng số đo của các dòng hợp lệ thuộc chính `BatchID` đó (`1.139,0000`).
+
+![TN03_flow.png](../../results/TN03/chi_2026-11-15/TN03_flow.png)
+
+![TN03_audit.png](../../results/TN03/chi_2026-11-15/TN03_audit.png)
+
+![TN03_reject.png](../../results/TN03/chi_2026-11-15/TN03_reject.png)
