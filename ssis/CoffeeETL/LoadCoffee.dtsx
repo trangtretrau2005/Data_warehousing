@@ -11,8 +11,9 @@
   DTS:LastModifiedProductVersion="11.0.5058.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="LoadCoffee"
+  DTS:ProtectionLevel="0"
   DTS:VersionBuild="1"
-  DTS:VersionGUID="{540B55F9-149B-422B-84DB-F02137ED7394}">
+  DTS:VersionGUID="{95E523FE-E955-4F60-B6CF-42AAC0F03A13}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -97,7 +98,8 @@
       DTS:DTSID="{4A389859-D961-4CE0-A7A4-C2960414F71B}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
-      DTS:ObjectName="EST_01_RegisterBatchAndStageRaw">
+      DTS:ObjectName="EST_01_RegisterBatchAndStageRaw"
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -123,7 +125,8 @@
       DTS:DTSID="{B40D2E4A-20D6-4BCE-AA78-FD790DC4D493}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
-      DTS:ObjectName="EST_02_ExecuteUspLoadCoffee">
+      DTS:ObjectName="EST_02_ExecuteUspLoadCoffee"
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData

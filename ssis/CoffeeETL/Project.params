@@ -1,33 +1,66 @@
 ﻿<?xml version="1.0"?>
 <SSIS:Parameters xmlns:SSIS="www.microsoft.com/SqlServer/SSIS">
-  <SSIS:Parameter SSIS:Name="ServerName">
+  <SSIS:Parameter
+    SSIS:Name="ServerName">
     <SSIS:Properties>
-      <SSIS:Property SSIS:Name="ID">{A1B2C3D4-1111-4444-8888-111111111111}</SSIS:Property>
-      <SSIS:Property SSIS:Name="Description">SQL Server Instance Name</SSIS:Property>
-      <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
-      <SSIS:Property SSIS:Name="Value">localhost</SSIS:Property>
-      <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-      <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="ID">{2972f714-ad51-402a-93fb-3b921cde125e}</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="CreationName"></SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Description"></SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Required">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Sensitive">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Value">localhost</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="DataType">18</SSIS:Property>
     </SSIS:Properties>
   </SSIS:Parameter>
-  <SSIS:Parameter SSIS:Name="DatabaseName">
+  <SSIS:Parameter
+    SSIS:Name="DatabaseName">
     <SSIS:Properties>
-      <SSIS:Property SSIS:Name="ID">{A1B2C3D4-2222-4444-8888-222222222222}</SSIS:Property>
-      <SSIS:Property SSIS:Name="Description">Target Data Warehouse Database</SSIS:Property>
-      <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
-      <SSIS:Property SSIS:Name="Value">CoffeeDW</SSIS:Property>
-      <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-      <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="ID">{f7c2c55b-5df1-491c-92df-2c185f07a860}</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="CreationName"></SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Description"></SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Required">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Sensitive">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Value">CoffeeDW</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="DataType">18</SSIS:Property>
     </SSIS:Properties>
   </SSIS:Parameter>
-  <SSIS:Parameter SSIS:Name="SourceFilePath">
+  <SSIS:Parameter
+    SSIS:Name="SourceFilePath">
     <SSIS:Properties>
-      <SSIS:Property SSIS:Name="ID">{A1B2C3D4-3333-4444-8888-333333333333}</SSIS:Property>
-      <SSIS:Property SSIS:Name="Description">Path to UTF-8 Coffee CSV file</SSIS:Property>
-      <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
-      <SSIS:Property SSIS:Name="Value">data/raw/Coffee.csv</SSIS:Property>
-      <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-      <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="ID">{a7e58512-9f8f-4c81-8746-2bdb9959a2cc}</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="CreationName"></SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Description"></SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Required">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Sensitive">0</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="Value">c:\Users\Asus vivobook\Documents\Data_warehousing-main\data\raw\Coffee.csv</SSIS:Property>
+      <SSIS:Property
+        SSIS:Name="DataType">18</SSIS:Property>
     </SSIS:Properties>
   </SSIS:Parameter>
 </SSIS:Parameters>

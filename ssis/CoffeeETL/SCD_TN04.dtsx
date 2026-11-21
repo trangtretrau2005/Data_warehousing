@@ -11,8 +11,9 @@
   DTS:LastModifiedProductVersion="11.0.5058.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="SCD_TN04"
+  DTS:ProtectionLevel="0"
   DTS:VersionBuild="1"
-  DTS:VersionGUID="{85128011-064F-4FAE-8614-16C8747D6D8C}">
+  DTS:VersionGUID="{93FB02CA-DB80-40DD-9757-A09EB776C015}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -57,7 +58,8 @@
       DTS:DTSID="{4061301C-7E13-4405-BF2E-10F9D4F0E845}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
-      DTS:ObjectName="EST_RunIsolatedSCD_TN04">
+      DTS:ObjectName="EST_RunIsolatedSCD_TN04"
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
