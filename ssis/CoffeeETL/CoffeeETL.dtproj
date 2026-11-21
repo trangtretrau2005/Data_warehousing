@@ -3,27 +3,74 @@
   <DeploymentModel>Project</DeploymentModel>
   <ProductVersion>11.0.2100.60</ProductVersion>
   <SchemaVersion>3.0.1.0</SchemaVersion>
-  <ProjectGuid>{D4E5F6A7-5555-4444-9999-777777777777}</ProjectGuid>
-  <Database>
-    <Name>CoffeeETL.database</Name>
-    <FullPath>CoffeeETL.database</FullPath>
-  </Database>
-  <Packages>
-    <Package>
-      <Name>LoadCoffee.dtsx</Name>
-      <FullPath>LoadCoffee.dtsx</FullPath>
-    </Package>
-    <Package>
-      <Name>SCD_TN04.dtsx</Name>
-      <FullPath>SCD_TN04.dtsx</FullPath>
-    </Package>
-  </Packages>
+  <State>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48UHJvamVjdCB4bWxuczp4c2k9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hLWluc3RhbmNlIiB4bWxuczp4c2Q9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hIj48RGF0YWJhc2U+PE5hbWU+Q29mZmVlRVRMLmRhdGFiYXNlPC9OYW1lPjxGdWxsUGF0aD5Db2ZmZWVFVEwuZGF0YWJhc2U8L0Z1bGxQYXRoPjwvRGF0YWJhc2U+PC9Qcm9qZWN0Pg==</State>
+  <DeploymentModelSpecificContent>
+    <Manifest>
+      <SSIS:Project xmlns:SSIS="www.microsoft.com/SqlServer/SSIS" SSIS:ProtectionLevel="EncryptSensitiveWithUserKey">
+        <SSIS:Properties>
+          <SSIS:Property SSIS:Name="ID">{D4E5F6A7-5555-4444-9999-777777777777}</SSIS:Property>
+          <SSIS:Property SSIS:Name="Name">CoffeeETL</SSIS:Property>
+          <SSIS:Property SSIS:Name="Description">CoffeeDW SSIS ETL Project (Chapter 4 / TN03-TN04)</SSIS:Property>
+          <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+          <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+          <SSIS:Property SSIS:Name="VersionBuild">1</SSIS:Property>
+          <SSIS:Property SSIS:Name="VersionComments"></SSIS:Property>
+          <SSIS:Property SSIS:Name="CreationDate">2026-11-15T16:00:00</SSIS:Property>
+          <SSIS:Property SSIS:Name="CreatorName">Chi</SSIS:Property>
+          <SSIS:Property SSIS:Name="CreatorComputerName">Chi-Chie</SSIS:Property>
+          <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
+        </SSIS:Properties>
+        <SSIS:Packages>
+          <SSIS:Package SSIS:Name="LoadCoffee.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="SCD_TN04.dtsx" SSIS:EntryPoint="1" />
+        </SSIS:Packages>
+        <SSIS:ConnectionManagers />
+        <SSIS:DeploymentInfo>
+          <SSIS:ProjectConnectionParameters />
+          <SSIS:PackageInfo>
+            <SSIS:PackageMetaData SSIS:Name="LoadCoffee.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{11111111-2222-3333-4444-555555555555}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">LoadCoffee</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments"></SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{11111111-2222-3333-4444-666666666666}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">6</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">CoffeeDW SSIS ETL Package</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="SCD_TN04.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{22222222-3333-4444-5555-666666666666}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">SCD_TN04</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments"></SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{22222222-3333-4444-5555-777777777777}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">6</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">CoffeeDW SCD TN04 Package</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+          </SSIS:PackageInfo>
+        </SSIS:DeploymentInfo>
+      </SSIS:Project>
+    </Manifest>
+  </DeploymentModelSpecificContent>
   <Configurations>
     <Configuration>
       <Name>Development</Name>
       <Options>
         <OutputPath>bin</OutputPath>
-        
+        <ConnectionMappings />
+        <ConnectionProviderNames />
+        <ConnectionSecurity />
+        <DatabaseObjects />
+        <ParameterValues />
       </Options>
     </Configuration>
   </Configurations>
