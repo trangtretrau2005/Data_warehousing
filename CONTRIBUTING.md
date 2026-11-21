@@ -19,7 +19,9 @@ Nếu dùng Python 3.11, thay `-3.12` bằng `-3.11`. Không cần bật PowerSh
 
 ## Quy tắc sửa code và dữ liệu
 
-- Tạo nhánh theo thành viên/phạm vi; commit nhỏ có mục đích; mở PR để một người khác review.
+- Làm trên `thanh`, `chi` hoặc `trang`; commit nhỏ có mục đích; mở PR với base `dev` để một người khác review và tích hợp chạy thử.
+- Giữ nguyên `main`. Chỉ cập nhật `main` từ bản `dev` đã kiểm tra sau khi Trang xác nhận OK rõ ràng; không push trực tiếp hoặc tự merge vào `main`.
+- Đồng bộ nhánh cá nhân từ `origin/dev` trước khi tích hợp việc mới nếu cần. Giải quyết conflict trên nhánh cá nhân và chạy lại kiểm tra bị ảnh hưởng.
 - Giữ raw bất biến; không thay số lỗi bằng 0, không xóa Profit/Inventory âm theo mặc định.
 - Khi đổi schema, cập nhật consumer và tài liệu trong cùng PR; ba phần cùng dùng một định nghĩa grain/KPI.
 - Thêm kiểm tra khi thay đổi logic có ảnh hưởng grain, tổng, ETL hoặc chia thời gian dự báo. Chỉnh tài liệu/định dạng nhỏ chỉ cần kiểm tra phù hợp.

@@ -25,4 +25,4 @@ Base đã có code chạy cục bộ cho profile nguồn, ETL staging–star–m
 | UX | Tác vụ, đáp án và mẫu ẩn danh | Mời người thử Excel/web, đổi thứ tự và ghi số đo thật |
 | Báo cáo | Bảy checklist và ánh xạ đủ bước/TN | Viết nội dung, chèn ảnh thật, kết luận sau khi đo |
 
-Nhánh chung là `main`, remote `origin` là repository GitHub của nhóm. Xem commit cụ thể bằng `git log` và GitHub; các thành viên bắt đầu theo [START_HERE](START_HERE.md). Các file Word nguồn và CSV gốc được giữ nguyên.
+Nhánh tích hợp/chạy thử là `dev`; các nhánh làm việc là `thanh`, `chi`, `trang`. `main` được giữ nguyên tại bản base cho tới khi Trang xác nhận bản tích hợp OK và yêu cầu cập nhật. Remote `origin` là repository GitHub của nhóm. Xem commit cụ thể bằng `git log` và GitHub; các thành viên bắt đầu theo [START_HERE](START_HERE.md) trên `dev` hoặc nhánh cá nhân. Các file Word nguồn và CSV gốc được giữ nguyên.

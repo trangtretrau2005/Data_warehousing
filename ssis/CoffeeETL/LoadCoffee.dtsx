@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/21/2026 12:16:38 PM"
+  DTS:CreationName="SSIS.Package.3"
+  DTS:CreatorComputerName="CHI-CHIE"
+  DTS:CreatorName="Chi"
+  DTS:Description="CoffeeDW SSIS ETL Package (Chapter 4 / TN03): Batch registration, CSV staging, conditional validation/reject split, and transactional star schema upsert via dw.usp_LoadCoffee."
+  DTS:DTSID="{4CDDFCCE-2BA4-4FB2-8837-BE3133B77D2F}"
+  DTS:ExecutableType="SSIS.Package.3"
+  DTS:LastModifiedProductVersion="11.0.5058.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="LoadCoffee"
+  DTS:ProtectionLevel="0"
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{95E523FE-E955-4F60-B6CF-42AAC0F03A13}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">6</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CoffeeCSV_FlatFile]"
+      DTS:CreationName="FLATFILE"
+      DTS:Description="UTF-8 CSV Flat File Connection for Coffee.csv (20 columns)"
+      DTS:DTSID="{E9DFB141-8621-43DD-AC05-8BB5B44F1D3B}"
+      DTS:ObjectName="CoffeeCSV_FlatFile">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[User::SourceFilePath]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x0022_"
+          DTS:CodePage="65001"
+          DTS:ConnectionString="c:\Users\Asus vivobook\Documents\Data_warehousing-main\data\raw\Coffee.csv" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CoffeeDW_ADO]"
+      DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+      DTS:Description="ADO.NET Connection to SQL Server CoffeeDW"
+      DTS:DTSID="{275425D4-E1E1-438D-A775-5827418EC3E2}"
+      DTS:ObjectName="CoffeeDW_ADO">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Data Source=" + @[User::ServerName] + ";Initial Catalog=" + @[User::DatabaseName] + ";Integrated Security=True;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=CoffeeDW;Integrated Security=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C4D64BF4-AC4D-4732-9936-D24BD2DD19D5}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="BatchID">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{150534AE-4456-4150-8E3D-36C031BACD8D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DatabaseName">
+      <DTS:VariableValue
+        DTS:DataType="8">CoffeeDW</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C5F93425-B1DB-480A-80B9-A6CC687B885D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ServerName">
+      <DTS:VariableValue
+        DTS:DataType="8">localhost</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7346C1FC-FDF7-4F1C-926E-AD4ADE6E1B86}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceFilePath">
+      <DTS:VariableValue
+        DTS:DataType="8">c:\Users\Asus vivobook\Documents\Data_warehousing-main\data\raw\Coffee.csv</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\EST_01_RegisterBatchAndStageRaw"
+      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:Description="Generate BatchID, compute SHA-256 checksum of source CSV, register audit.LoadBatch, and stage raw CSV rows + RejectReason into stg.CoffeeRaw."
+      DTS:DTSID="{4A389859-D961-4CE0-A7A4-C2960414F71B}"
+      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_01_RegisterBatchAndStageRaw"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{275425D4-E1E1-438D-A775-5827418EC3E2}"
+          SQLTask:SqlStatementSource="SET NOCOUNT ON;&#xA;SET QUOTED_IDENTIFIER ON;&#xA;SET ANSI_NULLS ON;&#xA;&#xA;DECLARE @FilePath nvarchar(500) = @SourceFilePath;&#xA;DECLARE @FileName nvarchar(500) = RIGHT(@FilePath, CHARINDEX('\', REVERSE(@FilePath) + '\') - 1);&#xA;DECLARE @BatchID uniqueidentifier = NEWID();&#xA;&#xA;-- 1. Read raw file bytes to compute exact SHA-256 checksum&#xA;CREATE TABLE #FileBlob (BulkColumn varbinary(max));&#xA;DECLARE @BlobSql nvarchar(max) = N'INSERT INTO #FileBlob SELECT BulkColumn FROM OPENROWSET(BULK N''' + REPLACE(@FilePath, '''', '''''') + N''', SINGLE_BLOB) AS b;';&#xA;EXEC sp_executesql @BlobSql;&#xA;&#xA;DECLARE @Checksum char(64) = (&#xA;    SELECT LOWER(CONVERT(char(64), HASHBYTES('SHA2_256', BulkColumn), 2))&#xA;    FROM #FileBlob&#xA;);&#xA;&#xA;-- 2. Read raw CSV lines (UTF-8) preserving physical line order&#xA;CREATE TABLE #RawLines (LineText nvarchar(max));&#xA;DECLARE @BulkSql nvarchar(max) = N'BULK INSERT #RawLines FROM N''' + REPLACE(@FilePath, '''', '''''') + N''' WITH (FIRSTROW = 2, CODEPAGE = ''65001'', ROWTERMINATOR = ''0x0a'', FIELDTERMINATOR = ''\0'');';&#xA;EXEC sp_executesql @BulkSql;&#xA;&#xA;CREATE TABLE #NumberedLines (&#xA;    SourceRow int IDENTITY(2,1) PRIMARY KEY,&#xA;    CleanLine nvarchar(max)&#xA;);&#xA;INSERT INTO #NumberedLines (CleanLine)&#xA;SELECT REPLACE(LineText, CHAR(13), N'')&#xA;FROM #RawLines&#xA;WHERE LEN(REPLACE(LineText, CHAR(13), N'')) &gt; 0;&#xA;&#xA;DECLARE @SourceCount int = (SELECT COUNT(*) FROM #NumberedLines);&#xA;&#xA;-- 3. Register Batch in audit.LoadBatch (outside usp_LoadCoffee transaction so failures remain traceable)&#xA;INSERT INTO audit.LoadBatch (BatchID, SourceFile, SourceChecksum, StartedAt, Status, SourceCount)&#xA;VALUES (@BatchID, @FileName, @Checksum, SYSUTCDATETIME(), 'STAGED', @SourceCount);&#xA;&#xA;-- 4. Split 20 CSV columns using OPENJSON array over RFC-compliant CSV values&#xA;;WITH SplitCols AS (&#xA;    SELECT&#xA;        n.SourceRow,&#xA;        n.CleanLine,&#xA;        MAX(CASE WHEN j.[key] = 0  THEN LTRIM(RTRIM(j.[value])) END) AS [Area Code],&#xA;        MAX(CASE WHEN j.[key] = 1  THEN LTRIM(RTRIM(j.[value])) END) AS [Date],&#xA;        MAX(CASE WHEN j.[key] = 2  THEN LTRIM(RTRIM(j.[value])) END) AS [Market],&#xA;        MAX(CASE WHEN j.[key] = 3  THEN LTRIM(RTRIM(j.[value])) END) AS [Market Size],&#xA;        MAX(CASE WHEN j.[key] = 4  THEN LTRIM(RTRIM(j.[value])) END) AS [Product],&#xA;        MAX(CASE WHEN j.[key] = 5  THEN LTRIM(RTRIM(j.[value])) END) AS [Product Line],&#xA;        MAX(CASE WHEN j.[key] = 6  THEN LTRIM(RTRIM(j.[value])) END) AS [Product Type],&#xA;        MAX(CASE WHEN j.[key] = 7  THEN LTRIM(RTRIM(j.[value])) END) AS [State],&#xA;        MAX(CASE WHEN j.[key] = 8  THEN LTRIM(RTRIM(j.[value])) END) AS [Type],&#xA;        MAX(CASE WHEN j.[key] = 9  THEN LTRIM(RTRIM(j.[value])) END) AS [Budget COGS],&#xA;        MAX(CASE WHEN j.[key] = 10 THEN LTRIM(RTRIM(j.[value])) END) AS [Budget Margin],&#xA;        MAX(CASE WHEN j.[key] = 11 THEN LTRIM(RTRIM(j.[value])) END) AS [Budget Profit],&#xA;        MAX(CASE WHEN j.[key] = 12 THEN LTRIM(RTRIM(j.[value])) END) AS [Budget Sales],&#xA;        MAX(CASE WHEN j.[key] = 13 THEN LTRIM(RTRIM(j.[value])) END) AS [COGS],&#xA;        MAX(CASE WHEN j.[key] = 14 THEN LTRIM(RTRIM(j.[value])) END) AS [Inventory],&#xA;        MAX(CASE WHEN j.[key] = 15 THEN LTRIM(RTRIM(j.[value])) END) AS [Margin],&#xA;        MAX(CASE WHEN j.[key] = 16 THEN LTRIM(RTRIM(j.[value])) END) AS [Marketing],&#xA;        MAX(CASE WHEN j.[key] = 17 THEN LTRIM(RTRIM(j.[value])) END) AS [Profit],&#xA;        MAX(CASE WHEN j.[key] = 18 THEN LTRIM(RTRIM(j.[value])) END) AS [Sales],&#xA;        MAX(CASE WHEN j.[key] = 19 THEN LTRIM(RTRIM(j.[value])) END) AS [Total Expenses]&#xA;    FROM #NumberedLines n&#xA;    CROSS APPLY OPENJSON(N'[&quot;' + REPLACE(STRING_ESCAPE(n.CleanLine, 'json'), N',', N'&quot;,&quot;') + N'&quot;]') j&#xA;    GROUP BY n.SourceRow, n.CleanLine&#xA;),&#xA;Parsed AS (&#xA;    SELECT&#xA;        s.*,&#xA;        (&#xA;            SELECT&#xA;                s.[Area Code] AS [Area Code], s.[Date] AS [Date], s.[Market] AS [Market],&#xA;                s.[Market Size] AS [Market Size], s.[Product] AS [Product],&#xA;                s.[Product Line] AS [Product Line], s.[Product Type] AS [Product Type],&#xA;                s.[State] AS [State], s.[Type] AS [Type],&#xA;                s.[Budget COGS] AS [Budget COGS], s.[Budget Margin] AS [Budget Margin],&#xA;                s.[Budget Profit] AS [Budget Profit], s.[Budget Sales] AS [Budget Sales],&#xA;                s.[COGS] AS [COGS], s.[Inventory] AS [Inventory], s.[Margin] AS [Margin],&#xA;                s.[Marketing] AS [Marketing], s.[Profit] AS [Profit], s.[Sales] AS [Sales],&#xA;                s.[Total Expenses] AS [Total Expenses]&#xA;            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER&#xA;        ) AS RawJson,&#xA;        TRY_CONVERT(int, s.[Date]) AS DateSerial,&#xA;        CASE&#xA;            WHEN TRY_CONVERT(int, s.[Date]) IS NOT NULL&#xA;            THEN DATEADD(day, TRY_CONVERT(int, s.[Date]), CONVERT(date, '1899-12-30'))&#xA;            ELSE NULL&#xA;        END AS CalcMonthStart,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Sales], N'')) AS vSales,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Budget Sales], N'')) AS vBudgetSales,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Profit], N'')) AS vProfit,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Budget Profit], N'')) AS vBudgetProfit,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[COGS], N'')) AS vCOGS,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Budget COGS], N'')) AS vBudgetCOGS,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Margin], N'')) AS vMargin,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Budget Margin], N'')) AS vBudgetMargin,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Marketing], N'')) AS vMarketing,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Inventory], N'')) AS vInventory,&#xA;        TRY_CONVERT(decimal(19,4), NULLIF(s.[Total Expenses], N'')) AS vTotalExpenses&#xA;    FROM SplitCols s&#xA;)&#xA;SELECT&#xA;    p.SourceRow,&#xA;    p.RawJson,&#xA;    p.CalcMonthStart AS MonthStart,&#xA;    CASE&#xA;        WHEN p.CalcMonthStart IS NOT NULL AND DAY(p.CalcMonthStart) = 1&#xA;        THEN CONVERT(int, CONVERT(char(8), p.CalcMonthStart, 112))&#xA;        ELSE NULL&#xA;    END AS DateKey,&#xA;    NULLIF(p.[Area Code], N'') AS AreaCode,&#xA;    NULLIF(p.[State], N'') AS [State],&#xA;    NULLIF(p.[Market], N'') AS Market,&#xA;    NULLIF(p.[Market Size], N'') AS MarketSize,&#xA;    NULLIF(p.[Product], N'') AS ProductName,&#xA;    NULLIF(p.[Product Line], N'') AS ProductLine,&#xA;    NULLIF(p.[Product Type], N'') AS ProductType,&#xA;    NULLIF(p.[Type], N'') AS [Type],&#xA;    p.vSales AS Sales, p.vBudgetSales AS BudgetSales,&#xA;    p.vProfit AS Profit, p.vBudgetProfit AS BudgetProfit,&#xA;    p.vCOGS AS COGS, p.vBudgetCOGS AS BudgetCOGS,&#xA;    p.vMargin AS Margin, p.vBudgetMargin AS BudgetMargin,&#xA;    p.vMarketing AS Marketing, p.vInventory AS Inventory,&#xA;    p.vTotalExpenses AS TotalExpenses,&#xA;    STUFF(&#xA;        CONCAT(&#xA;            CASE WHEN NULLIF(p.[Area Code], N'') IS NULL THEN N'; AreaCode: required' ELSE N'' END,&#xA;            CASE WHEN NULLIF(p.[State], N'') IS NULL THEN N'; State: required' ELSE N'' END,&#xA;            CASE WHEN NULLIF(p.[Market], N'') IS NULL THEN N'; Market: required' ELSE N'' END,&#xA;            CASE WHEN NULLIF(p.[Market Size], N'') IS NULL THEN N'; MarketSize: required' ELSE N'' END,&#xA;            CASE WHEN NULLIF(p.[Product], N'') IS NULL THEN N'; ProductName: required' ELSE N'' END,&#xA;            CASE WHEN NULLIF(p.[Product Line], N'') IS NULL THEN N'; ProductLine: required' ELSE N'' END,&#xA;            CASE WHEN NULLIF(p.[Product Type], N'') IS NULL THEN N'; ProductType: required' ELSE N'' END,&#xA;            CASE WHEN NULLIF(p.[Type], N'') IS NULL THEN N'; Type: required' ELSE N'' END,&#xA;            CASE WHEN p.CalcMonthStart IS NULL OR DAY(p.CalcMonthStart) &lt;&gt; 1 THEN N'; Date: invalid Excel month-start serial' ELSE N'' END,&#xA;            CASE WHEN p.vSales IS NULL THEN N'; Sales: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vBudgetSales IS NULL THEN N'; BudgetSales: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vProfit IS NULL THEN N'; Profit: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vBudgetProfit IS NULL THEN N'; BudgetProfit: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vCOGS IS NULL THEN N'; COGS: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vBudgetCOGS IS NULL THEN N'; BudgetCOGS: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vMargin IS NULL THEN N'; Margin: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vBudgetMargin IS NULL THEN N'; BudgetMargin: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vMarketing IS NULL THEN N'; Marketing: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vInventory IS NULL THEN N'; Inventory: invalid numeric value' ELSE N'' END,&#xA;            CASE WHEN p.vTotalExpenses IS NULL THEN N'; TotalExpenses: invalid numeric value' ELSE N'' END&#xA;        ), 1, 2, N''&#xA;    ) AS RejectReason&#xA;INTO #StagePrep&#xA;FROM Parsed p;&#xA;&#xA;-- 5. Conditional Split check for duplicate candidate grain or conflicting dimension attributes among structurally valid rows&#xA;;WITH DupGrain AS (&#xA;    SELECT DateKey, AreaCode, ProductName&#xA;    FROM #StagePrep&#xA;    WHERE RejectReason IS NULL&#xA;    GROUP BY DateKey, AreaCode, ProductName&#xA;    HAVING COUNT(*) &gt; 1&#xA;)&#xA;UPDATE sp&#xA;SET RejectReason = N'duplicate candidate grain'&#xA;FROM #StagePrep sp&#xA;JOIN DupGrain d ON sp.DateKey = d.DateKey AND sp.AreaCode = d.AreaCode AND sp.ProductName = d.ProductName&#xA;WHERE sp.RejectReason IS NULL;&#xA;&#xA;;WITH BadArea AS (&#xA;    SELECT AreaCode&#xA;    FROM #StagePrep&#xA;    WHERE RejectReason IS NULL&#xA;    GROUP BY AreaCode&#xA;    HAVING COUNT(DISTINCT [State]) &gt; 1 OR COUNT(DISTINCT Market) &gt; 1 OR COUNT(DISTINCT MarketSize) &gt; 1&#xA;)&#xA;UPDATE sp&#xA;SET RejectReason = COALESCE(sp.RejectReason + N'; ', N'') + N'conflicting attributes for AreaCode'&#xA;FROM #StagePrep sp&#xA;JOIN BadArea ba ON sp.AreaCode = ba.AreaCode;&#xA;&#xA;;WITH BadProd AS (&#xA;    SELECT ProductName&#xA;    FROM #StagePrep&#xA;    WHERE RejectReason IS NULL&#xA;    GROUP BY ProductName&#xA;    HAVING COUNT(DISTINCT ProductLine) &gt; 1 OR COUNT(DISTINCT ProductType) &gt; 1 OR COUNT(DISTINCT [Type]) &gt; 1&#xA;)&#xA;UPDATE sp&#xA;SET RejectReason = COALESCE(sp.RejectReason + N'; ', N'') + N'conflicting attributes for ProductName'&#xA;FROM #StagePrep sp&#xA;JOIN BadProd bp ON sp.ProductName = bp.ProductName;&#xA;&#xA;-- 6. Populate stg.CoffeeRaw (valid rows have RejectReason IS NULL; rejected rows have fields nulled and RejectReason set)&#xA;INSERT INTO stg.CoffeeRaw (&#xA;    BatchID, SourceRow, RawJson, RejectReason,&#xA;    MonthStart, DateKey, AreaCode, [State], Market, MarketSize,&#xA;    ProductName, ProductLine, ProductType, [Type],&#xA;    Sales, BudgetSales, Profit, BudgetProfit, COGS, BudgetCOGS,&#xA;    Margin, BudgetMargin, Marketing, Inventory, TotalExpenses&#xA;)&#xA;SELECT&#xA;    @BatchID,&#xA;    SourceRow,&#xA;    RawJson,&#xA;    RejectReason,&#xA;    CASE WHEN RejectReason IS NULL THEN MonthStart ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN DateKey ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN AreaCode ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN [State] ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN Market ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN MarketSize ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN ProductName ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN ProductLine ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN ProductType ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN [Type] ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN Sales ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN BudgetSales ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN Profit ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN BudgetProfit ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN COGS ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN BudgetCOGS ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN Margin ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN BudgetMargin ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN Marketing ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN Inventory ELSE NULL END,&#xA;    CASE WHEN RejectReason IS NULL THEN TotalExpenses ELSE NULL END&#xA;FROM #StagePrep&#xA;ORDER BY SourceRow;&#xA;&#xA;SELECT CAST(@BatchID AS nvarchar(50)) AS BatchID;"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::BatchID" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="@SourceFilePath"
+            SQLTask:DtsVariableName="User::SourceFilePath"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="16"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_02_ExecuteUspLoadCoffee"
+      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:Description="Call dw.usp_LoadCoffee @BatchID to atomically load dimensions, upsert FactSalesPerformance, route RejectedRow, and reconcile counts."
+      DTS:DTSID="{B40D2E4A-20D6-4BCE-AA78-FD790DC4D493}"
+      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_02_ExecuteUspLoadCoffee"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{275425D4-E1E1-438D-A775-5827418EC3E2}"
+          SQLTask:SqlStatementSource="DECLARE @b uniqueidentifier = CAST(@BatchID AS uniqueidentifier); EXEC dw.usp_LoadCoffee @BatchID = @b;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="@BatchID"
+            SQLTask:DtsVariableName="User::BatchID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="16"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{C3DC1B74-0506-4AE4-9A38-D3C00D02A870\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{C3DC1B74-0506-4AE4-9A38-D3C00D02A870}"
+      DTS:From="Package\EST_01_RegisterBatchAndStageRaw"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{C3DC1B74-0506-4AE4-9A38-D3C00D02A870}"
+      DTS:To="Package\EST_02_ExecuteUspLoadCoffee" />
+  </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{5D98F7B3-2C09-42F1-98A9-0D6B0EC95957}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{7D2875E5-0D84-453A-B42B-24916D6E64E2}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\EST_OnError_LogFailedBatch"
+          DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:Description="Update audit.LoadBatch Status = FAILED outside rolled-back transaction so failure remains traceable."
+          DTS:DTSID="{B2CA5DC7-1C7C-41D9-8392-930D70BC582D}"
+          DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="EST_OnError_LogFailedBatch">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{275425D4-E1E1-438D-A775-5827418EC3E2}"
+              SQLTask:SqlStatementSource="UPDATE audit.LoadBatch SET Status = 'FAILED', FinishedAt = SYSUTCDATETIME() WHERE BatchID = TRY_CAST(@BatchID AS uniqueidentifier) AND Status = 'STAGED';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="@BatchID"
+                SQLTask:DtsVariableName="User::BatchID"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="16"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
+</DTS:Executable>

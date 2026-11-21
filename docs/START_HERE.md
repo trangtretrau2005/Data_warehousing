@@ -5,7 +5,7 @@
 ## Lần đầu nhận repo
 
 ```powershell
-git clone --branch main https://github.com/trangtretrau2005/Data_warehousing.git
+git clone --branch dev https://github.com/trangtretrau2005/Data_warehousing.git
 cd Data_warehousing
 powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
 .\.venv\Scripts\python -m coffee_dw.cli demo
@@ -14,13 +14,15 @@ powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
 .\.venv\Scripts\python -m streamlit run apps/dashboard/app.py
 ```
 
-Nếu đã clone, dùng `git pull --ff-only origin main` khi đang ở `main` và không có thay đổi chưa lưu. Mở cả thư mục repo trong IDE để agent thấy code và tài liệu. Không cần SQL Server cho lần chạy demo đầu tiên. Khi chuyển sang công cụ native, dùng cấu hình riêng trên máy và giữ credential trong `.env`.
+Nếu đã clone, dùng `git fetch origin` rồi chuyển sang nhánh cá nhân `thanh`, `chi` hoặc `trang`; ví dụ `git switch thanh` và `git pull --ff-only origin thanh` khi không có thay đổi chưa lưu. Mở cả thư mục repo trong IDE để agent thấy code và tài liệu. Không cần SQL Server cho lần chạy demo đầu tiên. Khi chuyển sang công cụ native, dùng cấu hình riêng trên máy và giữ credential trong `.env`.
+
+Mọi PR cá nhân đều vào `dev` để merge/chạy thử. `main` được giữ nguyên cho đến khi Trang xác nhận OK rõ ràng. Bản hướng dẫn phát triển mới nằm trên `dev` và các nhánh cá nhân.
 
 Đọc theo thứ tự: [README](../README.md) → [hướng dẫn agent](../AGENTS.md) → [kiến trúc](architecture.md) → [ánh xạ báo cáo](REPORT_MAP.md) → [trạng thái base](BASE_STATUS.md) → checklist chương của mình. Cách phối hợp và PR ở [TEAM_WORKFLOW](TEAM_WORKFLOW.md).
 
 ## Thanh bắt đầu từ đâu
 
-Tạo nhánh `thanh/ch01-03-schema`. Đọc `docs/chapters/ch01_thanh.md`, `ch02_thanh.md`, `ch03_thanh.md`, `source.py` và SQL00–01.
+Chuyển sang nhánh `thanh` đã có sẵn. Đọc `docs/chapters/ch01_thanh.md`, `ch02_thanh.md`, `ch03_thanh.md`, `source.py` và SQL00–01.
 
 Việc đầu tiên: chạy profile, đối chiếu độc lập số nguồn/Pivot, xác nhận grain tháng–mã vùng–sản phẩm, lập mapping đủ20 cột và chốt DDL. Bàn giao cho Chi/Trang các khóa, kiểu số, quan hệ chiều, định nghĩa KPI và đáp án kiểm tra; ghi chỗ chưa rõ như đơn vị tiền/Inventory.
 
@@ -35,14 +37,15 @@ Giải thích ngắn luồng dữ liệu và phần tôi phải bàn giao cho Ch
 Bắt đầu bằng kiểm chứng TN01: profile và đối soát độc lập nguồn, grain,
 ngày Excel, tổng số đo, các phụ thuộc chiều; rồi rà mapping/DDL cho TN02.
 Tận dụng code base hiện có, giữ nguyên Coffee.csv và hợp đồng consumer.
-Làm trên nhánh thanh/ch01-03-schema; bổ sung nội dung và code còn thiếu,
+Làm trên nhánh thanh, mở PR vào dev; không cập nhật main khi Trang chưa chốt OK.
+Bổ sung nội dung và code còn thiếu,
 kiểm tra phù hợp, cập nhật checklist và ghi minh chứng thực chạy.
 Chỉ rõ điều gì đã kiểm chứng bằng Python, điều gì còn cần SQL Server.
 ```
 
 ## Chi bắt đầu từ đâu
 
-Tạo nhánh `chi/ch04-05-etl-olap`. Đọc `docs/chapters/ch04_chi.md`, `ch05_chi.md`, `warehouse.py`, `learning/experiments`, SQL02–04 và hướng dẫn `ssis/`, `ssas/`.
+Chuyển sang nhánh `chi` đã có sẵn. Đọc `docs/chapters/ch04_chi.md`, `ch05_chi.md`, `warehouse.py`, `learning/experiments`, SQL02–04 và hướng dẫn `ssis/`, `ssas/`.
 
 Việc đầu tiên: chạy demo, incremental và SCD để hiểu audit/reject/idempotence trước. Tiếp theo dựng môi trường SQL Server, chạy SQL00–04 để đối soát, tạo package SSIS, rồi cube SSAS. Kiểm tra cùng bộ lọc giữa nguồn–SQL–cube và bàn giao mart đã chốt cho Trang.
 
@@ -55,14 +58,15 @@ Giải thích luồng staging–dimension–fact–mart, audit và xử lý lỗ
 Bắt đầu bằng TN03/TN04: chạy demo, thử tăng dần, phát lại, sửa số, dòng lỗi
 và SCD; đối soát kết quả, rồi triển khai SQL Server/SSIS trước SSAS/OLAP.
 Tái sử dụng base và giữ hợp đồng khóa/cột với Thanh/Trang. Làm trên nhánh
-chi/ch04-05-etl-olap, cập nhật tests/checklist và lưu minh chứng thật.
+chi, mở PR vào dev; giữ nguyên main đến khi Trang chốt OK rõ ràng.
+Cập nhật tests/checklist và lưu minh chứng thật.
 queries.mdx còn là mẫu; phải khớp metadata của cube đã tạo trước khi chạy.
 Không coi kết quả SQLite là bằng chứng triển khai SSIS/SSAS.
 ```
 
 ## Trang tiếp tục phần nào
 
-Nhánh `trang/ch06-07-app-ai`; checklist `ch06_trang.md`, `ch07_trang.md`. Chạy forecast/dashboard, chốt KPI với Chi, tích hợp mart SQL Server khi sẵn sàng; thu benchmark TN07–10, tác vụ người dùng TN11 và kết quả dự báo TN12. HRU/TN13 là mở rộng đã có code mô hình chi phí, còn cần đo engine thật.
+Nhánh `trang`; checklist `ch06_trang.md`, `ch07_trang.md`. Chạy forecast/dashboard, chốt KPI với Chi, tích hợp mart SQL Server khi sẵn sàng; thu benchmark TN07–10, tác vụ người dùng TN11 và kết quả dự báo TN12. HRU/TN13 là mở rộng đã có code mô hình chi phí, còn cần đo engine thật. Mở PR vào `dev` để tích hợp chạy thử.
 
 ## Mỗi lần bàn giao
 

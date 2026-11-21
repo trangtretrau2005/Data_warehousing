@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProductVersion>11.0.5058.0</ProductVersion>
+  <SchemaVersion>9.0.2.10</SchemaVersion>
+  <Database>
+    <Name>CoffeeCube.database</Name>
+    <FullPath>CoffeeCube.database</FullPath>
+  </Database>
+  <DataSources>
+    <ProjectItem>
+      <Name>CoffeeDW.ds</Name>
+      <FullPath>CoffeeDW.ds</FullPath>
+    </ProjectItem>
+  </DataSources>
+  <DataSourceViews>
+    <ProjectItem>
+      <Name>CoffeeDW.dsv</Name>
+      <FullPath>CoffeeDW.dsv</FullPath>
+    </ProjectItem>
+  </DataSourceViews>
+  <Dimensions>
+    <ProjectItem>
+      <Name>Dim Date.dim</Name>
+      <FullPath>Dim Date.dim</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Dim Location.dim</Name>
+      <FullPath>Dim Location.dim</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Dim Product.dim</Name>
+      <FullPath>Dim Product.dim</FullPath>
+    </ProjectItem>
+  </Dimensions>
+  <Cubes>
+    <ProjectItem>
+      <Name>Coffee Performance.cube</Name>
+      <FullPath>Coffee Performance.cube</FullPath>
+    </ProjectItem>
+  </Cubes>
+  <MiningModels />
+  <Roles />
+  <Miscellaneous />
+  <Configurations>
+    <Configuration>
+      <Name>Development</Name>
+      <Options>
+        <OutputPath>bin\</OutputPath>
+        <TargetServer>localhost</TargetServer>
+        <TargetDatabase>CoffeeCube</TargetDatabase>
+        <ProcessingOption>Default</ProcessingOption>
+        <TransactionalDeployment>true</TransactionalDeployment>
+      </Options>
+    </Configuration>
+  </Configurations>
+</Project>
