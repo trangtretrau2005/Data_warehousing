@@ -201,3 +201,13 @@ SELECT
   [Dim Location].[Market].[Market].Members ON ROWS
 FROM [Coffee Performance]
 WHERE ([Dim Date].[Date Key].&[20131201]);
+
+/* ----------------------------------------------------------------------------
+   9. Cube Browser MDX Slice Check (Month = 2013-11-01, DateKey 20131101):
+      Expected (Sales / Budget Sales / Gap / Profit):
+        Central : 10,885 / 9,910 /   975 / 4,381
+        East    :  7,438 / 6,160 / 1,278 / 2,880
+        South   :  4,480 / 3,810 /   670 / 1,642
+        West    : 11,300 / 9,660 / 1,640 / 3,557
+   ---------------------------------------------------------------------------- */
+SELECT {[Measures].[Sales], [Measures].[Budget Sales], [Measures].[Gap], [Measures].[Profit]} ON COLUMNS, [Dim Location].[Market].[Market].Members ON ROWS FROM [Coffee Performance] WHERE ([Dim Date].[Date Key].&[20131101]);

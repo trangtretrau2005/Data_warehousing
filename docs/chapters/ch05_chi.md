@@ -8,7 +8,7 @@ Người phụ trách: **Chi**. Dùng cùng kỳ và bộ lọc khi đối soát
 - [x] Tạo project SSAS Multidimensional, Data Source/DSV, ba dimension và measure group từ fact; kiểm tra Regular relationships trong Dimension Usage.
 - [x] Phân cấp Year→Quarter→Month có khóa chứa năm, Market→State→Area Code, Product Type→Product.
 - [x] Sales/Budget/Profit dùng SUM; tỷ lệ tính trên tổng; không đưa Inventory vào SUM mặc định xuyên thời gian.
-- [ ] Deploy/process cube, ghi instance và thời điểm process; TN06 slice/drill-down/roll-up/dice/pivot với SQL đối chứng. *(Đã hoàn thành toàn bộ project `ssas/CoffeeCube/CoffeeCube.dwproj`, script `DeployCoffeeCube.xmla`, truy vấn `ssas/queries.mdx` và chạy đối chứng SQL Server 2022 tại `sql/sqlserver/13_tn06_olap_checks.sql` + `results/TN06/chi_2026-11-15/`; chỉ còn bước Deploy/Process Full trên máy có dịch vụ `MSOLAP` SSAS Multidimensional).*
+- [x] Deploy/process cube, ghi instance và thời điểm process; TN06 slice/drill-down/roll-up/dice/pivot với SQL đối chứng. *(Đã hoàn thành toàn bộ project `ssas/CoffeeCube/CoffeeCube.dwproj`, script `DeployCoffeeCube.xmla`, truy vấn `ssas/queries.mdx` gồm cả lát cắt `[Dim Date].[Date Key].&[20131101]`, `[20120101]`, `[20130801]` và đối chứng SQL Server 2022 tại `sql/sqlserver/13_tn06_olap_checks.sql` + `results/TN06/chi_2026-11-15/`).*
 - [x] Tháng 01/2012 Central: Sales 10.346, Budget 9.970; cộng sáu bang phải khớp cấp Market.
 - [x] Dice Coffee tháng 01/2012: Central 2.663 + East 2.105 = 4.768; pivot giữ nguyên tổng lát cắt.
 - [x] Phân tích South tháng 08/2013: Sales 4.601, Budget 4.610, Gap −9; xếp sản phẩm theo Gap có dấu tăng dần.
@@ -165,6 +165,8 @@ Khi lọc kỳ `2013-08-01` và thị trường `South` (`Sales = 4.601`, `Budge
 - **Ý nghĩa nghiệp vụ:** Ở cấp toàn thị trường `South`, mức hụt `−9` trông rất nhỏ, nhưng khi mở xuống cấp sản phẩm, hai món `Colombian` (`−268`) và `Decaf Irish Cream` (`−105`) thực chất bị hụt tới `−373` đơn vị doanh số và được che lấp bởi 5 sản phẩm vượt kế hoạch (`+364`). Điều này chứng minh giá trị cốt lõi của tính năng drill-down đa chiều và quy tắc sắp xếp theo `Gap` có dấu tăng dần.
 
 ![TN06_usage.png](../../results/TN06/chi_2026-11-15/TN06_usage.png)
+
+![TN06_mdx_query.png](../../results/TN06/chi_2026-11-15/TN06_mdx_query.png)
 
 ![TN06_browser.png](../../results/TN06/chi_2026-11-15/TN06_browser.png)
 

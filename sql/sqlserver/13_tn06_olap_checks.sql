@@ -96,4 +96,16 @@ FROM mart.vw_Detail
 WHERE MonthStart = (SELECT MAX(MonthStart) FROM mart.vw_Detail)
 GROUP BY MonthStart, ROLLUP(Market)
 ORDER BY CASE WHEN Market IS NULL THEN 1 ELSE 0 END, Market;
+
+-- 8. Cube Browser MDX Slice Check (DateKey = 20131101 / 2013-11-01 by Market)
+SELECT
+    Market,
+    CAST(SUM(Sales) AS int) AS Sales,
+    CAST(SUM(BudgetSales) AS int) AS [Budget Sales],
+    CAST(SUM(Sales) - SUM(BudgetSales) AS int) AS Gap,
+    CAST(SUM(Profit) AS int) AS Profit
+FROM mart.vw_Detail
+WHERE DateKey = 20131101
+GROUP BY Market
+ORDER BY Market;
 GO
