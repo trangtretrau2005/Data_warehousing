@@ -78,6 +78,8 @@ Thực nghiệm **TN05** (`learning/experiments/mart_olap.py`, `sql/sqlserver/10
 
 ## 5.3 Thiết kế Cube SSAS Multidimensional (`ssas/CoffeeCube/`)
 
+![TN06_datacube_3d.png](../../results/TN06/chi_2026-11-15/TN06_datacube_3d.png)
+
 Project SSAS Multidimensional tại `ssas/CoffeeCube/CoffeeCube.dwproj` (cùng script triển khai `DeployCoffeeCube.xmla`) được xây dựng trên `CoffeeDW.dsv` với một Measure Group `Fact Sales Performance` và ba chiều dùng chung:
 
 1. **Chiều Thời gian (`Dim Date.dim`):**
