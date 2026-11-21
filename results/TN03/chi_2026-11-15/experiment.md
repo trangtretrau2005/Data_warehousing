@@ -51,7 +51,11 @@
   - Dòng bị loại trong `audit.RejectedRow` (Batch `FDC68A75-53CA-4EA4-BA3F-571D144DD1FA`):
     - `SourceRow = 2`: `Reason = "Sales: invalid numeric value"` (`"Sales":"abc"`, `"Area Code":"719"`, `"Product":"Amaretto"`).
     - `SourceRow = 3`: `Reason = "ProductName: required"` (`"Product":""`, `"Area Code":"970"`).
-  - **Ảnh minh chứng (`TN03_flow.png`, `TN03_audit.png`, `TN03_reject.png`):**
+  - **Ảnh minh chứng (`TN03_ssis_vs.jpg`, `TN03_ssms_audit.jpg`, `TN03_flow.png`, `TN03_audit.png`, `TN03_reject.png`):**
+
+![TN03_ssis_vs.jpg](TN03_ssis_vs.jpg)
+
+![TN03_ssms_audit.jpg](TN03_ssms_audit.jpg)
 
 ![TN03_flow.png](TN03_flow.png)
 

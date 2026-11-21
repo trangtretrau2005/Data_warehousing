@@ -146,6 +146,10 @@ Trong Lượt chạy 5 (`BatchID = FDC68A75-53CA-4EA4-BA3F-571D144DD1FA`, tệp 
   - Khi chạy `invalid_8rows.csv` vào một kho trống (như trong `learning/experiments/incremental.py` và `tests/test_pipeline.py`), kho sau nạp có đúng `6` dòng và `SUM(Sales) = 1.139`.
   - Khi chạy `invalid_8rows.csv` trên kho đã nạp sẵn dữ liệu lịch sử (Lượt 5 trên SQL Server), 2 dòng bị loại ở batch mới chỉ bị chặn không cho ghi đè vào fact, trong khi bản ghi hợp lệ của cùng grain từ batch trước vẫn được bảo toàn trên `dw.FactSalesPerformance`. Do đó, việc đối soát chất lượng batch tăng dần luôn phải kiểm tra đồng thời `audit.LoadBatch` (`SourceDelta = 0`, `AcceptedDelta = 0`) và tổng số đo của các dòng hợp lệ thuộc chính `BatchID` đó (`1.139,0000`).
 
+![TN03_ssis_vs.jpg](../../results/TN03/chi_2026-11-15/TN03_ssis_vs.jpg)
+
+![TN03_ssms_audit.jpg](../../results/TN03/chi_2026-11-15/TN03_ssms_audit.jpg)
+
 ![TN03_flow.png](../../results/TN03/chi_2026-11-15/TN03_flow.png)
 
 ![TN03_audit.png](../../results/TN03/chi_2026-11-15/TN03_audit.png)
