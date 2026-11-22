@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Process xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Object><DatabaseID>CoffeeCube_Trang_20261120</DatabaseID></Object>
+  <Type>ProcessFull</Type>
+  <WriteBackTableCreation>UseExisting</WriteBackTableCreation>
+</Process>

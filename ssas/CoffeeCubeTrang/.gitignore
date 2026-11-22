@@ -1,0 +1,6 @@
+# Local build outputs; keep native source and project descriptors reviewable.
+/bin/
+/obj/
+/Backup/
+*.ispac
+/__pycache__/

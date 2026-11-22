@@ -24,6 +24,8 @@ data/processed/*
 *.sqlite-*
 *.db
 *.db-*
+# Downloaded pretrained speech models; reproducible using the demo prepare script
+data/models/
 # Evidence is opt-in, documented in results/README.md
 results/**
 !results/README.md

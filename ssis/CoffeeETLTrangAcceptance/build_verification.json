@@ -1,0 +1,59 @@
+{
+  "status": "PREPARED_NOT_EXECUTED",
+  "suite_id": "63d2403b-e12f-495d-a3ce-69efce27f1a6",
+  "packages": [
+    {
+      "name": "00_AcceptAll.dtsx",
+      "sha256": "ab1524a36a1f8bd3a97bc11f165daf280e30ac1d7a858a00abd2ed1f4c1806bd",
+      "DTSID": "{F047A0EB-F998-4B25-AFD2-32A9DBD1E9D6}"
+    },
+    {
+      "name": "01_First23.dtsx",
+      "sha256": "f758bcea6ffaca40514a0b34862005a2168fcab3f1a30a7a6f23a43b50d67d21",
+      "DTSID": "{D4936BA0-AE14-46B3-A015-8175B887D8F2}"
+    },
+    {
+      "name": "02_AddDecember.dtsx",
+      "sha256": "02b0389716378555b787b4601e39f1f62e92257c68c87a7ab8d00a8dbe598a65",
+      "DTSID": "{6CE128E3-EEB7-4CB8-B877-B40794521B32}"
+    },
+    {
+      "name": "03_ReplayDecember.dtsx",
+      "sha256": "ea8cc3ec6e367c30462bd282579f2b761c85d07f2baa29a94b5abc79056ed5cf",
+      "DTSID": "{190F43B8-BFDD-451C-A36A-449BA3FFCAE6}"
+    },
+    {
+      "name": "04_CorrectSales.dtsx",
+      "sha256": "ea695934b927b047db06a87383e420ec078f89d298cc6544af3490a1a5b1ad78",
+      "DTSID": "{3980E573-2467-4B28-AF98-502622DA01C4}"
+    },
+    {
+      "name": "05_RestoreOriginal.dtsx",
+      "sha256": "ba0ba24fa39647b2a649943ba015ba20b202b79628bc04bcb185e71ce3a87aab",
+      "DTSID": "{95A3BAA1-391E-43A2-8995-D0B8A92C0CC4}"
+    },
+    {
+      "name": "06_FullOneBadNumeric.dtsx",
+      "sha256": "b8466ecd4255b2d9182b26ec80e7656e8f7e9eb8a6cabfa40ee7aba5a202bedc",
+      "DTSID": "{AB09941B-2724-4D1D-A4FE-F8406E52B11C}"
+    },
+    {
+      "name": "07_InvalidEight.dtsx",
+      "sha256": "36f38e27e3b6ccf6a0a2ef5d68adb2805fc956a1916b12d83020ef9f292c2e0d",
+      "DTSID": "{C1FAA523-4379-40B5-AB34-A7D8836628EF}"
+    },
+    {
+      "name": "08_FinalOriginal.dtsx",
+      "sha256": "fdf6929336a3a4903f28e97fd6636988b3ff12f013cae7da5616a96ce4ec69ff",
+      "DTSID": "{1FF95DA4-4C59-47D6-BEAB-445F0628F806}"
+    }
+  ],
+  "assertions": [
+    "9 unique package IDs",
+    "8 unique fresh BatchIDs",
+    "8 fixture SHA/count/path bindings verified",
+    "8 ExecutePackageTask project references",
+    "18 parent tasks /17 success links",
+    "Each child retains3native dataflowcomponents"
+  ]
+}

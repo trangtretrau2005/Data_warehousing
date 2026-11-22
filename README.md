@@ -10,6 +10,18 @@ Bộ khung làm chung cho bài tập lớn môn Kho dữ liệu trên `Coffee.cs
 
 **Mới vào repo:** đọc [bắt đầu tại đây và prompt cho Thanh/Chi](docs/START_HERE.md). Khi làm bằng agent, yêu cầu đọc [AGENTS.md](AGENTS.md) trước.
 
+**Demo của Trang:** [dự báo có giải thích và người thuyết minh](apps/forecast_demo/README.md), chạy ở cổng8502 sau khi chuẩn bị dữ liệu. Đây là prototype để bấm thử, tách khỏi dashboard tổng hợp hiện tại.
+
+**Hồ sơ hoàn thiện Trang — 19/11/2026:** [báo cáo chương6–7, kịch bản bảo vệ, UX và tái lập](docs/trang/README.md), [TN12 West riêng](experiments/tn12_west/README.md), [benchmark SQL Server thật TN07–10/HRU](docs/TRANG_NATIVE_HANDOFF.md). Mở hai app bằng `powershell -ExecutionPolicy Bypass -File scripts/start_trang_demo.ps1`; thêm `-Backend sqlserver` khi database native đã chuẩn bị. Dashboard đọc backend được cấu hình; không huấn luyện khi xem trang. UX người thật còn cần phiên tham gia, không thay bằng AppTest.
+
+**Explore của Trang:** [EDA nguồn, phân tích và hình báo cáo](explore/README.md). Chạy `python explore/run.py`; kết quả ở `explore/results/`, làm được trước khi Chi bàn giao kho.
+
+**Bước sau EDA:** [thử nghiệm cơ sở ba phương pháp](experiments/baseline/README.md). Chạy `python experiments/baseline/run.py`; lưu bảng/hình/nhận xét cho từng bước, lựa chọn trước pha test.
+
+**Thử siêu tham số:** [7 cấu hình Naive/MA/Ridge](experiments/tuning/README.md). Chạy `python experiments/tuning/run.py`; lưu toàn bộ cấu hình, hệ số đã học, pipeline cuối, báo cáo và hình PNG/PDF/SVG. Đây là mở rộng thăm dò trên test đã biết, chọn cấu hình bằng validation.
+
+**Bước tiếp theo:** [tích hợp nghiên cứu vào bài thuyết trình](experiments/briefing/README.md). Chạy `python experiments/briefing/run.py --voice`; đối soát96 ô với kho tham chiếu, lưu16 hồ sơ MA3/hình báo cáo và cập nhật demo với công thức, kiểm chứng, bảng7 cấu hình.
+
 Xem [phân công](docs/TEAM_WORKFLOW.md), [ánh xạ toàn bộ báo cáo](docs/REPORT_MAP.md), [checklist từng chương](docs/chapters/) và [trạng thái base](docs/BASE_STATUS.md).
 
 ## Chạy nhanh
