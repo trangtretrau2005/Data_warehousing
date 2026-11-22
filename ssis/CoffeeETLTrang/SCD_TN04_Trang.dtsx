@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/20/2026 3:38:44 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="Local development"
+  DTS:CreatorName="Coffee DW team"
+  DTS:Description="Native SSIS control-flow SCD1/2/3 synthetic P01/A01; independent of blocked CSV DataFlow."
+  DTS:DTSID="{3D999619-AE98-4B29-993F-75A2AEDD53B2}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.1000.6"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="SCD_TN04_Trang"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{C79D624F-0D9B-4A4F-9C10-8F2C8FF01F32}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CoffeeDW_Isolated_OLEDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{E0846B47-0409-4DB3-8C73-79DFBAD44BC4}"
+      DTS:ObjectName="CoffeeDW_Isolated_OLEDB">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=MSOLEDBSQL;Data Source=" + @[User::ServerName] + ";Initial Catalog=" + @[User::DatabaseName] + ";Integrated Security=SSPI;TrustServerCertificate=True;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=.;Initial Catalog=CoffeeDW_Trang_SSIS_TN03_20261120;Provider=MSOLEDBSQL;Integrated Security=SSPI;TrustServerCertificate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B0477828-4EE4-4583-BE72-6B3D2E6AAD84}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DatabaseName">
+      <DTS:VariableValue
+        DTS:DataType="8">CoffeeDW_Trang_SSIS_TN03_20261120</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A9693C4C-683C-46DF-AF56-E6A904123803}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="RunID">
+      <DTS:VariableValue
+        DTS:DataType="8">46703b00-4a13-4c9b-a4c0-38f836796cd2</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{92CA63DE-7833-44D5-AC3D-F3B3B806D4B9}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ServerName">
+      <DTS:VariableValue
+        DTS:DataType="8">.</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\EST_TN04_SCD_Assertions"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{F56AC1E4-FCB0-4607-A026-E07C876F2303}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_TN04_SCD_Assertions"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{E0846B47-0409-4DB3-8C73-79DFBAD44BC4}"
+          SQLTask:SqlStatementSource="-- Adapted from Chi's SCD_TN04 SQL simulation, kept separate from Chi's worktree.&#xA;-- Executed by native SSIS Execute SQL Task; no Data Flow/serving dimensions changed.&#xA;IF DB_NAME() NOT LIKE N'CoffeeDW[_]Trang[_]%' THROW 50201,'Use isolated CoffeeDW_Trang DB',1;&#xA;DECLARE @RunID uniqueidentifier=CONVERT(uniqueidentifier,?);&#xA;IF OBJECT_ID('audit.SCDNativeEvidence') IS NULL&#xA; CREATE TABLE audit.SCDNativeEvidence(RunID uniqueidentifier NOT NULL PRIMARY KEY,&#xA; CreatedAtUTC datetime2 NOT NULL DEFAULT SYSUTCDATETIME(),ResultJson nvarchar(max) NOT NULL);&#xA;&#xA;&#xA;-- TN04: Synthetic SCD Type 1 / Type 2 / Type 3 experiment on SQL Server.&#xA;-- Isolated in #temp tables so serving dimensions (dw.DimProduct, dw.DimLocation)&#xA;-- and source data remain untouched.&#xA;SET NOCOUNT ON;&#xA;SET QUOTED_IDENTIFIER ON;&#xA;SET ANSI_NULLS ON;&#xA;&#xA;-------------------------------------------------------------------------------&#xA;-- PART 1: Product P01 (Report Section 4.3 &amp; learning/experiments/scd.py)&#xA;-------------------------------------------------------------------------------&#xA;CREATE TABLE #Type1 (&#xA;    ProductKey int IDENTITY(1,1) PRIMARY KEY,&#xA;    Code varchar(10) NOT NULL UNIQUE,&#xA;    ProductName nvarchar(100) NOT NULL&#xA;);&#xA;INSERT INTO #Type1 (Code, ProductName) VALUES ('P01', N'Amareto');&#xA;-- Type 1: overwrite typo in place; surrogate key remains 1, row count remains 1.&#xA;UPDATE #Type1 SET ProductName = N'Amaretto' WHERE Code = 'P01';&#xA;&#xA;CREATE TABLE #Type2 (&#xA;    ProductKey int IDENTITY(1,1) PRIMARY KEY,&#xA;    Code varchar(10) NOT NULL,&#xA;    ProductName nvarchar(100) NOT NULL,&#xA;    ProductType nvarchar(40) NOT NULL,&#xA;    ValidFrom date NOT NULL,&#xA;    ValidTo date NOT NULL,&#xA;    IsCurrent bit NOT NULL,&#xA;    CONSTRAINT CK_Type2_ValidRange CHECK (ValidFrom &lt; ValidTo)&#xA;);&#xA;CREATE UNIQUE INDEX UX_Type2_OneCurrent ON #Type2(Code) WHERE IsCurrent = 1;&#xA;&#xA;INSERT INTO #Type2 (Code, ProductName, ProductType, ValidFrom, ValidTo, IsCurrent)&#xA;VALUES ('P01', N'Amaretto', N'Coffee', '2012-01-01', '9999-12-31', 1);&#xA;&#xA;-- Stored procedure logic in a transaction: close old version and open new version&#xA;-- at effective boundary T = 2013-01-01; replay of identical event is a no-op.&#xA;DECLARE @change_round int = 1;&#xA;WHILE @change_round &lt;= 2 -- Round 1 applies change; Round 2 tests idempotent replay&#xA;BEGIN&#xA;    BEGIN TRANSACTION;&#xA;    DECLARE @curKey int, @curType nvarchar(40), @curStart date;&#xA;    SELECT @curKey = ProductKey, @curType = ProductType, @curStart = ValidFrom&#xA;    FROM #Type2 WITH (UPDLOCK, HOLDLOCK)&#xA;    WHERE Code = 'P01' AND IsCurrent = 1;&#xA;&#xA;    IF @curType &lt;&gt; N'Specialty'&#xA;    BEGIN&#xA;        IF '2013-01-01' &lt;= @curStart&#xA;            THROW 50010, 'Effective date must be strictly after current ValidFrom', 1;&#xA;        UPDATE #Type2&#xA;        SET ValidTo = '2013-01-01', IsCurrent = 0&#xA;        WHERE ProductKey = @curKey;&#xA;&#xA;        INSERT INTO #Type2 (Code, ProductName, ProductType, ValidFrom, ValidTo, IsCurrent)&#xA;        VALUES ('P01', N'Amaretto', N'Specialty', '2013-01-01', '9999-12-31', 1);&#xA;    END&#xA;    COMMIT TRANSACTION;&#xA;    SET @change_round += 1;&#xA;END;&#xA;&#xA;-- Type 3: retains only current and immediately previous attribute value&#xA;CREATE TABLE #Type3 (&#xA;    Code varchar(10) NOT NULL PRIMARY KEY,&#xA;    ProductName nvarchar(100) NOT NULL,&#xA;    CurrentType nvarchar(40) NOT NULL,&#xA;    PreviousType nvarchar(40) NULL&#xA;);&#xA;INSERT INTO #Type3 VALUES ('P01', N'Amaretto', N'Coffee', NULL);&#xA;UPDATE #Type3 SET PreviousType = CurrentType, CurrentType = N'Specialty' WHERE Code = 'P01';&#xA;UPDATE #Type3 SET PreviousType = CurrentType, CurrentType = N'Premium' WHERE Code = 'P01';&#xA;&#xA;-- Verification outputs for Part 1&#xA;SELECT 'P01_Type1' AS TestSection, ProductKey, Code, ProductName FROM #Type1;&#xA;SELECT 'P01_Type2_Versions' AS TestSection, ProductKey, Code, ProductName, ProductType, ValidFrom, ValidTo, IsCurrent&#xA;FROM #Type2 ORDER BY ProductKey;&#xA;&#xA;SELECT 'P01_Type2_Lookup' AS TestSection, q.OrderMonth, t.ProductKey, t.ProductType&#xA;FROM (VALUES (CAST('2012-12-01' AS date)), ('2013-01-01'), ('2013-02-01')) q(OrderMonth)&#xA;JOIN #Type2 t ON t.Code = 'P01' AND t.ValidFrom &lt;= q.OrderMonth AND q.OrderMonth &lt; t.ValidTo&#xA;ORDER BY q.OrderMonth;&#xA;&#xA;SELECT 'P01_Type2_Invariants' AS TestSection,&#xA;    COUNT(*) AS TotalVersionsAfterReplay,&#xA;    SUM(CAST(IsCurrent AS int)) AS CurrentVersionCount,&#xA;    (SELECT COUNT(*) FROM #Type2 a JOIN #Type2 b&#xA;     ON a.Code = b.Code AND a.ProductKey &lt; b.ProductKey&#xA;     AND a.ValidFrom &lt; b.ValidTo AND b.ValidFrom &lt; a.ValidTo) AS OverlappingIntervals&#xA;FROM #Type2 WHERE Code = 'P01';&#xA;&#xA;SELECT 'P01_Type3_Limit' AS TestSection, Code, ProductName, CurrentType, PreviousType FROM #Type3;&#xA;&#xA;-------------------------------------------------------------------------------&#xA;-- PART 2: Location A01 (Handbook TN04 worksheet: Minor -&gt; Major -&gt; Pilot)&#xA;-------------------------------------------------------------------------------&#xA;CREATE TABLE #L (&#xA;    SK int IDENTITY(1,1) PRIMARY KEY,&#xA;    BK varchar(8) NOT NULL,&#xA;    Label nvarchar(40) NOT NULL,&#xA;    Tier varchar(10) NOT NULL,&#xA;    PrevTier varchar(10) NULL,&#xA;    ValidFrom date NOT NULL,&#xA;    ValidTo date NOT NULL&#xA;);&#xA;INSERT INTO #L VALUES ('A01', N'Wset', 'Minor', NULL, '20120101', '99991231');&#xA;-- Type 1: fix label typo&#xA;UPDATE #L SET Label = N'West' WHERE BK = 'A01';&#xA;-- Type 2: close old version and insert new version in same transaction&#xA;BEGIN TRANSACTION;&#xA;UPDATE #L SET ValidTo = '20120701' WHERE BK = 'A01' AND ValidTo = '99991231';&#xA;INSERT INTO #L VALUES ('A01', N'West', 'Major', NULL, '20120701', '99991231');&#xA;COMMIT TRANSACTION;&#xA;&#xA;SELECT 'A01_Type2_Versions' AS TestSection, SK, BK, Label, Tier, ValidFrom, ValidTo FROM #L ORDER BY SK;&#xA;SELECT 'A01_Type2_Lookup' AS TestSection, t.MonthStart, l.SK, l.Tier&#xA;FROM (VALUES (CAST('20120601' AS date)), ('20120701')) t(MonthStart)&#xA;JOIN #L l ON l.BK = 'A01' AND t.MonthStart &gt;= l.ValidFrom AND t.MonthStart &lt; l.ValidTo&#xA;ORDER BY t.MonthStart;&#xA;&#xA;SELECT TOP (1) BK, Tier, PrevTier INTO #T3 FROM #L ORDER BY SK;&#xA;UPDATE #T3 SET PrevTier = Tier, Tier = 'Major';&#xA;UPDATE #T3 SET PrevTier = Tier, Tier = 'Pilot';&#xA;SELECT 'A01_Type3_After2Changes' AS TestSection, BK, Tier, PrevTier FROM #T3;&#xA;&#xA;&#xA;-- Assertions fail the native package if a required SCD invariant is wrong.&#xA;IF (SELECT COUNT(*) FROM #Type1 WHERE ProductKey=1 AND ProductName=N'Amaretto')&lt;&gt;1&#xA; THROW 50210,'Type1 overwrite/key assertion failed',1;&#xA;IF (SELECT COUNT(*) FROM #Type2)&lt;&gt;2 OR (SELECT COUNT(*) FROM #Type2 WHERE IsCurrent=1)&lt;&gt;1&#xA; THROW 50211,'Type2 replay/current assertion failed',1;&#xA;IF EXISTS(SELECT 1 FROM #Type2 a JOIN #Type2 b ON a.Code=b.Code AND a.ProductKey&lt;b.ProductKey&#xA; AND a.ValidFrom&lt;b.ValidTo AND b.ValidFrom&lt;a.ValidTo)&#xA; THROW 50212,'Type2 overlapping intervals',1;&#xA;IF (SELECT ProductKey FROM #Type2 WHERE '20121201'&gt;=ValidFrom AND '20121201'&lt;ValidTo)&lt;&gt;1&#xA; OR (SELECT ProductKey FROM #Type2 WHERE '20130101'&gt;=ValidFrom AND '20130101'&lt;ValidTo)&lt;&gt;2&#xA; THROW 50213,'Type2 date boundary assertion failed',1;&#xA;IF NOT EXISTS(SELECT 1 FROM #Type3 WHERE CurrentType=N'Premium' AND PreviousType=N'Specialty')&#xA; THROW 50214,'Type3 one-step-history assertion failed',1;&#xA;DECLARE @Result nvarchar(max)=(SELECT&#xA; JSON_QUERY((SELECT * FROM #Type1 FOR JSON PATH)) ProductType1,&#xA; JSON_QUERY((SELECT * FROM #Type2 ORDER BY ProductKey FOR JSON PATH)) ProductType2,&#xA; JSON_QUERY((SELECT * FROM #Type3 FOR JSON PATH)) ProductType3,&#xA; JSON_QUERY((SELECT * FROM #L ORDER BY SK FOR JSON PATH)) LocationType2,&#xA; JSON_QUERY((SELECT * FROM #T3 FOR JSON PATH)) LocationType3,&#xA; 'PASS' Assertions,'Synthetic P01/A01; not evidence of a real source dimension change' Scope&#xA; FOR JSON PATH,WITHOUT_ARRAY_WRAPPER);&#xA;INSERT audit.SCDNativeEvidence(RunID,ResultJson) VALUES(@RunID,@Result);&#xA;&#xA;DROP TABLE #T3;&#xA;DROP TABLE #L;&#xA;DROP TABLE #Type3;&#xA;DROP TABLE #Type2;&#xA;DROP TABLE #Type1;&#xA;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::RunID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="1024" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+</DTS:Executable>

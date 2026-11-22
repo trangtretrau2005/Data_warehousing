@@ -1,0 +1,53 @@
+-- Read-only SSAS acceptance cases; connect to CoffeeCube_Trang_20261120.
+-- Each Inventory context must match SQL at MAX(selected MonthStart).
+
+-- CASE all_markets_24months
+SELECT {[Measures].[Sales],[Measures].[Budget Sales],[Measures].[Gap],[Measures].[Profit],[Measures].[Budget Achievement],[Measures].[Profit Margin]} ON 0,[Dim Location].[Market].[Market].Members ON 1 FROM [Coffee Performance];
+
+-- CASE central_201201_states
+SELECT {[Measures].[Sales],[Measures].[Budget Sales],[Measures].[Gap],[Measures].[Profit],[Measures].[Budget Achievement],[Measures].[Profit Margin]} ON 0, NON EMPTY DESCENDANTS([Dim Location].[Geography].[Market].&[Central],[Dim Location].[Geography].[State],SELF) ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Date Key].&[20120101]);
+
+-- CASE west_201201_states
+SELECT {[Measures].[Sales],[Measures].[Budget Sales],[Measures].[Gap],[Measures].[Profit],[Measures].[Budget Achievement],[Measures].[Profit Margin]} ON 0, NON EMPTY DESCENDANTS([Dim Location].[Geography].[Market].&[West],[Dim Location].[Geography].[State],SELF) ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Date Key].&[20120101]);
+
+-- CASE dice_coffee_201201_central_east
+SELECT {[Measures].[Sales],[Measures].[Budget Sales],[Measures].[Profit]} ON 0, {[Dim Location].[Market].&[Central],[Dim Location].[Market].&[East]} ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Date Key].&[20120101],[Dim Product].[Product Type].&[Coffee]);
+
+-- CASE south_201308_signed_gap
+SELECT {[Measures].[Sales],[Measures].[Budget Sales],[Measures].[Gap],[Measures].[Profit]} ON 0, ORDER(NONEMPTY([Dim Product].[Product Name].[Product Name].Members,[Measures].[Sales]),[Measures].[Gap],BASC) ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Date Key].&[20130801],[Dim Location].[Market].&[South]);
+
+-- CASE budget_zero_preserves_null_ratio
+SELECT {[Measures].[Sales],[Measures].[Budget Sales],[Measures].[Gap],[Measures].[Profit],[Measures].[Budget Achievement],[Measures].[Profit Margin]} ON 0, {[Dim Product].[Product Name].&[Green Tea]} ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Date Key].&[20120101],[Dim Location].[Area Code].&[702]);
+
+-- CASE joint_dates_markets_ratio_from_totals
+SELECT {[Measures].[Sales],[Measures].[Budget Sales],[Measures].[Gap],[Measures].[Profit],[Measures].[Budget Achievement],[Measures].[Profit Margin]} ON 0, {[Dim Location].[Market].[All]} ON 1 FROM (SELECT {[Dim Date].[Date Key].&[20120101],[Dim Date].[Date Key].&[20130801]} ON 0, {[Dim Location].[Market].&[Central],[Dim Location].[Market].&[East]} ON 1 FROM [Coffee Performance]);
+
+-- CASE inventory_latest_selected_empty_no_fallback
+SELECT {[Measures].[Inventory]} ON 0, {[Dim Product].[Product Name].&[Chamomile]} ON 1 FROM (SELECT {[Dim Date].[Date Key].&[20130101],[Dim Date].[Date Key].&[20130801]} ON 0 FROM [Coffee Performance]) WHERE ([Dim Location].[Area Code].&[720]);
+
+-- CASE inventory_all
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM [Coffee Performance];
+
+-- CASE inventory_month_201312
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Date Key].&[20131201]);
+
+-- CASE inventory_year_2012
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Calendar].[Year].&[2012]);
+
+-- CASE inventory_year_2013
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Calendar].[Year].&[2013]);
+
+-- CASE inventory_quarter_2013q2
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM [Coffee Performance] WHERE ([Dim Date].[Calendar].[Quarter].&[2013]&[2]);
+
+-- CASE inventory_range_feb_may2013
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM (SELECT {[Dim Date].[Date Key].&[20130201]:[Dim Date].[Date Key].&[20130501]} ON 0 FROM [Coffee Performance]);
+
+-- CASE inventory_noncontiguous_jan_aug2013
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM (SELECT {[Dim Date].[Date Key].&[20130101],[Dim Date].[Date Key].&[20130801]} ON 0 FROM [Coffee Performance]);
+
+-- CASE inventory_where_set_jan_aug2013
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM [Coffee Performance] WHERE {[Dim Date].[Date Key].&[20130101],[Dim Date].[Date Key].&[20130801]};
+
+-- CASE inventory_colombian_aug_nov2013
+SELECT {[Measures].[Inventory]} ON 0, NON EMPTY [Dim Location].[Market].[Market].Members ON 1 FROM (SELECT {[Dim Date].[Date Key].&[20130801],[Dim Date].[Date Key].&[20131101]} ON 0 FROM [Coffee Performance]) WHERE ([Dim Product].[Product Name].&[Colombian]);

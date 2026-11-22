@@ -1,0 +1,1505 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/20/2026 3:38:43 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="Local development"
+  DTS:CreatorName="Coffee DW team"
+  DTS:Description="Acceptance case 3; SuiteID 63d2403b-e12f-495d-a3ce-69efce27f1a6; configured but not executed at generation"
+  DTS:DTSID="{190F43B8-BFDD-451C-A36A-449BA3FFCAE6}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.1000.6"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="03_ReplayDecember"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{E4FB8AF0-4C62-4EE5-BC0E-3DA198EA9E0B}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CoffeeCSV_UTF8]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{E41707D7-73C0-4B71-803F-DC9A5D4819FF}"
+      DTS:ObjectName="CoffeeCSV_UTF8">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[User::SourceFilePath]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x0022_"
+          DTS:CodePage="65001"
+          DTS:ConnectionString="C:\Users\Lenovo\Desktop\HK1_năm 4\kho dữ liệu\BTL_datawarehousing\results\native_build_20261120\ssis\fixtures\month_201312.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Area Code"
+              DTS:DTSID="{F8C6D965-768D-4144-81AF-38C9E4F59559}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Date"
+              DTS:DTSID="{B5131D34-A3C6-425F-B504-1C25A2ECBDE3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Market"
+              DTS:DTSID="{6759F5E5-A316-43DD-944A-7EF45CCF7167}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Market Size"
+              DTS:DTSID="{8EFCB0F3-5D00-472B-9DBC-0DD7DCFB31B7}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Product"
+              DTS:DTSID="{1E889A49-5461-440B-AEEA-791B5070DCF3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Product Line"
+              DTS:DTSID="{C31FE705-6C90-4E2B-AFD9-ADBC10DEDC4F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Product Type"
+              DTS:DTSID="{F44BEA39-5310-4039-A1F6-170F1B3592E9}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="State"
+              DTS:DTSID="{8DAF4F89-7DCD-487C-A9B4-33C688182834}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Type"
+              DTS:DTSID="{F4A0D11D-0295-4706-9D11-8BE490CF1826}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Budget COGS"
+              DTS:DTSID="{BA78B14F-4B0F-467D-AFF1-C5F21EFAD562}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Budget Margin"
+              DTS:DTSID="{57028B30-CB1A-4BE9-935C-2993B3D2CB1D}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Budget Profit"
+              DTS:DTSID="{E9213318-64BB-4D93-8CD4-6CCD0F2F44A3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Budget Sales"
+              DTS:DTSID="{4A4B1E8A-E4B4-4AA0-8D7C-10ECC306AB7B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="COGS"
+              DTS:DTSID="{A105B8B1-FEEE-4D7E-92E0-AE7F693B998A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Inventory"
+              DTS:DTSID="{59ED839E-757E-4BA0-95E7-1232DCD21B56}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Margin"
+              DTS:DTSID="{1B906AC0-3EB7-40A7-ABF7-61B15849A42C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Marketing"
+              DTS:DTSID="{53CDB6A7-9C55-4DC8-9C92-2D227698690C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Profit"
+              DTS:DTSID="{4C06104E-F70F-4627-B23F-9ED79FC62D2C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Sales"
+              DTS:DTSID="{98A855FF-9CC5-46EB-A31D-32F53BCD8F6C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="1024"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Total Expenses"
+              DTS:DTSID="{BA7F487D-241E-4083-9167-75145EB24CFF}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CoffeeDW_Isolated_OLEDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{E98EA756-1D9B-4FEC-8311-C36439F110B7}"
+      DTS:ObjectName="CoffeeDW_Isolated_OLEDB">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=MSOLEDBSQL;Data Source=" + @[User::ServerName] + ";Initial Catalog=" + @[User::DatabaseName] + ";Integrated Security=SSPI;TrustServerCertificate=True;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=.;Initial Catalog=CoffeeDW_Trang_SSIS_TN03_20261120;Provider=MSOLEDBSQL;Integrated Security=SSPI;TrustServerCertificate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B786592F-23AC-4F10-AF08-091969CB9409}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="BatchID">
+      <DTS:VariableValue
+        DTS:DataType="8">35cb2851-7bd4-4ae3-93f3-f9b4c8386fa0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A6215BA6-0F53-4D71-B4BE-FDCEE698B326}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DatabaseName">
+      <DTS:VariableValue
+        DTS:DataType="8">CoffeeDW_Trang_SSIS_TN03_20261120</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{825CE8F3-760E-4904-8717-736234480A24}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ServerName">
+      <DTS:VariableValue
+        DTS:DataType="8">.</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A46E9549-FB5E-4E6C-9A18-25D340D0DC76}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceChecksum">
+      <DTS:VariableValue
+        DTS:DataType="8">df3706c5ef395313fbc67fe368673a3205040e249c8800b01a936ddaaad16162</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B8D9C410-2E48-4E42-96EB-6E4018B10B38}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceCount">
+      <DTS:VariableValue
+        DTS:DataType="3">177</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{EF6BDE34-2D75-4CB3-9B47-A4D5EC21E3D5}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceFileName">
+      <DTS:VariableValue
+        DTS:DataType="8">month_201312.csv</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3B846F08-A9E9-4CDC-9DBE-A65B63EBE4C7}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceFilePath">
+      <DTS:VariableValue
+        DTS:DataType="8">C:\Users\Lenovo\Desktop\HK1_năm 4\kho dữ liệu\BTL_datawarehousing\results\native_build_20261120\ssis\fixtures\month_201312.csv</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DFT_02_CSV_RawLanding"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{64EB122C-C7D9-4668-89F5-FCF6AA6F0A7D}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DFT_02_CSV_RawLanding"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          engineThreads="2"
+          version="1">
+          <components>
+            <component
+              refId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="DC_AddBatchID"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Output].Columns[BatchID]"
+                      dataType="wstr"
+                      description="Current immutable batch identifier"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="36"
+                      lineageId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Output].Columns[BatchID]"
+                      name="BatchID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_WSTR,36)@[User::BatchID]</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_WSTR,36)@[User::BatchID]</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns"
+              componentClassID="Microsoft.FlatFileSource"
+              contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Source"
+              localeId="1033"
+              name="FFS_CoffeeCSV_20_Text_Columns"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether zero-length columns are treated as null."
+                  name="RetainNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                  name="FileNameColumnName"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CoffeeCSV_UTF8]"
+                  connectionManagerRefId="Package.ConnectionManagers[CoffeeCSV_UTF8]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output]"
+                  name="Flat File Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Area Code]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Area Code]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Area Code]"
+                      name="Area Code"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Date]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Date]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Date]"
+                      name="Date"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Market]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Market]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Market]"
+                      name="Market"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Market Size]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Market Size]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Market Size]"
+                      name="Market Size"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Product]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product]"
+                      name="Product"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product Line]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Product Line]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product Line]"
+                      name="Product Line"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product Type]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Product Type]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product Type]"
+                      name="Product Type"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[State]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[State]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[State]"
+                      name="State"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Type]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Type]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Type]"
+                      name="Type"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget COGS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Budget COGS]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget COGS]"
+                      name="Budget COGS"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Margin]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Budget Margin]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Margin]"
+                      name="Budget Margin"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Profit]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Budget Profit]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Profit]"
+                      name="Budget Profit"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Sales]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Budget Sales]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Sales]"
+                      name="Budget Sales"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[COGS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[COGS]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[COGS]"
+                      name="COGS"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Inventory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Inventory]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Inventory]"
+                      name="Inventory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Margin]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Margin]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Margin]"
+                      name="Margin"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Marketing]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Marketing]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Marketing]"
+                      name="Marketing"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Profit]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Profit]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Profit]"
+                      name="Profit"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Sales]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Sales]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Sales]"
+                      name="Sales"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Total Expenses]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Total Expenses]"
+                      length="1024"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Total Expenses]"
+                      name="Total Expenses"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Area Code]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Area Code" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Date]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Date" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Market]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Market" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Market Size]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Market Size" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Product]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Product" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Product Line]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Product Line" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Product Type]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Product Type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[State]"
+                      dataType="wstr"
+                      length="1024"
+                      name="State" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Type]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Budget COGS]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Budget COGS" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Budget Margin]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Budget Margin" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Budget Profit]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Budget Profit" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Budget Sales]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Budget Sales" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[COGS]"
+                      dataType="wstr"
+                      length="1024"
+                      name="COGS" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Inventory]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Inventory" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Margin]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Margin" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Marketing]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Marketing" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Profit]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Profit" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Sales]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Sales" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].ExternalColumns[Total Expenses]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Total Expenses" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Error Output]"
+                  isErrorOut="true"
+                  name="Flat File Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      codePage="65001"
+                      dataType="text"
+                      description="Flat File Source Error Output Column"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      name="Flat File Source Error Output Column" />
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLEDB_Raw_CoffeeCsvLanding"
+              usesDispositions="true"
+              validateExternalMetadata="False"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stg].[CoffeeCsvLanding]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CoffeeDW_Isolated_OLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[CoffeeDW_Isolated_OLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Area Code]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Area Code"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Area Code]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Area Code]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Date]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Date"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Date]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Date]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Market]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Market"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Market]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Market]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Market Size]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Market Size"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Market Size]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Market Size]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Product]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Product"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Product]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Product Line]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Product Line"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Product Line]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product Line]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Product Type]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Product Type"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Product Type]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Product Type]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[State]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="State"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[State]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[State]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Type]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Type"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Type]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Type]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Budget COGS]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Budget COGS"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Budget COGS]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget COGS]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Budget Margin]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Budget Margin"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Budget Margin]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Margin]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Budget Profit]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Budget Profit"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Budget Profit]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Profit]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Budget Sales]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Budget Sales"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Budget Sales]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Budget Sales]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[COGS]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="COGS"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[COGS]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[COGS]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Inventory]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Inventory"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Inventory]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Inventory]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Margin]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Margin"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Margin]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Margin]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Marketing]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Marketing"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Marketing]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Marketing]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Profit]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Profit"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Profit]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Profit]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Sales]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Sales"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Sales]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Sales]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[Total Expenses]"
+                      cachedDataType="wstr"
+                      cachedLength="1024"
+                      cachedName="Total Expenses"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Total Expenses]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output].Columns[Total Expenses]" />
+                    <inputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].Columns[BatchID]"
+                      cachedDataType="wstr"
+                      cachedLength="36"
+                      cachedName="BatchID"
+                      externalMetadataColumnId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[BatchID]"
+                      lineageId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Output].Columns[BatchID]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Area Code]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Area Code" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Date]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Date" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Market]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Market" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Market Size]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Market Size" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Product]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Product" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Product Line]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Product Line" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Product Type]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Product Type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[State]"
+                      dataType="wstr"
+                      length="1024"
+                      name="State" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Type]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Budget COGS]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Budget COGS" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Budget Margin]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Budget Margin" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Budget Profit]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Budget Profit" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Budget Sales]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Budget Sales" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[COGS]"
+                      dataType="wstr"
+                      length="1024"
+                      name="COGS" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Inventory]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Inventory" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Margin]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Margin" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Marketing]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Marketing" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Profit]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Profit" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Sales]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Sales" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[Total Expenses]"
+                      dataType="wstr"
+                      length="1024"
+                      name="Total Expenses" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input].ExternalColumns[BatchID]"
+                      dataType="wstr"
+                      length="36"
+                      name="BatchID" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DFT_02_CSV_RawLanding.Paths[Derived Column Output]"
+              endId="Package\DFT_02_CSV_RawLanding\OLEDB_Raw_CoffeeCsvLanding.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT_02_CSV_RawLanding.Paths[Flat File Source Output]"
+              endId="Package\DFT_02_CSV_RawLanding\DC_AddBatchID.Inputs[Derived Column Input]"
+              name="Flat File Source Output"
+              startId="Package\DFT_02_CSV_RawLanding\FFS_CoffeeCSV_20_Text_Columns.Outputs[Flat File Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_01_RegisterBatch"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{B487F05B-935E-49DB-A1D0-7E3FD5714FC5}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_01_RegisterBatch"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{E98EA756-1D9B-4FEC-8311-C36439F110B7}"
+          SQLTask:SqlStatementSource="IF DB_NAME() NOT LIKE N'CoffeeDW[_]Trang[_]%' THROW 50201,'Use an isolated CoffeeDW_Trang database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,?); DECLARE @file nvarchar(1024)=?; DECLARE @hash char(64)=?; DECLARE @n int=?; IF @hash=REPLICATE('0',64) THROW 50200,'Use Run-CoffeeETL.ps1 to supply actual SHA256 and source count',1; INSERT audit.LoadBatch(BatchID,SourceFile,SourceChecksum,SourceCount) VALUES(@b,@file,@hash,@n);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="1024" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::SourceFileName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="1024" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="2"
+            SQLTask:DtsVariableName="User::SourceChecksum"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="1024" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="3"
+            SQLTask:DtsVariableName="User::SourceCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_03_ValidateAndStage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{F049DC4C-5A67-4F19-89A8-7E561DCCD896}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_03_ValidateAndStage"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{E98EA756-1D9B-4FEC-8311-C36439F110B7}"
+          SQLTask:SqlStatementSource="DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,?); EXEC stg.usp_ValidateCoffeeLanding @BatchID=@b;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="1024" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_04_TransactionalStarLoad"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{901EBC83-5E44-46C8-96FA-033FBCB3850B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_04_TransactionalStarLoad"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{E98EA756-1D9B-4FEC-8311-C36439F110B7}"
+          SQLTask:SqlStatementSource="DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,?); EXEC dw.usp_LoadCoffee @BatchID=@b;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="1024" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{3220344A-0C75-4E70-BE3A-E6035E89C8D8\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{3220344A-0C75-4E70-BE3A-E6035E89C8D8}"
+      DTS:From="Package\EST_03_ValidateAndStage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{3220344A-0C75-4E70-BE3A-E6035E89C8D8}"
+      DTS:To="Package\EST_04_TransactionalStarLoad" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{517F9D6B-83B7-4622-A802-33F9EC02C46E\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{517F9D6B-83B7-4622-A802-33F9EC02C46E}"
+      DTS:From="Package\DFT_02_CSV_RawLanding"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{517F9D6B-83B7-4622-A802-33F9EC02C46E}"
+      DTS:To="Package\EST_03_ValidateAndStage" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{B1E21650-51E7-4A19-BDA9-3B9F52BC63AD\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{B1E21650-51E7-4A19-BDA9-3B9F52BC63AD}"
+      DTS:From="Package\EST_01_RegisterBatch"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{B1E21650-51E7-4A19-BDA9-3B9F52BC63AD}"
+      DTS:To="Package\DFT_02_CSV_RawLanding" />
+  </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{48F7C54D-3547-4428-9C0C-A180B2E70423}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{AD6AF59C-A16C-4A0E-8A9B-637F6C7E436B}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\EST_OnError_MarkFailedBatch"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{84A59E33-E706-4DCE-AC9D-60149967ADCC}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="EST_OnError_MarkFailedBatch">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E98EA756-1D9B-4FEC-8311-C36439F110B7}"
+              SQLTask:SqlStatementSource="DECLARE @b uniqueidentifier=TRY_CONVERT(uniqueidentifier,?); UPDATE audit.LoadBatch SET Status='FAILED',FinishedAt=SYSUTCDATETIME() WHERE BatchID=@b AND Status='STAGED';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::BatchID"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="1024" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
+</DTS:Executable>

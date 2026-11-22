@@ -11,6 +11,12 @@ Hai tài liệu gốc được giữ nguyên trong `docs/`: `Bao_cao_Kho_du_lieu
 
 SQLite là bản tham chiếu chạy nhanh để phát triển chung. SQL Server là đích triển khai theo báo cáo; các package SSIS và project SSAS phải được nhóm tạo/chạy bằng công cụ native và thu minh chứng riêng. Kết quả trên SQLite không thay cho số đo SQL Server hoặc ảnh SSIS/SSAS.
 
+**Minh chứng bổ sung 20/11/2026 trên máy Trang:** [biên bản native](TRANG_NATIVE_BUILD_20261120.md) nối TN03 tới [suite CSV 8/8 PASS](../results/native_build_20261120/ssis/acceptance_runs/63d2403b-e12f-495d-a3ce-69efce27f1a6/verification.json), TN04 tới [SCD package PASS](../results/native_build_20261120/ssis/scd/6f3301d7-87ff-44c5-a578-76666329f290/manifest.json), TN06 tới [SSAS Processed 17/17 MDX–SQL](../results/native_build_20261120/ssas/final_acceptance.json). [39 phép kiểm SQL chỉ đọc](../results/native_build_20261120/relational_acceptance/final/summary.json) xác nhận mart theo từng ô và TN05 CTE aggregate/FULL OUTER JOIN/fixture thiếu nhóm/fan-out, cùng PK/FK/JOIN/11 tổng; fixture không deploy stored mart hoặc tạo hai fact nguồn thật. Đây là các đích biệt lập thích nghi từ tài sản Chi; UX người thật, native fault-injection rollback và lần bàn giao trên máy Chi vẫn riêng. Tiêu chí của ma trận dưới đây được giữ nguyên; ảnh Browser còn cần thu riêng.
+
+**Chốt bằng chứng cuối ngày 20/11/2026:** [rollback native](../results/native_build_20261120/relational_acceptance/rollback/20261120T142531Z_7f80dd10/verification.json) đạt 12/12, không residue và hash logical 11 bảng giữ nguyên. TN06 có Browser slice/drill/dice thực và [pivot ADOMD 6/6 ô](../results/native_build_20261120/ssas/integrated_ssis_source/pivot_acceptance/verification.json); Query Designer UI chặn axis swap vẫn được ghi là giới hạn. [Build SSAS cuối](../results/native_build_20261120/ui/ssas_integrated_build.txt) 0 lỗi / 8 cảnh báo. [Final summary](../results/native_build_20261120/final_summary.json) dẫn 141 pytest đạt, 10 frontend tests đạt và CLI demo/forecast exit 0; không suy thành phiên UX người thật. Các mốc trước được giữ theo lịch sử, không xóa lỗi/chẩn đoán cũ.
+
+**Chuỗi SSIS→SQL→SSAS chốt cùng ngày:** [nguồn deploy thực và đối soát cuối](../results/native_build_20261120/ssas/integrated_ssis_source/verification.json) là `CoffeeDW_Trang_SSIS_TN03_20261120` vừa được suite SSIS nạp. ProcessFull lúc 14:58:07Z; 17/17 ca MDX so SQL mới và pivot 6/6 ô chạy lại đều đạt. Receipt/ảnh giai đoạn nguồn cũ vẫn là lịch sử; dữ liệu và forecast của DB native 19/11 không bị ghi đè.
+
 ## Bảy chương và điểm bàn giao
 
 | Chương | Phụ trách | Code/tài sản chính | Bàn giao bắt buộc |
@@ -68,4 +74,4 @@ Chi tiết thao tác nằm ở [hướng dẫn thực nghiệm](../learning/READ
 
 **Ví dụ TN12 của sổ tay:** West, sáu tháng 07–12/2013, feature lag1/lag2/mean3. Đây là phép thử thăm dò khác; số MAE của nó không so trực tiếp với bảng chương 6. Nếu mở rộng, đặt tên protocol và lưu cấu hình riêng.
 
-**Số nguồn và số thực đo:** các giá trị tài liệu cho trước là đáp án đối chiếu, không phải kết quả chạy tại máy của nhóm. Chỉ đánh dấu TN đạt khi có output thật; benchmark/SSIS/SSAS/UX còn cần nhóm thực hiện trên môi trường tương ứng.
+**Số nguồn và số thực đo:** các giá trị tài liệu cho trước là đáp án đối chiếu, không phải kết quả chạy tại máy của nhóm. Chỉ đánh dấu TN đạt khi có output thật; các run benchmark/native đã có phải dẫn receipt/output đúng môi trường và phạm vi ở biên bản. UX người thật và các ca chưa có evidence vẫn cần thực hiện riêng.

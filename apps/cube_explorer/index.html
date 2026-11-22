@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Coffee Atlas · Khám phá kho dữ liệu</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='17' fill='%231e443c'/%3E%3Cpath d='M32 10 52 22 32 34 12 22Z' fill='%23dcb987'/%3E%3Cpath d='M12 26 30 37 30 57 12 46Z' fill='%239ccabb'/%3E%3Cpath d='M34 37 52 26 52 46 34 57Z' fill='%236eaa95'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Coffee Atlas, trang đầu"><span class="brand-mark"><i></i><i></i><i></i></span><span>Coffee <em>Atlas</em></span></a>
+    <div class="source-status"><span class="status-dot"></span><span id="source-label">Đang kết nối kho…</span><button id="source-info" class="icon-button" aria-label="Xem nguồn dữ liệu">i</button></div>
+  </header>
+
+  <main>
+    <div class="page-heading">
+      <div><p class="eyebrow">KHÔNG GIAN PHÂN TÍCH ĐA CHIỀU</p><h1>Chạm vào dữ liệu.<br class="mobile-break"> Nhìn ra bức tranh.</h1><p class="subtitle">Tháng nào, thị trường nào, sản phẩm nào đang kéo kết quả kinh doanh?</p></div>
+      <div class="dataset-stats"><span><strong id="month-count">24</strong> tháng</span><span><strong id="market-count">4</strong> thị trường</span><span><strong id="product-count">13</strong> sản phẩm</span></div>
+    </div>
+
+    <nav class="section-tabs" role="tablist" aria-label="Các bước khám phá dữ liệu">
+      <button id="explore-tab" class="nav-tab active" role="tab" aria-selected="true" aria-controls="explorer" tabindex="0"><span class="tab-icon" aria-hidden="true">▦</span><span><strong>Khối dữ liệu 3D</strong><small>Xoay, cắt lát & khám phá</small></span></button>
+      <button id="analysis-tab" class="nav-tab" role="tab" aria-selected="false" aria-controls="drill-section" tabindex="-1"><span class="tab-icon" aria-hidden="true">↗</span><span><strong>Phân tích chi tiết</strong><small>Tìm phần hụt & phần vượt</small></span></button>
+      <button id="lineage-tab" class="nav-tab" role="tab" aria-selected="false" aria-controls="lineage-section" tabindex="-1"><span class="tab-icon" aria-hidden="true">◇</span><span><strong>Kho & ứng dụng</strong><small>Hiểu phần Chi đang được dùng</small></span></button>
+    </nav>
+
+    <div id="view-intro" class="view-intro"><span aria-hidden="true">✦</span><p><strong>Mỗi khối nhỏ là một ô dữ liệu.</strong> Chọn tháng, xoay khối rồi chạm vào một ô để xem Sales, ngân sách và chênh lệch.</p></div>
+
+    <section id="explorer" class="workspace" role="tabpanel" aria-labelledby="explore-tab" aria-label="Ứng dụng phân tích cube">
+      <aside class="control-panel">
+        <details id="filter-details" class="filter-disclosure" open>
+        <summary><span class="step-num">01</span><span><strong>Bộ lọc phân tích</strong><small id="filter-summary">Chọn tháng, Market và sản phẩm</small></span><span class="disclosure-chevron" aria-hidden="true">⌄</span></summary>
+        <div class="filter-body">
+        <div class="field"><label for="year-select">Phạm vi thời gian</label><select id="year-select" disabled></select></div>
+        <div class="field"><label>Độ chi tiết sản phẩm</label><div class="segmented" id="level-control" role="group" aria-label="Độ chi tiết sản phẩm"><button data-level="type" class="active" aria-pressed="true">Nhóm</button><button data-level="product" aria-pressed="false">Sản phẩm</button></div></div>
+        <div class="field"><label for="measure-select">Màu khối biểu diễn</label><select id="measure-select"><option value="Gap">Chênh lệch kế hoạch</option><option value="Sales">Sales thực tế</option><option value="Profit">Lợi nhuận</option></select></div>
+        <div class="field"><label for="market-select">Thị trường</label><select id="market-select" disabled></select></div>
+        <div class="field"><label for="product-select">Nhóm sản phẩm</label><select id="product-select" disabled></select></div>
+        <hr>
+        <p class="small-label">THỬ MỘT CÂU HỎI</p>
+        <button id="case-south" class="case-button"><span class="case-arrow">↗</span><strong>Vì sao South hụt 9?</strong><small>Tháng 08/2013 · đi xuống sản phẩm</small></button>
+        <button id="case-central" class="case-button"><span class="case-arrow">↗</span><strong>Central vượt ở đâu?</strong><small>Tháng 01/2012 · xem theo địa bàn</small></button>
+        <div class="control-foot"><span class="mini-cube">◇</span><p>Đổi góc nhìn trên cùng một kho dữ liệu. Tổng vẫn được giữ nguyên.</p></div>
+        </div>
+        </details>
+      </aside>
+
+      <div class="canvas-panel">
+        <div class="canvas-heading"><div><p class="small-label">DATACUBE / <span id="cube-grain">THÁNG × MARKET × NHÓM</span></p><h2 id="cube-title">Nhìn toàn khối</h2></div><button id="reset-camera" class="canvas-button" aria-label="Đưa camera về góc mặc định">↺ <span>Góc ban đầu</span></button></div>
+        <div id="viewport" class="viewport" role="group" aria-label="Khối dữ liệu 3D. Kéo để xoay, cuộn để thu phóng, bấm một khối để xem chi tiết.">
+          <canvas id="cube-canvas" aria-label="Khối dữ liệu 3D. Kéo chuột hoặc dùng phím mũi tên để xoay; dấu cộng và trừ để thu phóng." tabindex="0"></canvas>
+          <div id="axis-labels" aria-hidden="true"></div>
+          <div id="cube-tooltip" class="cube-tooltip" hidden></div>
+          <div id="loading-state" class="loading-state"><div class="loader-cube">◇</div><strong>Đang mở kho dữ liệu</strong><span>Đọc các mart của Chi…</span></div>
+          <div class="viewport-caption"><span class="gesture">↔</span> Kéo để xoay <span>·</span> Cuộn để phóng <span>·</span> Chạm một khối</div>
+          <div class="axis-key"><span><i class="axis-x"></i>Tháng</span><span><i class="axis-y"></i>Market</span><span><i class="axis-z"></i>Sản phẩm</span></div>
+        </div>
+        <div class="cube-toolbar"><div class="view-buttons" id="view-control"><button data-mode="all" class="active" aria-pressed="true"><span>▦</span> Toàn khối</button><button data-mode="slice" aria-pressed="false"><span>▥</span> Cắt lát</button><button data-mode="explode" aria-pressed="false"><span>▤</span> Tách lớp</button></div><button id="pivot-button" class="canvas-button">⇄ Đổi trục</button></div>
+        <div class="time-control"><div><span class="small-label">LÁT THÁNG</span><strong id="month-label">08 / 2013</strong><button id="prev-month" class="month-step" aria-label="Tháng trước">‹</button><button id="next-month" class="month-step" aria-label="Tháng sau">›</button></div><input id="month-slider" type="range" min="0" max="11" value="7" aria-label="Chọn lát tháng"><div class="range-labels"><span id="time-start">01/2013</span><span id="time-end">12/2013</span></div></div>
+        <div class="legend-row"><span id="legend-negative">Hụt kế hoạch</span><div id="color-scale" class="color-scale"></div><span id="legend-positive">Vượt kế hoạch</span><span id="visible-cells" class="cell-count"></span></div>
+      </div>
+
+      <aside class="inspector">
+        <div class="panel-title"><span class="step-num">02</span><h2>Đọc kết quả</h2></div>
+        <div class="scope-line"><span id="scope-market">Toàn chuỗi</span><span id="scope-month">08/2013</span></div>
+        <div class="primary-kpi"><span>Sales thực tế</span><strong id="kpi-sales">—</strong><small>Đơn vị theo nguồn dữ liệu</small></div>
+        <div class="kpi-pair"><div><span>Ngân sách</span><strong id="kpi-budget">—</strong></div><div><span>Chênh lệch</span><strong id="kpi-gap">—</strong></div></div>
+        <div class="achievement"><div><span>Mức đạt ngân sách</span><strong id="kpi-ratio">—</strong></div><div class="achievement-track"><span id="achievement-fill"></span><i></i></div></div>
+        <p id="scope-sentence" class="scope-sentence"></p>
+        <div class="selected-cell" id="selected-cell" hidden><p class="small-label">Ô ĐANG CHỌN</p><strong id="cell-title"></strong><div id="cell-values"></div></div>
+        <hr>
+        <div class="ranking-heading"><h3 id="ranking-title">Sản phẩm cần xem</h3><button id="clear-product" class="text-button" hidden>Xóa chọn</button></div>
+        <p class="ranking-description">Âm là hụt, dương là vượt ngân sách. Bấm để xem ô tương ứng.</p>
+        <div id="product-ranking" class="product-ranking"></div>
+        <div class="inspector-foot"><span>✓</span><p id="reconcile-text">Đang đối chiếu các cấp tổng hợp…</p></div>
+      </aside>
+    </section>
+
+    <section id="drill-section" class="drill-section" role="tabpanel" aria-labelledby="analysis-tab" hidden>
+      <div class="analysis-kicker"><div><p class="eyebrow">TỪ KHỐI 3D ĐẾN CON SỐ CỤ THỂ</p><h2>Đọc rõ từng phần chênh lệch.</h2><p id="analysis-scope">Cùng bộ lọc với khối dữ liệu 3D.</p></div><button id="analysis-back" class="outline-button">▦ Xem trong khối 3D</button></div>
+      <div class="analysis-filters"><div class="field"><label for="analysis-month-select">Tháng phân tích</label><select id="analysis-month-select" disabled></select></div><div class="field"><label for="analysis-market-select">Thị trường</label><select id="analysis-market-select" disabled></select></div><div class="field"><label for="analysis-level-select">Mức phân tích</label><select id="analysis-level-select"><option value="type">Nhóm sản phẩm</option><option value="product">Từng sản phẩm</option></select></div><div class="field"><label for="analysis-product-select">Sản phẩm / nhóm đang xem</label><select id="analysis-product-select" disabled></select></div></div>
+      <div class="analysis-summary"><article class="summary-card summary-sales"><span>Sales thực tế</span><strong id="analysis-sales">—</strong><small>Doanh số ghi nhận</small></article><article class="summary-card summary-budget"><span>Ngân sách</span><strong id="analysis-budget">—</strong><small>Mục tiêu cùng lát cắt</small></article><article class="summary-card summary-gap"><span>Chênh lệch kế hoạch</span><strong id="analysis-gap">—</strong><small>Sales − ngân sách</small></article><article class="summary-card summary-ratio"><span>Mức đạt ngân sách</span><strong id="analysis-ratio">—</strong><small>Tổng Sales / tổng ngân sách</small></article></div>
+      <div class="drill-heading"><div><p class="eyebrow">ĐI TỪ TỔNG QUAN ĐẾN CHI TIẾT</p><h2 id="drill-title">Thị trường nào cần chú ý?</h2><p id="drill-caption">Chọn một thị trường để mở chi tiết nhóm sản phẩm.</p></div><button id="export-button" class="outline-button">↓ Tải lát cắt CSV</button></div>
+      <div id="market-cards" class="market-cards"></div>
+      <section class="analysis-breakdown"><article class="analysis-products"><div><p class="eyebrow">NHỮNG PHẦN ĐANG BÙ TRỪ NHAU</p><h3>Sản phẩm tạo chênh lệch</h3><p>Các dòng cùng tháng và Market, xếp phần hụt trước. Bấm một dòng để xem theo State.</p></div><div class="table-scroll"><table class="analysis-table"><thead><tr><th>Sản phẩm / nhóm</th><th>Sales</th><th>Ngân sách</th><th>Chênh lệch</th></tr></thead><tbody id="analysis-product-rows"></tbody></table></div></article></section>
+      <div id="state-empty" class="empty-drill"><span aria-hidden="true">↳</span><p><strong>Muốn xem đến từng State?</strong> Chọn một thị trường và một dòng sản phẩm phía trên.</p></div>
+      <div id="state-section" class="state-section" hidden><div><p class="eyebrow">DRILL-DOWN / MARKET → STATE</p><h3 id="state-title"></h3><p id="state-caption"></p></div><div id="state-list" class="state-list"></div></div>
+    </section>
+
+    <section id="lineage-section" class="lineage-section" role="tabpanel" aria-labelledby="lineage-tab" hidden>
+      <div class="lineage-intro"><p class="eyebrow">THIẾT KẾ KHO ĐANG ĐƯỢC SỬ DỤNG NHƯ THẾ NÀO?</p><h2>Từ một dòng nguồn đến một ô trong khối.</h2><p>Mỗi thao tác trên giao diện chọn cùng các chiều của kho: thời gian, địa bàn và sản phẩm.</p></div>
+      <div class="pipeline"><article><span class="pipeline-number">01</span><h3>Tiếp nhận & kiểm tra</h3><p>ETL của Chi kiểm kiểu dữ liệu, khóa và dòng trùng. Bản ghi lỗi được giữ riêng cùng nguyên nhân.</p><code>stg.CoffeeRaw → audit</code></article><span class="pipe-arrow">→</span><article><span class="pipeline-number">02</span><h3>Kho hình sao</h3><p>Fact giữ Sales, Budget, Profit. Ba chiều cho phép lọc đúng tháng, địa bàn và sản phẩm.</p><code>dw.FactSalesPerformance</code></article><span class="pipe-arrow">→</span><article><span class="pipeline-number">03</span><h3>Mart phục vụ phân tích</h3><p>Ứng dụng đọc trực tiếp hai view tổng hợp theo Market và Product; không nối lặp ngân sách vào chi tiết.</p><code>mart.vw_Market*Period</code></article><span class="pipe-arrow">→</span><article><span class="pipeline-number">04</span><h3>Khối dữ liệu tương tác</h3><p>Cắt một tháng, chọn Market, đi xuống Product rồi State. Con số trên màn hình xuất phát từ mart.</p><code>Tháng × Market × Product</code></article></div>
+      <div class="star-layout"><div class="dimension dim-time"><span>CHIỀU THỜI GIAN</span><h3>DimDate</h3><p>Năm → quý → tháng</p><small id="lineage-month"></small></div><div class="dimension dim-location"><span>CHIỀU ĐỊA BÀN</span><h3>DimLocation</h3><p>Market → State → AreaCode</p><small id="lineage-market"></small></div><div class="fact-node"><span>BẢNG SỰ KIỆN</span><h3>FactSalesPerformance</h3><p>Tháng × AreaCode × Product</p><div><span>Sales <strong id="lineage-sales">—</strong></span><span>Budget <strong id="lineage-budget">—</strong></span><span>Profit <strong id="lineage-profit">—</strong></span></div></div><div class="dimension dim-product"><span>CHIỀU SẢN PHẨM</span><h3>DimProduct</h3><p>Nhóm → sản phẩm</p><small id="lineage-product"></small></div></div>
+      <div class="lineage-evidence"><span>✓</span><div><h3>Điều ứng dụng này chứng minh</h3><p>Cùng một bộ lọc cho tổng quan, sản phẩm, địa bàn và CSV. Tỷ lệ bằng tổng Sales / tổng Budget; mẫu số 0 giữ thiếu. Khối 3D là cách biểu diễn các mart quan hệ, không phải kết nối trực tiếp đến máy chủ SSAS.</p></div><button id="return-explorer" class="solid-button">Trở lại khối dữ liệu ↗</button></div>
+    </section>
+
+    <footer class="page-footer"><div><span class="footer-mark">◇</span><span><strong>Chi</strong> · ETL, kho & mart <span class="footer-arrow">→</span> <strong>Trang</strong> · khám phá & phân tích</span></div><span id="footer-source">Chỉ đọc dữ liệu · không thay đổi kho</span></footer>
+  </main>
+  <dialog id="source-dialog" aria-labelledby="source-dialog-title"><div class="dialog-heading"><h2 id="source-dialog-title">Nguồn dữ liệu đang xem</h2><button id="close-dialog" class="icon-button" aria-label="Đóng">×</button></div><div id="source-details"></div><p>Khối 3D tổng hợp lại các ô mart theo nhóm sản phẩm để dễ quan sát. Chuyển “Sản phẩm” để xem đúng grain tháng–Market–Product của view.</p><p>Sales giữ đơn vị của nguồn. Không suy số dòng thành số đơn hàng; không suy chênh lệch thành nguyên nhân kinh doanh.</p></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="error-banner" class="error-banner" role="alert" hidden></div>
+</body>
+</html>

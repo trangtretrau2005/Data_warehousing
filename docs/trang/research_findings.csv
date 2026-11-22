@@ -1,0 +1,5 @@
+ResearchQuestion,Conclusion,Scope,Evidence,Limitation
+RQ1,MA3 selected by validation MAE 223.2777777777778,4 Markets validation 2013-04 to 2013-09 N24,experiments/tuning/results/02_validation/leaderboard.csv,Test MAE 225.22222222222226 is worse than Naive 221.75
+RQ2,Seven configurations do not improve over selected baseline MA3,Same validation targets and source snapshot,experiments/tuning/results/04_comparison/all_configurations.csv,Known test makes extension exploratory
+RQ3,4248 native rows and 11 measures and 96 cells reconciled; 112 forecasts after replay; 12 browser agent cases passed,Isolated SQL Server database CoffeeDW_Trang_20261119,results/trang_completion/browser/acceptance.json,Chi SSIS SSAS acceptance and real human UX remain separate; zero human participants
+RQ4,Indexed view read median 898 to 3ms with insert cost 10 to 29ms; partition helps one-month slice but not full range,SQL Server Express TN07 to TN10 with 2124000 rows and 180 measured runs,results/native_trang/20261119/benchmark_summary.csv,Shared machine with per-query memory grant limits; seek 0ms is timer resolution not infinite speedup

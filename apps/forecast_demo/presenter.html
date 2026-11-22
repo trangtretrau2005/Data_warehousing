@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}body{margin:0;color:#302a25;font:14px 'Segoe UI',Arial,sans-serif;background:#f7f6f2}button{font:inherit;cursor:pointer}button:disabled{opacity:.4;cursor:default}.steps{display:flex;gap:10px;margin:0 0 16px}.step{flex:1;text-align:left;background:#efeee8;border:1px solid transparent;border-radius:12px;padding:13px 15px;color:#827c72;transition:all .2s}.step strong{font-size:12px;letter-spacing:.5px;margin-right:9px}.step.active{background:#e5efe7;color:#225f48;border-color:#cbded0}.step.done{color:#4d735b}.layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(280px,1fr);gap:20px}.chart-card{background:white;border:1px solid #e7e4dc;border-radius:20px;padding:24px 22px 18px;min-width:0}.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.8px;color:#91887c;text-transform:uppercase}.chart-card h2{font-size:23px;line-height:1.25;letter-spacing:-.6px;margin:9px 0 4px;font-weight:650}.chart-sub{color:#827b71;font-size:12px;min-height:20px;line-height:1.5}#chart{height:333px;margin:3px -6px 0}.insight{border-top:1px solid #eeece6;padding-top:13px;line-height:1.6;color:#5d574e;min-height:58px;font-size:12px}.presenter{position:relative;border-radius:20px;background:#e9eee8;border:1px solid #dde5db;padding:21px;display:flex;flex-direction:column;overflow:hidden}.presence{display:flex;align-items:center;gap:7px;font-size:11px;color:#3b6b51;font-weight:600}.dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#588965}.portrait{height:185px;position:relative;display:flex;justify-content:center;align-items:end;margin:7px 0 0;background:radial-gradient(ellipse at center,#f7f5eb 0%,#edf1e9 45%,transparent 70%);border-bottom:1px solid #dbe2d8}.portrait svg{height:185px;width:210px}.speaker-name{font-size:20px;margin:13px 0 2px;font-weight:650;letter-spacing:-.4px}.speaker-role{color:#7d8577;font-size:11px}.caption{font-size:12px;color:#4d584b;line-height:1.8;margin-top:13px;max-height:115px;overflow:auto;scrollbar-width:thin;flex:1;min-height:86px}.transport{display:flex;gap:8px;align-items:center;margin-top:14px}.primary{border:none;color:#fff;background:#285b43;border-radius:11px;padding:12px 14px;font-size:12px;font-weight:600;flex:1}.primary:hover{background:#1d4935}.round{border:1px solid #ccd7c9;background:transparent;border-radius:11px;width:40px;height:40px;color:#35523b;font-size:20px}.play-state{font-size:10px;color:#78816e;margin-top:9px;min-height:15px}.foot{display:flex;align-items:center;justify-content:space-between;margin-top:13px;gap:12px}.foot-note{font-size:10px;line-height:1.5;color:#91887d}.nav{display:flex;gap:7px;flex-shrink:0}.nav button{background:#fff;border:1px solid #dedbd2;border-radius:9px;padding:8px 13px;color:#5f584e;font-size:11px}.reveal{margin-top:10px;display:none}.reveal button{background:#fbf6ec;border:1px solid #ead7ad;color:#8b6428;padding:9px 13px;border-radius:9px;font-size:11px}.actual{margin-top:9px;background:#fbf7ef;border-radius:10px;padding:12px;font-size:12px;line-height:1.7;color:#775a30}.speaking .dot{animation:pulse .9s infinite}.speaking #mouth{animation:talk .28s infinite alternate;transform-box:fill-box;transform-origin:center}.eyes{transform-box:fill-box;transform-origin:center;animation:blink 5s infinite}.wave{display:flex;gap:3px;height:15px;align-items:center;position:absolute;bottom:10px;right:7px}.wave span{display:block;background:#6b9373;width:3px;height:3px;border-radius:2px}.speaking .wave span{animation:wave .6s infinite alternate}.wave span:nth-child(2){animation-delay:.15s}.wave span:nth-child(3){animation-delay:.3s}.wave span:nth-child(4){animation-delay:.05s}.wave span:nth-child(5){animation-delay:.25s}@keyframes talk{from{transform:scaleY(.65)}to{transform:scaleY(2.3)}}@keyframes blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.08)}}@keyframes pulse{50%{box-shadow:0 0 0 4px #58896522}}@keyframes wave{to{height:15px}}@media(max-width:850px){.layout{grid-template-columns:1fr}.presenter{min-height:490px}.step{font-size:11px;padding:10px}.chart-card{padding:18px 14px}.foot{align-items:flex-start}.portrait{height:160px}.portrait svg{height:160px}}
+</style><style>__REPORT_CSS__</style>
+<script>__PLOTLY_JS__</script></head>
+<body>
+<div class="steps" role="tablist" aria-label="Ba phần thuyết minh">
+ <button class="step active" data-stage="0" role="tab"><strong>01</strong>Bối cảnh & dự kiến</button>
+ <button class="step" data-stage="1" role="tab"><strong>02</strong>Căn cứ tính toán</button>
+ <button class="step" data-stage="2" role="tab"><strong>03</strong>Kiểm chứng & theo dõi</button>
+</div>
+<section class="brief"><div><div class="eyebrow">NHẬN ĐỊNH CHÍNH</div><h2 id="brief-title"></h2><p id="brief-text"></p></div><div class="brief-badge">Lịch sử → Dự kiến → Quyết định có điều kiện</div></section>
+<div class="layout">
+ <section class="chart-card">
+  <div class="eyebrow" id="eyebrow"></div><h2 id="chart-title"></h2>
+  <div class="chart-sub" id="chart-sub"></div><div id="chart" role="img" aria-label="Biểu đồ dự báo"></div>
+  <div id="formula" class="formula" hidden></div>
+  <div class="insight" id="insight"></div>
+  <div class="reveal" id="reveal"><button id="reveal-button">Mở số thực tế để đối chiếu ↗</button><div id="actual"></div></div>
+ </section>
+ <aside class="presenter" id="presenter">
+  <div class="presence"><span class="dot"></span><span id="presence-text">Sẵn sàng thuyết minh</span></div>
+  <div class="portrait">
+   <svg viewBox="0 0 220 205" xmlns="http://www.w3.org/2000/svg" aria-label="An, nhân vật minh họa" role="img">
+    <defs><linearGradient id="coat" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#446b56"/><stop offset="1" stop-color="#264a39"/></linearGradient><linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edc4a6"/><stop offset="1" stop-color="#dba989"/></linearGradient></defs>
+    <ellipse cx="110" cy="205" rx="83" ry="8" fill="#31583d18"/>
+    <path d="M48 205c1-43 17-65 45-71h34c30 6 45 30 45 71" fill="url(#coat)"/>
+    <path d="M94 133l16 24 17-24-7 72H99z" fill="#f7efe2"/>
+    <path d="M91 138l-15 18 15 12-8 13 15 24 3-47zM130 138l15 18-15 12 8 13-15 24-4-47z" fill="#52765c"/>
+    <path d="M98 118v22q12 15 25-1v-22" fill="#d8a183"/>
+    <path d="M67 71c-4-47 26-64 49-61 34 3 50 32 40 70l-6 43-20 13-39-3-19-16z" fill="#3a2b27"/>
+    <ellipse cx="77" cy="86" rx="9" ry="13" fill="#dfac8c"/><ellipse cx="147" cy="86" rx="9" ry="13" fill="#d9a384"/>
+    <path d="M77 58q35-2 62-23 9 23 8 45l-3 26c-5 22-20 31-33 30-21-2-34-22-35-44z" fill="url(#skin)"/>
+    <path d="M73 72q-8-55 40-55 28-1 36 26-24-13-37-13-12 27-39 42z" fill="#3a2b27"/>
+    <path d="M86 72q8-5 16-1M121 71q9-4 16 2" fill="none" stroke="#684c3a" stroke-width="2.7" stroke-linecap="round"/>
+    <g class="eyes"><ellipse cx="95" cy="83" rx="3" ry="3.6" fill="#3c332e"/><ellipse cx="129" cy="83" rx="3" ry="3.6" fill="#3c332e"/></g>
+    <path d="M112 85l-3 14 7 1" fill="none" stroke="#c68f72" stroke-width="1.7" stroke-linecap="round"/>
+    <ellipse id="mouth" cx="112" cy="113" rx="7.5" ry="2.7" fill="#9f5c54"/>
+    <ellipse cx="89" cy="100" rx="8" ry="3" fill="#d2927c" opacity=".4"/><ellipse cx="135" cy="100" rx="7" ry="3" fill="#d2927c" opacity=".4"/>
+    <circle cx="78" cy="101" r="2.5" fill="#d5b36a"/><circle cx="146" cy="101" r="2.5" fill="#d5b36a"/>
+    <path d="M145 194h15l3-21h-23z" fill="#f3e9d6"/><path d="M160 178q14-3 11 8-2 7-12 3" fill="none" stroke="#f3e9d6" stroke-width="4"/>
+   </svg>
+   <div class="wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+  <div class="speaker-name">An <span style="font-size:11px;font-weight:400;color:#7b8876">/ Coffee Lab</span></div>
+  <div class="speaker-role">Nhân vật minh họa · thuyết minh có kiểm chứng</div>
+  <div class="caption" id="caption" aria-live="polite"></div>
+  <div class="transport"><button class="primary" id="play">▶ Bắt đầu thuyết minh</button><button class="round" id="replay" title="Phát lại phần này" aria-label="Phát lại phần này">↺</button></div>
+  <div class="voice-options"><label for="speed">Tốc độ nghe</label><select id="speed"><option value="0.9">Chậm · 0,9×</option><option value="1" selected>Vừa · 1×</option><option value="1.1">Nhanh · 1,1×</option></select></div>
+  <progress id="audio-progress" value="0" max="100" aria-label="Tiến độ thuyết minh"></progress><div id="audio-time" class="play-state">Sẵn sàng nghe báo cáo</div>
+  <div class="play-state" id="play-state">Nghe liền mạch cả bài hoặc tự chọn một phần.</div>
+ </aside>
+</div>
+<div class="foot"><div class="foot-note">Lời đọc theo mẫu từ kết quả tính thật · Không cần API hay chatbot tự do.<br>Số trên hình được làm tròn; đối soát dùng giá trị đầy đủ.</div><div class="nav"><button id="prev">← Trước</button><button id="next">Tiếp →</button></div></div>
+<section class="report-section research-section" id="research-section" hidden>
+ <div class="section-heading"><span class="section-no">R</span><div><h2>Vì sao nhóm giữ phương pháp này?</h2><p id="research-summary"></p></div></div>
+ <div class="evidence-card"><h3>Bảy cấu hình, cùng 24 dự báo validation</h3><p>Màu xanh là cấu hình được chọn; MAE thấp hơn tốt hơn. Vòng mở rộng sử dụng test đã được xem trước.</p><div id="research-chart" role="img" aria-label="Xếp hạng bảy cấu hình trên validation"></div></div>
+</section>
+<section class="report-section">
+ <div class="section-heading"><span class="section-no">A</span><div><h2>Nền kinh doanh đứng sau dự báo</h2><p id="context-period"></p></div></div>
+ <div class="context-kpis"><div><span>Doanh số tháng gần nhất</span><strong id="known-sales"></strong><small id="known-change"></small></div><div><span>Hoàn thành ngân sách</span><strong id="known-budget"></strong><small>Sales / Budget Sales · cùng kỳ, cùng thị trường</small></div><div><span>Lợi nhuận ghi nhận</span><strong id="known-profit"></strong><small id="known-margin"></small></div></div>
+ <div class="evidence-grid"><article class="evidence-card"><h3>Doanh số đang bám kế hoạch thế nào?</h3><p>Sáu tháng đã biết · doanh số thực tế và ngân sách</p><div id="budget-chart" aria-label="Doanh số và ngân sách sáu tháng"></div><div class="legend"><i class="blue"></i>Doanh số <i class="gold"></i>Ngân sách</div></article><article class="evidence-card"><h3>Nhóm sản phẩm cần xem trước</h3><p id="product-period"></p><div id="product-chart" aria-label="Năm sản phẩm doanh số cao nhất"></div><p class="data-note">Cơ cấu bán hàng đã ghi nhận; không phải giải thích nhân quả cho dự báo.</p></article></div>
+</section>
+<section class="report-section decision-section"><div class="section-heading"><span class="section-no">B</span><div><h2>Từ con số đến điều cần làm</h2><p>Gợi ý kiểm tra có điều kiện, chưa phải quyết định tự động.</p></div></div><div class="decision-grid"><article><span>01 · CƯỜNG ĐỘ TÍN HIỆU</span><h3 id="signal-title"></h3><p id="signal-text"></p></article><article><span>02 · ƯU TIÊN RÀ SOÁT</span><h3 id="priority-title"></h3><p id="priority-text"></p></article><article><span>03 · ĐIỀU KIỆN ĐỂ CHỐT</span><h3>Đối chiếu trước khi điều chỉnh</h3><p id="decision-text"></p></article></div></section>
+<script>
+const D=__DATA_JSON__, C=D.case, E=C.explanation;
+const fmt=(x,n=1)=>new Intl.NumberFormat('vi-VN',{maximumFractionDigits:n}).format(x);
+const month=s=>s.slice(5,7)+'/'+s.slice(0,4);
+const $=id=>document.getElementById(id);
+let stage=0,playing=false,finished=false;
+const player=new Audio();player.preload='auto';
+const titles=['Từ kết quả đã biết, nhìn sang tháng tới.','Vì sao mô hình đưa ra con số này?','Tín hiệu này đủ mạnh để đổi kế hoạch chưa?'];
+const layoutBase={paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{family:'Times New Roman, Times, serif',color:'#304862',size:17},margin:{l:74,r:28,t:35,b:52},height:370,showlegend:false,xaxis:{showgrid:false,zeroline:false,linecolor:'#b7c7d8',tickfont:{size:16}},yaxis:{gridcolor:'#e4eaf1',zeroline:false,tickfont:{size:16},title:{text:'Sales · đơn vị nguồn',font:{size:16}},fixedrange:false}};
+const config={displayModeBar:false,responsive:true,locale:'en'};
+function draw(){
+ let traces,layout=JSON.parse(JSON.stringify(layoutBase));
+ const story=C.story;
+ $('formula').hidden=true;$('formula').textContent='';
+ $('eyebrow').textContent=`PHẦN 0${stage+1} / 03 · ${C.market.toUpperCase()}`;
+ $('chart-title').textContent=titles[stage];
+ $('caption').textContent=C.chapters[stage].text;
+ $('audio-progress').value=0;$('audio-time').textContent=`Phần ${stage+1} / 3 · ${C.chapters[stage].title||''}`;
+ $('prev').disabled=stage===0;$('next').disabled=stage===2;
+ document.querySelectorAll('.step').forEach((b,i)=>{b.classList.toggle('active',i===stage);b.classList.toggle('done',i<stage);b.setAttribute('aria-selected',i===stage?'true':'false')});
+ $('reveal').style.display=stage===2?'block':'none';
+ if(stage===0){
+  $('chart-sub').textContent=`Dữ liệu chốt ${month(C.issue_month)} → dự báo ${month(C.forecast_month)} · ${D.methods[C.method]}`;
+  const dates=C.history.map(p=>p.month),values=C.history.map(p=>p.sales);
+  traces=[{type:'scatter',mode:'lines',x:dates,y:values,line:{color:'#285e93',width:3},fill:'tozeroy',fillcolor:'rgba(40,94,147,.06)',hovertemplate:'%{x|%m/%Y}<br>Sales: %{y:,.1f}<extra>Lịch sử</extra>'},
+   {type:'scatter',mode:'lines+markers',x:[dates.at(-1),C.forecast_month],y:[values.at(-1),C.prediction],line:{color:'#ce8b40',width:2.6,dash:'dot'},marker:{size:[0,12],color:'#ce8b40',line:{color:'white',width:3}},hovertemplate:'%{x|%m/%Y}<br>%{y:,.1f}<extra>Dự báo</extra>'}];
+  layout.xaxis.type='date';layout.xaxis.tickformat='%m/%y';layout.xaxis.nticks=7;
+  const all=[...values,C.prediction],lo=Math.min(...all),hi=Math.max(...all),pad=Math.max(150,(hi-lo)*.23);
+  layout.yaxis.range=[Math.max(0,lo-pad),hi+pad];
+  layout.annotations=[{x:C.forecast_month,y:C.prediction,text:fmt(C.prediction),showarrow:true,arrowhead:0,ax:-32,ay:-32,font:{color:'#a8732d',size:13},bgcolor:'#fff8eb',borderpad:5}];
+  const change=C.prediction-C.last_actual;
+  $('insight').textContent=`Dự báo ${fmt(C.prediction)} ${change>=0?'cao':'thấp'} hơn tháng vừa kết thúc ${fmt(Math.abs(change))} đơn vị. Đây là điểm dự báo, chưa phải số thực tế hay một khoảng chắc chắn.`;
+ }else if(stage===1 && story && story.inputs.length===3){
+  $('chart-title').textContent='Ba tháng nào tạo nên dự báo này?';
+  $('chart-sub').textContent='Mỗi tháng có trọng số 1/3 · tổng ba doanh số chia cho ba';
+  const inputs=story.inputs;
+  traces=[{type:'bar',x:inputs.map(p=>month(p.month)),y:inputs.map(p=>p.sales),marker:{color:['#aac0d6','#638eB5','#285e93']},text:inputs.map(p=>fmt(p.sales)),textposition:'outside',cliponaxis:false,hovertemplate:'%{x}<br>Sales: %{y:,.1f}<extra>Tháng đã biết</extra>'}];
+  layout.yaxis.range=[0,Math.max(C.prediction,...inputs.map(p=>p.sales))*1.20];
+  layout.shapes=[{type:'line',xref:'paper',x0:0,x1:1,y0:C.prediction,y1:C.prediction,line:{color:'#b47b25',width:3,dash:'dash'}}];
+  layout.annotations=[{xref:'paper',yref:'paper',x:0,y:1.10,text:'Đường vàng · trung bình: '+fmt(C.prediction),showarrow:false,xanchor:'left',font:{size:15,color:'#805415'},bgcolor:'#fff8eb'}];
+  $('formula').hidden=false;$('formula').textContent=story.formula;
+  $('insight').textContent='Ba giá trị này đều có trước tháng dự báo. Đường vàng là trung bình; công thức khớp dự báo. Đây là cơ chế tính toán, chưa giải thích nguyên nhân kinh doanh.';
+ }else if(stage===1){
+  $('chart-sub').textContent='Mức nền + đóng góp của ba độ trễ = dự báo · So với bộ lag trung bình trong train';
+  const f=E.features,levels=[E.base_value];f.forEach(v=>levels.push(levels.at(-1)+v.contribution));
+  traces=[{type:'waterfall',orientation:'v',measure:['absolute','relative','relative','relative','total'],x:['Mức nền',...f.map(v=>month(v.month)),'Dự báo'],y:[E.base_value,...f.map(v=>v.contribution),0],text:[fmt(E.base_value),...f.map(v=>(v.contribution>=0?'+':'−')+fmt(Math.abs(v.contribution))),fmt(C.prediction)],textposition:'outside',textfont:{size:17},cliponaxis:false,connector:{line:{color:'#8095ad',width:1.2}},increasing:{marker:{color:'#287568'}},decreasing:{marker:{color:'#b04d44'}},totals:{marker:{color:'#bd8629'}},hovertemplate:'%{x}<br>%{text}<extra>Đóng góp mô hình</extra>'}];
+  const lo=Math.min(...levels),hi=Math.max(...levels),pad=Math.max(150,(hi-lo)*.40);
+  layout.yaxis.range=[lo-pad,hi+pad];layout.yaxis.title.text='Mức cộng dồn · đơn vị Sales';layout.margin.t=36;
+  $('insight').textContent=`Tổng phần đóng góp khớp dự báo với sai lệch ${E.reconstruction_error.toExponential(1)}. Trục tung thu hẹp để đọc mức cộng dồn. Các tháng có tương quan; đây không phải bằng chứng về nguyên nhân kinh doanh.`;
+ }else{
+  if(story){
+   const h=story.validation_history;
+   $('chart-title').textContent='Nhìn lại sáu lần dự báo đã kiểm chứng';
+   $('chart-sub').textContent=`Validation 04–09/2013 tại ${C.market} · 6 lần dự báo · bằng chứng có trước tháng đích`;
+   traces=[{type:'scatter',mode:'lines+markers',x:h.map(p=>p.month),y:h.map(p=>p.actual),line:{color:'#244e7a',width:3},name:'Thực tế validation'},
+           {type:'scatter',mode:'lines+markers',x:h.map(p=>p.month),y:h.map(p=>p.prediction),line:{color:'#207f83',width:2.5,dash:'dash'},name:'Dự báo validation'}];
+   layout.xaxis.type='date';layout.xaxis.tickformat='%m/%y';layout.xaxis.nticks=6;
+   layout.showlegend=true;layout.legend={orientation:'h',x:.5,xanchor:'center',y:1.16,font:{size:14}};
+   const values=h.flatMap(p=>[p.actual,p.prediction]),low=Math.min(...values),high=Math.max(...values),padding=Math.max(100,(high-low)*.18);
+   layout.yaxis.range=[Math.max(0,low-padding),high+padding];
+   $('insight').textContent=`MAE tại ${C.market}: ${fmt(C.validation_market.MAE,2)} trên 6 lần dự báo. Phương pháp chọn chung: ${D.methods[D.selected_method]}. Sai số lịch sử không phải giới hạn sai số tháng tới. Số thực tế của tháng đích chỉ hiện khi bạn bấm mở bên dưới.`;
+  }else{
+  $('chart-sub').textContent=`MAE validation tại ${C.market} · 04–09/2013 · 6 dự báo/phương pháp · Thấp hơn là tốt hơn`;
+  const list=C.market_comparison;
+  traces=[{type:'bar',x:list.map(v=>D.methods[v.method].replace(' · 3 độ trễ','')),y:list.map(v=>v.MAE),marker:{color:list.map(v=>v.method===C.method?'#397358':'#dddace'),cornerradius:6},text:list.map(v=>fmt(v.MAE,2)),textposition:'outside',cliponaxis:false,hovertemplate:'%{x}<br>MAE: %{y:,.2f}<extra>Validation</extra>'}];
+  layout.yaxis.title.text='MAE · đơn vị Sales';layout.yaxis.range=[0,Math.max(...list.map(v=>v.MAE))*1.25];
+  const delta=Math.abs(C.prediction-C.last_actual),mae=C.validation_market.MAE;
+  $('insight').textContent=`Biến động dự kiến ${fmt(delta)} ${delta<=mae?'nhỏ hơn hoặc bằng':'lớn hơn'} sai số trung bình lịch sử ${fmt(mae)}. ${delta<=mae?'Chưa nên phản ứng mạnh với tín hiệu này.':'Cần đối chiếu thêm trước khi đổi kế hoạch.'} Phương pháp chọn cho toàn chuỗi: ${D.methods[D.selected_method]}. MAE không phải khoảng dự báo 95%.`;
+  }
+  $('reveal-button').disabled=C.actual===null;
+  $('reveal-button').textContent=C.actual===null?'Chưa có actual tháng '+month(C.forecast_month):'Mở số thực tế '+month(C.forecast_month)+' để đối chiếu ↗';
+ }
+ Plotly.react('chart',traces,layout,config);
+}
+function state(on){playing=on;$('presenter').classList.toggle('speaking',on);$('presence-text').textContent=on?'Đang thuyết minh · phần '+(stage+1):'Sẵn sàng thuyết minh';$('play').textContent=on?'Ⅱ Tạm dừng':finished?'↺ Nghe lại từ đầu':'▶ '+(player.currentTime>0?'Tiếp tục':'Bắt đầu thuyết minh')}
+function pause(){player.pause();state(false)}
+function play(){
+ if(!D.audio[stage]){$('play-state').textContent='Chưa có giọng đọc cho phần này. Bạn vẫn xem đủ phụ đề và biểu đồ.';state(false);return}
+ if(!player.src||!player.src.endsWith(D.audio[stage]))player.src=D.audio[stage];
+ $('play-state').textContent='Giọng tiếng Việt · có ngắt câu và nghỉ giữa các ý';
+ player.play().then(()=>state(true)).catch(()=>{$('play-state').textContent='Trình duyệt chưa phát được âm thanh. Bấm nút để thử lại.';state(false)});
+}
+function setStage(next,autoplay=false){pause();stage=next;finished=false;player.removeAttribute('src');player.load();player.currentTime=0;draw();if(autoplay)play();else state(false)}
+player.addEventListener('ended',()=>{state(false);if(stage<2)setStage(stage+1,true);else{finished=true;$('play-state').textContent='Đã hết báo cáo. Xem phần ưu tiên rà soát bên dưới hoặc mở kết quả thực tế.';state(false)}});
+player.addEventListener('error',()=>{state(false);$('play-state').textContent='Âm thanh chưa sẵn sàng; phụ đề vẫn được giữ nguyên.'});
+player.addEventListener('timeupdate',()=>{const total=Number.isFinite(player.duration)?player.duration:C.chapters[stage].audio_seconds||0;$('audio-progress').value=total>0?player.currentTime/total*100:0;$('audio-time').textContent=`Phần ${stage+1} / 3 · ${Math.floor(player.currentTime)} / ${Math.ceil(total)} giây`});
+$('play').onclick=()=>{if(playing)pause();else if(finished)setStage(0,true);else play()};
+$('replay').onclick=()=>setStage(stage,true);
+$('speed').onchange=event=>{player.playbackRate=Number(event.target.value)};
+$('prev').onclick=()=>setStage(Math.max(0,stage-1),playing);
+$('next').onclick=()=>setStage(Math.min(2,stage+1),playing);
+document.querySelectorAll('.step').forEach(button=>button.onclick=()=>setStage(Number(button.dataset.stage),playing));
+$('reveal-button').onclick=()=>{if(C.actual===null)return;const difference=C.prediction-C.actual;$('actual').className='actual';$('actual').textContent=`Actual: ${fmt(C.actual)} · Sai số tuyệt đối: ${fmt(Math.abs(difference))} đơn vị. Dự báo ${difference>=0?'cao':'thấp'} hơn actual ${fmt(Math.abs(difference))}. Số actual này không được dùng để fit dự báo của tháng đích.`};
+function report(){
+ const r=C.report;if(!r)return;
+ const delta=C.prediction-C.last_actual,pct=C.last_actual?delta/C.last_actual*100:null;
+ const change=`${delta>=0?'tăng':'giảm'} ${fmt(Math.abs(delta))}`;
+ $('brief-title').textContent=`${C.market} · Tháng ${month(C.forecast_month)} dự kiến ${change}${pct===null?'':` (${fmt(Math.abs(pct))}%)`}`;
+ $('brief-text').textContent=`Dự báo ${fmt(C.prediction)} từ nền doanh số ${fmt(C.last_actual)}. Đọc cùng tình hình ngân sách, lợi nhuận và sai số lịch sử; các bằng chứng bên dưới luôn giữ nguyên phạm vi bạn đã chọn.`;
+ $('context-period').textContent=`Dữ liệu kinh doanh đã biết đến ${month(r.known_through)} · ${C.market} · Đơn vị nguồn, chưa xác định đơn vị tiền tệ.`;
+ $('known-sales').textContent=fmt(r.latest_sales);
+ $('known-change').textContent=`${r.last_change>=0?'+':'−'}${fmt(Math.abs(r.last_change))} so với tháng trước`;
+ $('known-budget').textContent=r.budget_ratio===null?'Chưa có mẫu số':fmt(r.budget_ratio*100)+'%';
+ $('known-profit').textContent=fmt(r.latest_profit);
+ $('known-margin').textContent=r.profit_ratio===null?'Không tính được tỷ suất':`Profit / Sales: ${fmt(r.profit_ratio*100)}%`;
+ $('product-period').textContent=`Top 5 theo Sales · tháng ${month(r.known_through)} · ${C.market}`;
+ let layout=JSON.parse(JSON.stringify(layoutBase));layout.height=275;layout.margin={l:72,r:20,t:20,b:45};layout.yaxis.title.text='Sales';
+ Plotly.react('budget-chart',[{type:'bar',x:r.recent.map(p=>month(p.month)),y:r.recent.map(p=>p.sales),marker:{color:'#285e93'},name:'Doanh số'},{type:'scatter',mode:'lines+markers',x:r.recent.map(p=>month(p.month)),y:r.recent.map(p=>p.budget),line:{color:'#a67115',width:3,dash:'dot'},name:'Ngân sách'}],layout,config);
+ layout=JSON.parse(JSON.stringify(layoutBase));layout.height=275;layout.margin={l:122,r:65,t:15,b:45};layout.yaxis={autorange:'reversed',tickfont:{size:16}};layout.xaxis.title={text:'Sales · tháng đã biết',font:{size:16}};
+ Plotly.react('product-chart',[{type:'bar',orientation:'h',y:r.products.map(p=>p.name),x:r.products.map(p=>p.sales),text:r.products.map(p=>fmt(p.sales,0)),textposition:'outside',cliponaxis:false,marker:{color:'#487ba7'},hovertemplate:'%{y}<br>Sales: %{x:,.1f}<extra></extra>'}],layout,config);
+ const mae=C.validation_market.MAE;
+ $('signal-title').textContent=Math.abs(delta)<=mae?'Biến động còn nhỏ so với sai số':'Có biến động cần theo dõi';
+ $('signal-text').textContent=`Chênh tháng tới: ${fmt(Math.abs(delta))}; MAE lịch sử: ${fmt(mae)} trên 6 kỳ. So sánh này là gợi ý thận trọng, không phải kiểm định thống kê hay xác suất đúng.`;
+ $('priority-title').textContent=r.products.length?r.products[0].name:'Kiểm tra cơ cấu bán hàng';
+ $('priority-text').textContent=r.products.length?`Sản phẩm dẫn đầu chiếm ${r.products[0].share===null?'chưa rõ':fmt(r.products[0].share*100)+'%'} doanh số tháng đã biết. Rà soát nhóm chủ lực và mức bám ngân sách trước khi điều chỉnh.`:'Đối chiếu nguồn và cơ cấu bán hàng trước khi điều chỉnh.';
+ $('decision-text').textContent=`${delta>=0?'Chưa tăng mua hàng chỉ vì dự báo tăng.':'Chưa cắt hàng hay nhân sự chỉ vì dự báo giảm.'} Cần thêm dữ liệu tồn kho khả dụng, nhu cầu theo sản phẩm và kế hoạch khuyến mãi. ${C.actual===null?'Kỳ này chưa có số thực tế.':'Có thể mở số thực tế của kỳ giữ lại trong phần 03.'}`;
+ if(D.research){
+  const research=D.research,rows=research.leaderboard;
+  $('research-section').hidden=false;
+  $('research-summary').textContent=`Đã thử ${research.candidate_count} cấu hình. MAE validation của phương pháp chọn: ${fmt(research.validation_mae,2)}. Cải thiện so bước cơ sở: ${fmt(research.gain_vs_previous_pct,2)}%. Đối soát ${research.reconciled_monthly_cells} ô Market–tháng với kho SQLite đã khớp.`;
+  const researchLayout=JSON.parse(JSON.stringify(layoutBase));researchLayout.height=355;researchLayout.margin={l:175,r:70,t:15,b:50};researchLayout.yaxis={autorange:'reversed',tickfont:{size:17}};researchLayout.xaxis.title={text:'MAE validation · đơn vị Sales',font:{size:16}};
+  Plotly.react('research-chart',[{type:'bar',orientation:'h',y:rows.map(p=>p.Label),x:rows.map(p=>p.MAE),text:rows.map(p=>fmt(p.MAE,2)),textposition:'outside',cliponaxis:false,marker:{color:rows.map(p=>p.Selected?'#207f83':'#a8bfd4')}}],researchLayout,config);
+ }
+}
+window.addEventListener('pagehide',pause);report();draw();
+</script></body></html>
