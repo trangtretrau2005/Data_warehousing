@@ -1,21 +1,21 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="11/21/2026 12:16:38 PM"
-  DTS:CreationName="SSIS.Package.3"
+  DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="CHI-CHIE"
   DTS:CreatorName="Chi"
   DTS:Description="CoffeeDW SSIS ETL Package (Chapter 4 / TN03): Batch registration, CSV staging, conditional validation/reject split, and transactional star schema upsert via dw.usp_LoadCoffee."
   DTS:DTSID="{4CDDFCCE-2BA4-4FB2-8837-BE3133B77D2F}"
-  DTS:ExecutableType="SSIS.Package.3"
-  DTS:LastModifiedProductVersion="11.0.5058.0"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="LoadCoffee"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="1"
-  DTS:VersionGUID="{95E523FE-E955-4F60-B6CF-42AAC0F03A13}">
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{930FF64F-FFB6-4514-87B0-0572735A57B5}">
   <DTS:Property
-    DTS:Name="PackageFormatVersion">6</DTS:Property>
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[CoffeeCSV_FlatFile]"
@@ -93,10 +93,10 @@
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\EST_01_RegisterBatchAndStageRaw"
-      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Generate BatchID, compute SHA-256 checksum of source CSV, register audit.LoadBatch, and stage raw CSV rows + RejectReason into stg.CoffeeRaw."
       DTS:DTSID="{4A389859-D961-4CE0-A7A4-C2960414F71B}"
-      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="EST_01_RegisterBatchAndStageRaw"
       DTS:ThreadHint="0">
@@ -120,10 +120,10 @@
     </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\EST_02_ExecuteUspLoadCoffee"
-      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Call dw.usp_LoadCoffee @BatchID to atomically load dimensions, upsert FactSalesPerformance, route RejectedRow, and reconcile counts."
       DTS:DTSID="{B40D2E4A-20D6-4BCE-AA78-FD790DC4D493}"
-      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="EST_02_ExecuteUspLoadCoffee"
       DTS:ThreadHint="0">
@@ -175,10 +175,10 @@
       <DTS:Executables>
         <DTS:Executable
           DTS:refId="Package.EventHandlers[OnError]\EST_OnError_LogFailedBatch"
-          DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Update audit.LoadBatch Status = FAILED outside rolled-back transaction so failure remains traceable."
           DTS:DTSID="{B2CA5DC7-1C7C-41D9-8392-930D70BC582D}"
-          DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="EST_OnError_LogFailedBatch">
           <DTS:Variables />
@@ -198,4 +198,62 @@
       </DTS:Executables>
     </DTS:EventHandler>
   </DTS:EventHandlers>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="253.6,41.6"
+          Id="Package\EST_01_RegisterBatchAndStageRaw"
+          TopLeft="5.50000000000001,5.50000000000007" />
+        <NodeLayout
+          Size="231.2,41.6"
+          Id="Package\EST_02_ExecuteUspLoadCoffee"
+          TopLeft="16.7,107.1" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[{C3DC1B74-0506-4AE4-9A38-D3C00D02A870\}]"
+          TopLeft="132.3,47.1000000000001">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.0000000000001"
+              Start="0,0"
+              End="0,52.5000000000001">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5000000000001" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <DtsEventHandler
+    design-time-name="Package.EventHandlers[OnError]">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package.EventHandlers[OnError]\EST_OnError_LogFailedBatch"
+          TopLeft="NaN,NaN" />
+      </GraphLayout>
+    </LayoutInfo>
+  </DtsEventHandler>
+</Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>

@@ -1,21 +1,21 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="11/21/2026 12:16:40 PM"
-  DTS:CreationName="SSIS.Package.3"
+  DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="CHI-CHIE"
   DTS:CreatorName="Chi"
   DTS:Description="CoffeeDW SSIS Package for TN04: Isolated SCD Type 1 (typo overwrite), Type 2 (effective boundary, no overlap, single current, idempotent replay), and Type 3 (2-step history limit)."
   DTS:DTSID="{C8A3CA31-912A-4BE4-ABE9-DEC8FE1C3B61}"
-  DTS:ExecutableType="SSIS.Package.3"
-  DTS:LastModifiedProductVersion="11.0.5058.0"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="SCD_TN04"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="1"
-  DTS:VersionGUID="{93FB02CA-DB80-40DD-9757-A09EB776C015}">
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{FF734920-E399-4B7E-BE0E-23C68A0B63C3}">
   <DTS:Property
-    DTS:Name="PackageFormatVersion">6</DTS:Property>
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[CoffeeDW_ADO]"
@@ -53,10 +53,10 @@
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\EST_RunIsolatedSCD_TN04"
-      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute isolated SCD Type 1, Type 2 (boundary lookup &amp; idempotent replay), and Type 3 verification in SQL Server."
       DTS:DTSID="{4061301C-7E13-4405-BF2E-10F9D4F0E845}"
-      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="EST_RunIsolatedSCD_TN04"
       DTS:ThreadHint="0">
@@ -68,4 +68,24 @@
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="212.8,41.6"
+          Id="Package\EST_RunIsolatedSCD_TN04"
+          TopLeft="5.5,5.50000000000007" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>
