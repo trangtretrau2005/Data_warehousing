@@ -1,0 +1,29 @@
+{
+  "chi_commit": "fd62d4b",
+  "chi_paths": 50,
+  "identical": 46,
+  "integrated_docs": [
+    "docs/chapters/ch04_chi.md",
+    "docs/chapters/ch05_chi.md",
+    "ssas/README.md",
+    "ssis/README.md"
+  ],
+  "chi_evidence": 24,
+  "verified_at": "2026-11-22T10:16:58.090925+00:00",
+  "mdx_sql_passed": 17,
+  "web_database": "CoffeeDW_Trang_SSIS_TN03_20261120",
+  "web_totals": {
+    "Sales": 819811.0,
+    "BudgetSales": 746160.0,
+    "Profit": 259543.0,
+    "Gap": 73651.0
+  },
+  "south_201308_products_compared": 7,
+  "south_201308": {
+    "Sales": 4601.0,
+    "BudgetSales": 4610.0,
+    "Profit": 1704.0,
+    "Gap": -9.0
+  },
+  "colombian_gap": -268.0
+}

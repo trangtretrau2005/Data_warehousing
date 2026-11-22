@@ -8,6 +8,27 @@ Bộ khung làm chung cho bài tập lớn môn Kho dữ liệu trên `Coffee.cs
 | Chi | 4–5 | ETL, chất lượng, SCD, data mart, SSIS và SSAS/OLAP |
 | Trang | 6–7 | Dự báo, dashboard, benchmark, tích hợp và nghiệm thu |
 
+## Bản tích hợp Chi và Trang
+
+Mở [Coffee Datacube 3D trên SQL Server](http://127.0.0.1:8504) để trình diễn chương 4–5. Từ thư mục gốc, khởi chạy trên máy Trang bằng lệnh sau khi SQL Server và kho nghiệm thu đã sẵn sàng.
+
+```powershell
+.\.venv\Scripts\python.exe apps/cube_explorer/server.py --backend sqlserver --database CoffeeDW_Trang_SSIS_TN03_20261120 --port 8504
+```
+
+Chi chủ trì thiết kế và thực nghiệm ETL, SCD, mart và OLAP. Có thể mở trực tiếp [solution SSIS của Chi](ssis/CoffeeETL/CoffeeETL.sln), [solution SSAS của Chi](ssas/CoffeeCube/CoffeeCube.sln) và [bộ truy vấn MDX](ssas/queries.mdx). Bốn hồ sơ gốc chứa đủ 24 tệp minh chứng từ commit `fd62d4b`.
+
+| Thực nghiệm của Chi | Hồ sơ gốc |
+| --- | --- |
+| TN03 — Nạp, phát lại, sửa số và loại dòng lỗi | [Batch, số đối soát và ảnh SSIS](results/TN03/chi_2026-11-15/experiment.md) |
+| TN04 — SCD và tra cứu lịch sử | [Kết quả và ảnh kiểm tra](results/TN04/chi_2026-11-15/experiment.md) |
+| TN05 — Mart và drill-across | [Truy vấn, kết quả và ảnh](results/TN05/chi_2026-11-15/experiment.md) |
+| TN06 — Cube, MDX và OLAP | [Kịch bản, ảnh và trạng thái ghi trong biên bản của Chi](results/TN06/chi_2026-11-15/experiment.md) |
+
+Luồng demo trên máy Trang dùng [SSIS Data Flow](ssis/CoffeeETLTrang/README.md) và [bộ tám ca CSV](ssis/CoffeeETLTrangAcceptance/README.md) để nạp kho biệt lập. [Cube SSAS](ssas/CoffeeCubeTrang/README.md) đọc mô hình sao của kho đó. Web đọc mart SQL của cùng kho. Hồ sơ ngày 20/11 ghi lần nạp và ProcessFull. Ngày 22/11, nhóm đối soát chỉ đọc trên dữ liệu đã nạp, đạt [17/17 truy vấn MDX so với SQL](results/final_chi_trang_20261122/comparison.json).
+
+Để trình diễn ca của Chi, chọn tháng 08/2013 và Market South trên web. Sales 4.601, BudgetSales 4.610, Gap −9. Bảy sản phẩm khớp SQL và cube ở cả bốn số Sales, BudgetSales, Profit và Gap. Riêng Colombian có Gap −268. [Kết quả đối soát và kiểm kê tệp của Chi](results/final_chi_trang_20261122/handoff.json).
+
 **Mới vào repo:** đọc [bắt đầu tại đây và prompt cho Thanh/Chi](docs/START_HERE.md). Khi làm bằng agent, yêu cầu đọc [AGENTS.md](AGENTS.md) trước.
 
 **Demo của Trang:** [dự báo có giải thích và người thuyết minh](apps/forecast_demo/README.md), chạy ở cổng8502 sau khi chuẩn bị dữ liệu. Đây là prototype để bấm thử, tách khỏi dashboard tổng hợp hiện tại.
