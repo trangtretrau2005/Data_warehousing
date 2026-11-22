@@ -1,0 +1,536 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/20/2026 8:00:55 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="Local development"
+  DTS:CreatorName="Coffee DW team"
+  DTS:Description="Eight native CSV DataFlow acceptance cases, sequenced with real Execute Package Tasks and SQL assertions. Build is not execution evidence."
+  DTS:DTSID="{F047A0EB-F998-4B25-AFD2-32A9DBD1E9D6}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.1000.6"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="00_AcceptAll"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{C2F0C086-BB30-4192-8CF9-381B6B50D4DD}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Acceptance_Isolated_SQL]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+      DTS:ObjectName="Acceptance_Isolated_SQL">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">"Provider=MSOLEDBSQL;Data Source=" + @[User::ServerName] + ";Initial Catalog=" + @[User::DatabaseName] + ";Integrated Security=SSPI;TrustServerCertificate=True;"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=.;Initial Catalog=CoffeeDW_Trang_SSIS_TN03_20261120;Provider=MSOLEDBSQL;Integrated Security=SSPI;TrustServerCertificate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{114E536E-9103-461F-9A45-A1100F00F76A}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DatabaseName">
+      <DTS:VariableValue
+        DTS:DataType="8">CoffeeDW_Trang_SSIS_TN03_20261120</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{49E1E443-2361-4DFB-A275-431829F76FFF}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ServerName">
+      <DTS:VariableValue
+        DTS:DataType="8">.</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\EPT_01_01_First23"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{D1979D94-C44D-40B4-80CC-A98FF259B3F6}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT_01_01_First23"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>01_First23.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT_02_02_AddDecember"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{97DCA303-7DF5-4539-8E6D-C18F87876F88}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT_02_02_AddDecember"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>02_AddDecember.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT_03_03_ReplayDecember"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{84344FAF-9FAB-4F30-84E8-A482D34EA80D}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT_03_03_ReplayDecember"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>03_ReplayDecember.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT_04_04_CorrectSales"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{C3A914B9-D20C-4B50-A6CD-B16369F156FA}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT_04_04_CorrectSales"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>04_CorrectSales.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT_05_05_RestoreOriginal"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{D8E33648-54FB-4995-8288-9D030A8AC319}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT_05_05_RestoreOriginal"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>05_RestoreOriginal.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT_06_06_FullOneBadNumeric"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{1F6B4A40-D651-4772-BC1E-7D4CF8AD80B1}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT_06_06_FullOneBadNumeric"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>06_FullOneBadNumeric.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT_07_07_InvalidEight"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{500C154A-9107-459F-89B1-A0B62300591A}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT_07_07_InvalidEight"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>07_InvalidEight.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EPT_08_08_FinalOriginal"
+      DTS:CreationName="Microsoft.ExecutePackageTask"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{771C58F4-575B-4280-9216-37622DC1CEC4}"
+      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EPT_08_08_FinalOriginal"
+      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecutePackageTask>
+          <UseProjectReference>True</UseProjectReference>
+          <PackageName>08_FinalOriginal.dtsx</PackageName>
+        </ExecutePackageTask>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_00_Preflight"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{720FE5D0-C241-4A45-B058-05534F4FF821}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_00_Preflight"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; &#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;0 THROW 50301,'Acceptance requires empty fact; use a fresh initialized DB, do not delete data',1;&#xA;IF OBJECT_ID('audit.SSISAcceptanceSuite') IS NULL&#xA; CREATE TABLE audit.SSISAcceptanceSuite(SuiteID uniqueidentifier NOT NULL PRIMARY KEY,ManifestSHA256 char(64) NOT NULL,StartedAtUTC datetime2 NOT NULL DEFAULT SYSUTCDATETIME(),FinishedAtUTC datetime2 NULL,Status varchar(20) NOT NULL);&#xA;IF OBJECT_ID('audit.SSISAcceptanceCase') IS NULL&#xA; CREATE TABLE audit.SSISAcceptanceCase(SuiteID uniqueidentifier NOT NULL,CaseNumber int NOT NULL,BatchID uniqueidentifier NOT NULL,VerifiedAtUTC datetime2 NOT NULL DEFAULT SYSUTCDATETIME(),WarehouseRows bigint NOT NULL,WarehouseSales decimal(19,4) NOT NULL,PRIMARY KEY(SuiteID,CaseNumber));&#xA;INSERT audit.SSISAcceptanceSuite(SuiteID,ManifestSHA256,Status) VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),N'88ba9eac77111bce13451ee5c504a81c699c41cc9d9319cc791d2d85a88645c1','RUNNING');" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_01_Verify"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{1193E9A3-ACD1-4F93-AFBC-8659016999DF}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_01_Verify"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,N'fb522b30-cfef-4c0b-84df-4ed1169379a4');&#xA;IF NOT EXISTS(SELECT 1 FROM audit.LoadBatch WHERE BatchID=@b AND Status='COMPLETED'&#xA; AND SourceCount=4071 AND AcceptedCount=4071 AND RejectedCount=0 AND InsertedCount=4071 AND UpdatedCount=0 AND UnchangedCount=0) THROW 50302,'Batch counts mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM stg.CoffeeRaw WHERE BatchID=@b)&lt;&gt;4071 THROW 50303,'Staging count mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM audit.RejectedRow WHERE BatchID=@b)&lt;&gt;0 THROW 50304,'Reject count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM stg.CoffeeRaw WHERE BatchID=@b AND RejectReason IS NULL)&lt;&gt;784231 THROW 50305,'Batch accepted Sales mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;4071 THROW 50306,'Warehouse row count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM dw.FactSalesPerformance)&lt;&gt;784231 THROW 50307,'Warehouse Sales mismatch',1;&#xA;IF (SELECT SUM(BudgetSales) FROM dw.FactSalesPerformance)&lt;&gt;715340 THROW 50308,'Warehouse Budget mismatch',1;&#xA;IF (SELECT SUM(Profit) FROM dw.FactSalesPerformance)&lt;&gt;246454 THROW 50309,'Warehouse Profit mismatch',1;&#xA;INSERT audit.SSISAcceptanceCase(SuiteID,CaseNumber,BatchID,WarehouseRows,WarehouseSales)&#xA;VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),1,@b,4071,784231);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_02_Verify"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{A5E85AAC-A1C1-4770-B694-62D9438871D1}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_02_Verify"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,N'cc28469f-d6ce-4b89-be72-b60c584663c8');&#xA;IF NOT EXISTS(SELECT 1 FROM audit.LoadBatch WHERE BatchID=@b AND Status='COMPLETED'&#xA; AND SourceCount=177 AND AcceptedCount=177 AND RejectedCount=0 AND InsertedCount=177 AND UpdatedCount=0 AND UnchangedCount=0) THROW 50302,'Batch counts mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM stg.CoffeeRaw WHERE BatchID=@b)&lt;&gt;177 THROW 50303,'Staging count mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM audit.RejectedRow WHERE BatchID=@b)&lt;&gt;0 THROW 50304,'Reject count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM stg.CoffeeRaw WHERE BatchID=@b AND RejectReason IS NULL)&lt;&gt;35580 THROW 50305,'Batch accepted Sales mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;4248 THROW 50306,'Warehouse row count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM dw.FactSalesPerformance)&lt;&gt;819811 THROW 50307,'Warehouse Sales mismatch',1;&#xA;IF (SELECT SUM(BudgetSales) FROM dw.FactSalesPerformance)&lt;&gt;746160 THROW 50308,'Warehouse Budget mismatch',1;&#xA;IF (SELECT SUM(Profit) FROM dw.FactSalesPerformance)&lt;&gt;259543 THROW 50309,'Warehouse Profit mismatch',1;&#xA;INSERT audit.SSISAcceptanceCase(SuiteID,CaseNumber,BatchID,WarehouseRows,WarehouseSales)&#xA;VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),2,@b,4248,819811);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_03_Verify"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{FD983CE7-2F98-4428-98A1-8437C339D5EB}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_03_Verify"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,N'35cb2851-7bd4-4ae3-93f3-f9b4c8386fa0');&#xA;IF NOT EXISTS(SELECT 1 FROM audit.LoadBatch WHERE BatchID=@b AND Status='COMPLETED'&#xA; AND SourceCount=177 AND AcceptedCount=177 AND RejectedCount=0 AND InsertedCount=0 AND UpdatedCount=0 AND UnchangedCount=177) THROW 50302,'Batch counts mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM stg.CoffeeRaw WHERE BatchID=@b)&lt;&gt;177 THROW 50303,'Staging count mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM audit.RejectedRow WHERE BatchID=@b)&lt;&gt;0 THROW 50304,'Reject count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM stg.CoffeeRaw WHERE BatchID=@b AND RejectReason IS NULL)&lt;&gt;35580 THROW 50305,'Batch accepted Sales mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;4248 THROW 50306,'Warehouse row count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM dw.FactSalesPerformance)&lt;&gt;819811 THROW 50307,'Warehouse Sales mismatch',1;&#xA;IF (SELECT SUM(BudgetSales) FROM dw.FactSalesPerformance)&lt;&gt;746160 THROW 50308,'Warehouse Budget mismatch',1;&#xA;IF (SELECT SUM(Profit) FROM dw.FactSalesPerformance)&lt;&gt;259543 THROW 50309,'Warehouse Profit mismatch',1;&#xA;INSERT audit.SSISAcceptanceCase(SuiteID,CaseNumber,BatchID,WarehouseRows,WarehouseSales)&#xA;VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),3,@b,4248,819811);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_04_Verify"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{11AACB2F-5F8E-49F1-B583-1850A6E4AAFF}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_04_Verify"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,N'0803e573-8a84-4968-b202-a1b6a2921f53');&#xA;IF NOT EXISTS(SELECT 1 FROM audit.LoadBatch WHERE BatchID=@b AND Status='COMPLETED'&#xA; AND SourceCount=4248 AND AcceptedCount=4248 AND RejectedCount=0 AND InsertedCount=0 AND UpdatedCount=1 AND UnchangedCount=4247) THROW 50302,'Batch counts mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM stg.CoffeeRaw WHERE BatchID=@b)&lt;&gt;4248 THROW 50303,'Staging count mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM audit.RejectedRow WHERE BatchID=@b)&lt;&gt;0 THROW 50304,'Reject count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM stg.CoffeeRaw WHERE BatchID=@b AND RejectReason IS NULL)&lt;&gt;819821 THROW 50305,'Batch accepted Sales mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;4248 THROW 50306,'Warehouse row count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM dw.FactSalesPerformance)&lt;&gt;819821 THROW 50307,'Warehouse Sales mismatch',1;&#xA;IF (SELECT SUM(BudgetSales) FROM dw.FactSalesPerformance)&lt;&gt;746160 THROW 50308,'Warehouse Budget mismatch',1;&#xA;IF (SELECT SUM(Profit) FROM dw.FactSalesPerformance)&lt;&gt;259543 THROW 50309,'Warehouse Profit mismatch',1;&#xA;INSERT audit.SSISAcceptanceCase(SuiteID,CaseNumber,BatchID,WarehouseRows,WarehouseSales)&#xA;VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),4,@b,4248,819821);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_05_Verify"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{3652530B-5041-44A1-A214-3C3A17501CBD}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_05_Verify"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,N'b223b4e3-5a30-45c2-b3e8-28c893e272ae');&#xA;IF NOT EXISTS(SELECT 1 FROM audit.LoadBatch WHERE BatchID=@b AND Status='COMPLETED'&#xA; AND SourceCount=4248 AND AcceptedCount=4248 AND RejectedCount=0 AND InsertedCount=0 AND UpdatedCount=1 AND UnchangedCount=4247) THROW 50302,'Batch counts mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM stg.CoffeeRaw WHERE BatchID=@b)&lt;&gt;4248 THROW 50303,'Staging count mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM audit.RejectedRow WHERE BatchID=@b)&lt;&gt;0 THROW 50304,'Reject count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM stg.CoffeeRaw WHERE BatchID=@b AND RejectReason IS NULL)&lt;&gt;819811 THROW 50305,'Batch accepted Sales mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;4248 THROW 50306,'Warehouse row count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM dw.FactSalesPerformance)&lt;&gt;819811 THROW 50307,'Warehouse Sales mismatch',1;&#xA;IF (SELECT SUM(BudgetSales) FROM dw.FactSalesPerformance)&lt;&gt;746160 THROW 50308,'Warehouse Budget mismatch',1;&#xA;IF (SELECT SUM(Profit) FROM dw.FactSalesPerformance)&lt;&gt;259543 THROW 50309,'Warehouse Profit mismatch',1;&#xA;INSERT audit.SSISAcceptanceCase(SuiteID,CaseNumber,BatchID,WarehouseRows,WarehouseSales)&#xA;VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),5,@b,4248,819811);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_06_Verify"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{24EA5420-90CC-497F-983C-072D6D5C28BF}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_06_Verify"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,N'28896966-8fd0-4fbf-938b-77fe62a38a6d');&#xA;IF NOT EXISTS(SELECT 1 FROM audit.LoadBatch WHERE BatchID=@b AND Status='COMPLETED'&#xA; AND SourceCount=4248 AND AcceptedCount=4247 AND RejectedCount=1 AND InsertedCount=0 AND UpdatedCount=0 AND UnchangedCount=4247) THROW 50302,'Batch counts mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM stg.CoffeeRaw WHERE BatchID=@b)&lt;&gt;4248 THROW 50303,'Staging count mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM audit.RejectedRow WHERE BatchID=@b)&lt;&gt;1 THROW 50304,'Reject count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM stg.CoffeeRaw WHERE BatchID=@b AND RejectReason IS NULL)&lt;&gt;819592 THROW 50305,'Batch accepted Sales mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;4248 THROW 50306,'Warehouse row count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM dw.FactSalesPerformance)&lt;&gt;819811 THROW 50307,'Warehouse Sales mismatch',1;&#xA;IF (SELECT SUM(BudgetSales) FROM dw.FactSalesPerformance)&lt;&gt;746160 THROW 50308,'Warehouse Budget mismatch',1;&#xA;IF (SELECT SUM(Profit) FROM dw.FactSalesPerformance)&lt;&gt;259543 THROW 50309,'Warehouse Profit mismatch',1;&#xA;INSERT audit.SSISAcceptanceCase(SuiteID,CaseNumber,BatchID,WarehouseRows,WarehouseSales)&#xA;VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),6,@b,4248,819811);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_07_Verify"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{5FD8B6AB-CBC8-48D1-AB28-84436EF70E4F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_07_Verify"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,N'17a2898b-6782-4adc-8ceb-5d2b22763d79');&#xA;IF NOT EXISTS(SELECT 1 FROM audit.LoadBatch WHERE BatchID=@b AND Status='COMPLETED'&#xA; AND SourceCount=8 AND AcceptedCount=6 AND RejectedCount=2 AND InsertedCount=0 AND UpdatedCount=0 AND UnchangedCount=6) THROW 50302,'Batch counts mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM stg.CoffeeRaw WHERE BatchID=@b)&lt;&gt;8 THROW 50303,'Staging count mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM audit.RejectedRow WHERE BatchID=@b)&lt;&gt;2 THROW 50304,'Reject count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM stg.CoffeeRaw WHERE BatchID=@b AND RejectReason IS NULL)&lt;&gt;1139 THROW 50305,'Batch accepted Sales mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;4248 THROW 50306,'Warehouse row count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM dw.FactSalesPerformance)&lt;&gt;819811 THROW 50307,'Warehouse Sales mismatch',1;&#xA;IF (SELECT SUM(BudgetSales) FROM dw.FactSalesPerformance)&lt;&gt;746160 THROW 50308,'Warehouse Budget mismatch',1;&#xA;IF (SELECT SUM(Profit) FROM dw.FactSalesPerformance)&lt;&gt;259543 THROW 50309,'Warehouse Profit mismatch',1;&#xA;INSERT audit.SSISAcceptanceCase(SuiteID,CaseNumber,BatchID,WarehouseRows,WarehouseSales)&#xA;VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),7,@b,4248,819811);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_08_Verify"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{54E146E1-F886-4009-A442-66DB1BB9A43B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_08_Verify"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; DECLARE @b uniqueidentifier=CONVERT(uniqueidentifier,N'd80da4ff-34d3-4517-8bd9-6fcb60c051ed');&#xA;IF NOT EXISTS(SELECT 1 FROM audit.LoadBatch WHERE BatchID=@b AND Status='COMPLETED'&#xA; AND SourceCount=4248 AND AcceptedCount=4248 AND RejectedCount=0 AND InsertedCount=0 AND UpdatedCount=0 AND UnchangedCount=4248) THROW 50302,'Batch counts mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM stg.CoffeeRaw WHERE BatchID=@b)&lt;&gt;4248 THROW 50303,'Staging count mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM audit.RejectedRow WHERE BatchID=@b)&lt;&gt;0 THROW 50304,'Reject count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM stg.CoffeeRaw WHERE BatchID=@b AND RejectReason IS NULL)&lt;&gt;819811 THROW 50305,'Batch accepted Sales mismatch',1;&#xA;IF (SELECT COUNT_BIG(*) FROM dw.FactSalesPerformance)&lt;&gt;4248 THROW 50306,'Warehouse row count mismatch',1;&#xA;IF (SELECT SUM(Sales) FROM dw.FactSalesPerformance)&lt;&gt;819811 THROW 50307,'Warehouse Sales mismatch',1;&#xA;IF (SELECT SUM(BudgetSales) FROM dw.FactSalesPerformance)&lt;&gt;746160 THROW 50308,'Warehouse Budget mismatch',1;&#xA;IF (SELECT SUM(Profit) FROM dw.FactSalesPerformance)&lt;&gt;259543 THROW 50309,'Warehouse Profit mismatch',1;&#xA;INSERT audit.SSISAcceptanceCase(SuiteID,CaseNumber,BatchID,WarehouseRows,WarehouseSales)&#xA;VALUES(CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'),8,@b,4248,819811);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EST_99_Complete"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{69E41B8C-9CBB-44C9-BD75-FCA42965E990}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EST_99_Complete"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+          SQLTask:SqlStatementSource="IF DB_NAME()&lt;&gt;N'CoffeeDW_Trang_SSIS_TN03_20261120' THROW 50300,'Wrong acceptance database',1; IF (SELECT COUNT(*) FROM audit.SSISAcceptanceCase WHERE SuiteID=CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6'))&lt;&gt;8 THROW 50310,'Eight case receipts required',1; UPDATE audit.SSISAcceptanceSuite SET Status='PASS',FinishedAtUTC=SYSUTCDATETIME() WHERE SuiteID=CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6');" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{09D0A004-CE90-47A8-8AF1-5187A05AF771\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{09D0A004-CE90-47A8-8AF1-5187A05AF771}"
+      DTS:From="Package\EPT_04_04_CorrectSales"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{09D0A004-CE90-47A8-8AF1-5187A05AF771}"
+      DTS:To="Package\EST_04_Verify" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{131320EE-DEE1-4349-8D59-7E040163178D\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{131320EE-DEE1-4349-8D59-7E040163178D}"
+      DTS:From="Package\EPT_02_02_AddDecember"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{131320EE-DEE1-4349-8D59-7E040163178D}"
+      DTS:To="Package\EST_02_Verify" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{1DE43EE7-8FD9-48BB-B216-5552959AE6FA\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{1DE43EE7-8FD9-48BB-B216-5552959AE6FA}"
+      DTS:From="Package\EST_01_Verify"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{1DE43EE7-8FD9-48BB-B216-5552959AE6FA}"
+      DTS:To="Package\EPT_02_02_AddDecember" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{24E16885-6877-46E2-A666-246405D3E120\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{24E16885-6877-46E2-A666-246405D3E120}"
+      DTS:From="Package\EPT_05_05_RestoreOriginal"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{24E16885-6877-46E2-A666-246405D3E120}"
+      DTS:To="Package\EST_05_Verify" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{2FE3F8CA-BD57-4CAD-9F5F-D31C50BB9D50\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{2FE3F8CA-BD57-4CAD-9F5F-D31C50BB9D50}"
+      DTS:From="Package\EPT_08_08_FinalOriginal"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{2FE3F8CA-BD57-4CAD-9F5F-D31C50BB9D50}"
+      DTS:To="Package\EST_08_Verify" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{5F05A97D-A1E2-4ACD-A7F4-FCEDA1F8B713\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{5F05A97D-A1E2-4ACD-A7F4-FCEDA1F8B713}"
+      DTS:From="Package\EPT_06_06_FullOneBadNumeric"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{5F05A97D-A1E2-4ACD-A7F4-FCEDA1F8B713}"
+      DTS:To="Package\EST_06_Verify" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{5F69697F-93B0-4F3B-A538-AD18CF332CDA\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{5F69697F-93B0-4F3B-A538-AD18CF332CDA}"
+      DTS:From="Package\EPT_03_03_ReplayDecember"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{5F69697F-93B0-4F3B-A538-AD18CF332CDA}"
+      DTS:To="Package\EST_03_Verify" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{62671CF0-3390-4A2E-8120-B9E6BF01BB40\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{62671CF0-3390-4A2E-8120-B9E6BF01BB40}"
+      DTS:From="Package\EPT_07_07_InvalidEight"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{62671CF0-3390-4A2E-8120-B9E6BF01BB40}"
+      DTS:To="Package\EST_07_Verify" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{67F84FB1-92D4-46E2-99E8-80E125172E20\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{67F84FB1-92D4-46E2-99E8-80E125172E20}"
+      DTS:From="Package\EST_06_Verify"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{67F84FB1-92D4-46E2-99E8-80E125172E20}"
+      DTS:To="Package\EPT_07_07_InvalidEight" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{74A42775-CB7A-496B-9743-785F6AF47B6F\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{74A42775-CB7A-496B-9743-785F6AF47B6F}"
+      DTS:From="Package\EST_07_Verify"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{74A42775-CB7A-496B-9743-785F6AF47B6F}"
+      DTS:To="Package\EPT_08_08_FinalOriginal" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{9E66B02D-9FA0-4CF4-98C7-01F2BE889998\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{9E66B02D-9FA0-4CF4-98C7-01F2BE889998}"
+      DTS:From="Package\EST_04_Verify"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{9E66B02D-9FA0-4CF4-98C7-01F2BE889998}"
+      DTS:To="Package\EPT_05_05_RestoreOriginal" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{B6273054-E4F0-4C50-AA69-5B8763146794\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{B6273054-E4F0-4C50-AA69-5B8763146794}"
+      DTS:From="Package\EST_03_Verify"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{B6273054-E4F0-4C50-AA69-5B8763146794}"
+      DTS:To="Package\EPT_04_04_CorrectSales" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{B70C9329-DC2E-4CC3-98E7-CD0CC7B0EBA4\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{B70C9329-DC2E-4CC3-98E7-CD0CC7B0EBA4}"
+      DTS:From="Package\EST_05_Verify"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{B70C9329-DC2E-4CC3-98E7-CD0CC7B0EBA4}"
+      DTS:To="Package\EPT_06_06_FullOneBadNumeric" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{BEB3B8EF-1499-42E8-B8C4-CCE9BEF54A0D\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{BEB3B8EF-1499-42E8-B8C4-CCE9BEF54A0D}"
+      DTS:From="Package\EST_02_Verify"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{BEB3B8EF-1499-42E8-B8C4-CCE9BEF54A0D}"
+      DTS:To="Package\EPT_03_03_ReplayDecember" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{C0DA6693-7321-4760-957B-4373B06DC1FA\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{C0DA6693-7321-4760-957B-4373B06DC1FA}"
+      DTS:From="Package\EST_08_Verify"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{C0DA6693-7321-4760-957B-4373B06DC1FA}"
+      DTS:To="Package\EST_99_Complete" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{CC39BA11-EFE7-4B47-B0DE-88517F083A57\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{CC39BA11-EFE7-4B47-B0DE-88517F083A57}"
+      DTS:From="Package\EPT_01_01_First23"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{CC39BA11-EFE7-4B47-B0DE-88517F083A57}"
+      DTS:To="Package\EST_01_Verify" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{E984C388-AFEE-4903-A65B-ACC43EE1B5FE\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{E984C388-AFEE-4903-A65B-ACC43EE1B5FE}"
+      DTS:From="Package\EST_00_Preflight"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{E984C388-AFEE-4903-A65B-ACC43EE1B5FE}"
+      DTS:To="Package\EPT_01_01_First23" />
+  </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{6B70BD42-C5E9-437C-B956-F293902BD0C4}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{B8EBE5B9-CF9D-44FB-B5B0-192AC17A3D8D}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\EST_OnError_MarkSuiteFailed"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{53273DEC-B89A-48A9-A8D4-85A3619AAB75}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="EST_OnError_MarkSuiteFailed">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{95F23F41-6D38-4206-A584-BF8ABF712315}"
+              SQLTask:SqlStatementSource="IF DB_NAME()=N'CoffeeDW_Trang_SSIS_TN03_20261120' AND OBJECT_ID('audit.SSISAcceptanceSuite') IS NOT NULL UPDATE audit.SSISAcceptanceSuite SET Status='FAILED',FinishedAtUTC=SYSUTCDATETIME() WHERE SuiteID=CONVERT(uniqueidentifier,N'63d2403b-e12f-495d-a3ce-69efce27f1a6') AND Status='RUNNING';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
+</DTS:Executable>

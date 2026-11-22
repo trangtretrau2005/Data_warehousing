@@ -46,7 +46,9 @@ Sau mỗi đầu việc, ghi file đã sửa, cách tái lập, kết quả ki�
 
 ## Git và tài sản sinh ra
 
-- Mặc định tính năng mới dùng nhánh theo thành viên, mở PR vào `main`; thực hiện yêu cầu Git cụ thể của người dùng nếu có. Không force push hoặc bỏ thay đổi của người khác.
+- Các nhánh làm việc là `thanh`, `chi`, `trang`; mở PR vào `dev` để tích hợp và chạy thử. Nếu chưa ở đúng nhánh, kiểm tra thay đổi đang có trước khi chuyển; không bỏ thay đổi của người khác.
+- `main` đang được giữ nguyên theo yêu cầu của Trang. Không commit, push hoặc merge vào `main` khi chưa có yêu cầu chấp thuận rõ ràng mới của Trang. Sau khi `dev` được kiểm tra và Trang xác nhận OK mới chuẩn bị chuyển bản đã chốt từ `dev` sang `main`.
+- Không force push các nhánh dùng chung. Khi bắt đầu một việc mới, fetch và tích hợp thay đổi từ `origin/dev` vào nhánh cá nhân nếu cần; không dùng `main` làm đích PR mặc định.
 - Trước commit xem `git status`, diff và danh sách staged. Không commit `.env`, credential, `.venv`, cache hay database cục bộ.
 - `results/` được ignore theo mặc định; chỉ thêm thủ công minh chứng nhỏ đã kiểm tra theo `results/README.md`. Không sửa ignore để đưa toàn bộ output lên Git.
 - Dùng file Markdown riêng từng chương khi viết song song. Tránh ghi đè Word hoặc project designer đang được thành viên khác sửa.

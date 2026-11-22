@@ -2,18 +2,32 @@
 
 Người phụ trách: **Chi**. Dùng cùng kỳ và bộ lọc khi đối soát nguồn, SQL, cube và web.
 
-- [ ] Tạo mart tháng–Market, chi tiết State/Product và đầu vào dự báo Market–tháng; đối chiếu theo từng ô, không chỉ tổng toàn chuỗi.
-- [ ] TN05: dựng actual và budget độc lập ở cùng grain rồi FULL OUTER JOIN; giữ cờ thiếu, thử một kỳ thiếu budget và một kỳ chỉ có kế hoạch.
-- [ ] Minh họa lỗi fan-out nếu nối budget tổng vào actual chi tiết trước khi SUM; không cộng lặp ngân sách.
-- [ ] Tạo project SSAS Multidimensional, Data Source/DSV, ba dimension và measure group từ fact; kiểm tra Regular relationships trong Dimension Usage.
-- [ ] Phân cấp Year→Quarter→Month có khóa chứa năm, Market→State→Area Code, Product Type→Product.
-- [ ] Sales/Budget/Profit dùng SUM; tỷ lệ tính trên tổng; không đưa Inventory vào SUM mặc định xuyên thời gian.
-- [ ] Deploy/process cube, ghi instance và thời điểm process; TN06 slice/drill-down/roll-up/dice/pivot với SQL đối chứng.
-- [ ] Tháng 01/2012 Central: Sales 10.346, Budget 9.970; cộng sáu bang phải khớp cấp Market.
-- [ ] Dice Coffee tháng 01/2012: Central 2.663 + East 2.105 = 4.768; pivot giữ nguyên tổng lát cắt.
-- [ ] Phân tích South tháng 08/2013: Sales 4.601, Budget 4.610, Gap −9; xếp sản phẩm theo Gap có dấu tăng dần.
-- [ ] Lưu ảnh DSV, Dimension Usage, Browser có bộ lọc, SQL và bảng đối soát nguồn–cube.
+> **Bổ sung native 20/11/2026 trên máy Trang:** cube biệt lập `CoffeeCube_Trang_20261120` trên `localhost\TRANGTRETRAU` đã ProcessFull, trạng thái Processed; 17/17 ca MDX khớp SQL từ chính DB SSIS. [Biên bản](../TRANG_NATIVE_BUILD_20261120.md), [verification nguồn cuối](../../results/native_build_20261120/ssas/integrated_ssis_source/verification.json), [bảng từng ca mới](../../results/native_build_20261120/ssas/integrated_ssis_source/comparison.json). TN05/mart được kiểm SQL chỉ đọc riêng dưới đây, không suy từ các ca cube; ảnh Browser đã có slice/drill/dice thực, pivot native được kiểm riêng với giới hạn designer nêu dưới.
+
+- [x] Tạo mart tháng–Market, chi tiết State/Product và đầu vào dự báo Market–tháng; đối chiếu theo từng ô, không chỉ tổng toàn chuỗi.
+- [x] TN05: dựng actual và budget độc lập ở cùng grain rồi FULL OUTER JOIN; giữ cờ thiếu, thử một kỳ thiếu budget và một kỳ chỉ có kế hoạch.
+- [x] Minh họa lỗi fan-out nếu nối budget tổng vào actual chi tiết trước khi SUM; không cộng lặp ngân sách.
+- [x] Tạo project SSAS Multidimensional, Data Source/DSV, ba dimension và measure group từ fact; kiểm tra Regular relationships trong Dimension Usage.
+- [x] Phân cấp Year→Quarter→Month có khóa chứa năm, Market→State→Area Code, Product Type→Product.
+- [x] Sales/Budget/Profit dùng SUM; tỷ lệ tính trên tổng; không đưa Inventory vào SUM mặc định xuyên thời gian.
+- [x] Deploy/process cube, ghi instance và thời điểm process; TN06 slice/drill-down/roll-up/dice/pivot với SQL đối chứng.
+- [x] Tháng 01/2012 Central: Sales 10.346, Budget 9.970; cộng sáu bang phải khớp cấp Market.
+- [x] Dice Coffee tháng 01/2012: Central 2.663 + East 2.105 = 4.768; pivot giữ nguyên tổng lát cắt.
+- [x] Phân tích South tháng 08/2013: Sales 4.601, Budget 4.610, Gap −9; xếp sản phẩm theo Gap có dấu tăng dần.
+- [x] Lưu ảnh DSV, Dimension Usage, Browser có bộ lọc, SQL và bảng đối soát nguồn–cube.
 
 Trong lát cắt South 08/2013, Colombian có Gap −268, Decaf Irish Cream −105 và Chamomile +22 theo tài liệu nguồn. Sản phẩm dương có thể bù phần hụt của sản phẩm âm; tổng một vài dòng không đại diện tổng Market.
+
+Process đầu đợt trên nguồn cũ ghi `2026-11-20T08:11:51.936667Z`; ProcessFull nguồn SSIS cuối là `2026-11-20T14:58:07.690Z`. [Project native và giới hạn](../../ssas/CoffeeCubeTrang/README.md) có Inventory **LastChild** theo kỳ cuối được chọn, không LastNonEmpty; mẫu 0 trả NULL và tỷ lệ dùng tổng tử/mẫu. 17 ca gồm năm/quý/khoảng kỳ, hai tháng không liên tiếp, WHERE multi-select và tháng cuối thiếu dữ liệu. Có ảnh [DSV đủ 4 bảng (mốc 21:34)](../../results/native_build_20261120/ui/ssas_dsv_final.png)/[Dimension Usage](../../results/native_build_20261120/ui/ssas_dimension_usage.png). [Build sau tích hợp lúc 22:17](../../results/native_build_20261120/ui/ssas_integrated_build.txt) đạt **0 lỗi / 8 cảnh báo**, thay cho mốc ban đầu 0 lỗi / 11 cảnh báo; vẫn giữ cảnh báo provider/attribute best practices, không gọi 0 cảnh báo.
+
+Browser có query/filter và kết quả thật: [slice 01/2012](../../results/native_build_20261120/ui/ssas_integrated_browser_slice_201201.png), [drill sáu State Central](../../results/native_build_20261120/ui/ssas_integrated_browser_central_states.png), [dice Coffee Central+East](../../results/native_build_20261120/ui/ssas_integrated_browser_dice_coffee.png). Tổng tương ứng Central 10346/Budget9970 và dice2663+2105=4768. Query Designer chặn đổi trục khi axis đầu không chứa Measures ([ảnh giới hạn](../../results/native_build_20261120/ui/ssas_browser_pivot_designer_limit.png)); không tuyên bố pivot UI đã qua. Cùng [query gốc](../../results/native_build_20261120/ssas/integrated_ssis_source/pivot_acceptance/original_axes.mdx) và [query đổi trục](../../results/native_build_20261120/ssas/integrated_ssis_source/pivot_acceptance/swapped_axes.mdx) chạy bằng ADOMD ExecuteCellSet SELECT, [6/6 ô khớp SQL và transpose chính xác](../../results/native_build_20261120/ssas/integrated_ssis_source/pivot_acceptance/verification.json); đó là bằng chứng pivot native, không phải ảnh UI pivot thành công.
+
+**TN05/mart — SQL Server chỉ đọc ngày 20/11/2026:** [summary 39 PASS](../../results/native_build_20261120/relational_acceptance/final/summary.json) và [queries/results](../../results/native_build_20261120/relational_acceptance/final/) đọc định nghĩa ba view đang có trên DB ETL biệt lập, so 96 ô tháng–Market,1.008 ô tháng–Market–Product và 4.248 nhóm State/Product với nguồn. Đầu vào Sales Market–tháng đủ 96 ô; `ml.ForecastSales` ở DB ETL này còn 0 dòng nên không công bố đã publish forecast ở đây. Mẫu budget 0 trả NULL; Inventory chọn kỳ cuối trước khi lọc và không fallback nếu kỳ đó thiếu dữ liệu.
+
+Actual/budget của TN05 được aggregate độc lập bằng CTE từ **cùng snapshot CSV**, như bài thử SQL11; đây không phải hai nguồn fact độc lập hoặc một mart drill-across mới được deploy. [FULL OUTER JOIN cơ sở](../../results/native_build_20261120/relational_acceptance/final/tn05_full_outer_baseline.csv) giữ 96 nhóm. [Fixture CTE thiếu nhóm](../../results/native_build_20261120/relational_acceptance/final/tn05_query_only_missing_fixture.csv) bỏ budget West 01/2012 và thêm plan-only West 01/2014/Budget1000, giữ NULL và cờ thiếu; con số 1000 là dữ liệu thử trong truy vấn, không phải ngân sách thật hoặc forecast. [Ca fan-out](../../results/native_build_20261120/relational_acceptance/final/tn05_incorrect_fanout.csv) đo West 01/2012:56 dòng chi tiết làm budget 9460 bị cộng thành 529760 nếu nối sai. Không tạo bảng/view hoặc ghi dữ liệu cho các fixture này.
+
+[Read-only recheck hai DB trước chuyển nguồn](../../results/native_build_20261120/ssas/readonly_recheck/verification.json) xác nhận nguồn cube cũ và kho ETL mới giống 4.248 business keys, 11 số đo và 96 ô tháng–Market. Có 177 SourceRow tháng 12/2013 khác vì chỉ số dòng theo file/batch tăng dần; đã lưu riêng, không nhầm thành khác số liệu. **Nguồn cuối đã đổi thật sang `CoffeeDW_Trang_SSIS_TN03_20261120`**, ProcessFull lúc `2026-11-20T14:58:07.690Z`: [migration](../../results/native_build_20261120/ssas/integrated_ssis_source/migration.json), [17/17 ca mới đối chiếu SQL mới](../../results/native_build_20261120/ssas/integrated_ssis_source/comparison.json), [pivot 6/6](../../results/native_build_20261120/ssas/integrated_ssis_source/pivot_acceptance/verification.json), [verification cuối](../../results/native_build_20261120/ssas/integrated_ssis_source/verification.json). Quyền nguồn chỉ CONNECT+SELECT bốn bảng; các receipt/ảnh nguồn cũ giữ lịch sử, không gắn thành ảnh sau tích hợp. Sau clone chạy cấu hình local theo [README project](../../ssas/CoffeeCubeTrang/README.md) trước khi mở designer, rồi Build để tái tạo target đúng database biệt lập.
+
+Ảnh Browser chính ở trên dùng prefix `ssas_integrated_`, được thu sau ProcessFull nguồn SSIS; ảnh cũ và receipt cũ được giữ lịch sử. DSV 21:34/Dimension Usage là ảnh cấu trúc trước chuyển nguồn, vẫn khớp bốn bảng và quan hệ không đổi theo migration; Build sau tích hợp 22:17 là 0 lỗi / 8 cảnh báo, không dùng log 21:07 thay thế.
 
 Điều kiện bàn giao cho Trang: tên view/cột và định nghĩa KPI ổn định, dữ liệu truy vấn đã đối soát; phiên bản SQL Server/SSAS và quyền đọc mart được ghi trong cấu hình cục bộ.

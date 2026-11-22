@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Cube xmlns="http://schemas.microsoft.com/analysisservices/2003/engine" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ID>Coffee Performance</ID>
+  <MeasureGroups>
+    <MeasureGroup>
+      <ID>Fact Sales Performance</ID>
+      <Partitions>
+        <Partition>
+          <ID>FactSalesPerformance</ID>
+          <Name>FactSalesPerformance</Name>
+          <Source xsi:type="TableBinding">
+            <DataSourceID>CoffeeDW</DataSourceID>
+            <DbSchemaName>dw</DbSchemaName>
+            <DbTableName>FactSalesPerformance</DbTableName>
+          </Source>
+          <StorageMode>Molap</StorageMode>
+          <ProcessingMode>Regular</ProcessingMode>
+        </Partition>
+      </Partitions>
+    </MeasureGroup>
+  </MeasureGroups>
+</Cube>

@@ -1,6 +1,14 @@
 # SSIS Chương 4
 
-Chi tạo project Integration Services native tại đây, ví dụ `ssis/CoffeeETL/`. Base cung cấp schema/procedure và bản Python tham chiếu; chưa có `.dtproj`/`.dtsx` đã deploy. Dùng Visual Studio/SSDT có phần mở rộng SSIS phù hợp SQL Server của nhóm.
+Chi chủ trì project Integration Services native tại đây. Base ban đầu cung cấp schema/procedure và bản Python tham chiếu; hướng dẫn dưới đây giữ các quy tắc triển khai chung. Dùng Visual Studio/SSDT có phần mở rộng SSIS phù hợp SQL Server của nhóm.
+
+**Đã thực chạy 20/11/2026 trên máy Trang:** bản thích nghi riêng [CoffeeETLTrang](CoffeeETLTrang/README.md) và [CoffeeETLTrangAcceptance](CoffeeETLTrangAcceptance/README.md) Build trong Visual Studio 0 lỗi / 0 cảnh báo. Suite tám ca CSV qua SSDT F5 có đủ tám receipt, [verifier PASS/exit0](../results/native_build_20261120/ssis/acceptance_runs/63d2403b-e12f-495d-a3ce-69efce27f1a6/verification.json); kho thử `CoffeeDW_Trang_SSIS_TN03_20261120` cuối 4248/Sales819811/Budget746160/Profit259543. SCD package có run riêng PASS. Xem [biên bản](../docs/TRANG_NATIVE_BUILD_20261120.md) để phân biệt lỗi DTExec trước đây, crash IDE sau thành công và giới hạn ảnh viewport; không tự ghi bản trên máy Chi đã chạy.
+
+Data Flow hiện chạy Flat File UTF-8→Derived BatchID→OLE DB raw landing; validator T-SQL chuyển raw landing sang `stg.CoffeeRaw`, giữ reject/raw payload rồi gọi loader. Đây là phương án triển khai thực tế cho các yêu cầu dưới đây, không mô tả ép kiểu/reject đều nằm trong component Data Flow. Tham số của project này là standalone package variables có expression binding, không phải `Project.params` đã bind; xem README riêng trước khi đổi nguồn/DB.
+
+[Rollback native riêng](../results/native_build_20261120/relational_acceptance/rollback/20261120T142531Z_7f80dd10/verification.json) đã đạt 12/12: loader phát lỗi 50006 sau UPDATE rồi rollback outer transaction; 11 bảng / 47.315 dòng giữ hash logical và không residue. Đây là T-SQL probe có guard/không commit business rows, không phải ca CSV thứ 9. [Tổng hợp kiểm tra cuối](../results/native_build_20261120/final_summary.json) giữ kết quả SSIS/SSAS/pytest/CLI và giới hạn IDE tách riêng.
+
+[Cube cuối đã đọc chính DB này](../results/native_build_20261120/ssas/integrated_ssis_source/verification.json), ProcessFull lúc 14:58:07Z và chạy lại 17 ca MDX/pivot 6 ô trên SQL mới đều đạt; đó là minh chứng consumer SSAS sau nạp SSIS. Nguồn native 19/11 và receipt trước tích hợp vẫn được giữ riêng.
 
 1. Chạy SQL00–03, tạo connection manager SQL Server và Flat File UTF-8. File path, server và DB là project parameter; dùng parameter nhạy cảm cho credential, không commit mật khẩu.
 2. Control Flow: tạo BatchID, lưu checksum/tên nguồn/StartedAt vào `audit.LoadBatch`; đảm bảo SourceCount bằng số bản ghi đọc.

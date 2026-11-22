@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Database xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>CoffeeCube_Trang_20261120</ID>
+  <Name>CoffeeCube_Trang_20261120</Name>
+  <Description>Coffee DW Multidimensional OLAP Database (Chapter 5 / TN06)</Description>
+</Database>
