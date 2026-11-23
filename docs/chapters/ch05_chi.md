@@ -14,7 +14,7 @@ Người phụ trách: **Chi**. Dùng cùng kỳ và bộ lọc khi đối soát
 - [x] Tháng 01/2012 Central: Sales 10.346, Budget 9.970; cộng sáu bang phải khớp cấp Market.
 - [x] Dice Coffee tháng 01/2012: Central 2.663 + East 2.105 = 4.768; pivot giữ nguyên tổng lát cắt.
 - [x] Phân tích South tháng 08/2013: Sales 4.601, Budget 4.610, Gap −9; xếp sản phẩm theo Gap có dấu tăng dần.
-- [x] Lưu ảnh DSV, Dimension Usage, Browser có bộ lọc, SQL và bảng đối soát nguồn–cube. *(Đã lưu đầy đủ ảnh `TN05_join.png`, `TN06_usage.png`, `TN06_browser.png`, `TN06_sql.png` và bảng đối soát nguồn–SQL–MDX trong `results/TN05/chi_2026-11-15/` và `results/TN06/chi_2026-11-15/`).*
+- [x] Lưu ảnh DSV, Dimension Usage, Browser có bộ lọc, SQL và bảng đối soát nguồn–cube. *(Đã lưu đầy đủ ảnh `TN05_join.png`, `TN06_datacube_3d.png`, `TN06_cube_structure_vs.jpg`, `TN06_dsv_vs.jpg`, `TN06_usage.png`, `TN06_mdx_query.png`, `TN06_browser.png`, `TN06_sql.png` và bảng đối soát nguồn–SQL–MDX trong `results/TN05/chi_2026-11-15/` và `results/TN06/chi_2026-11-15/`).*
 
 Trong lát cắt South 08/2013, Colombian có Gap −268, Decaf Irish Cream −105 và Chamomile +22 theo tài liệu nguồn. Sản phẩm dương có thể bù phần hụt của sản phẩm âm; tổng một vài dòng không đại diện tổng Market.
 
@@ -34,104 +34,130 @@ Actual/budget của TN05 được aggregate độc lập bằng CTE từ **cùng
 
 ---
 
-## 5.1 Kết quả tổng hợp hiệu quả kinh doanh toàn chuỗi theo Thị trường
+# CHƯƠNG 5. PHÂN TÍCH ĐA CHIỀU VÀ KẾT QUẢ KINH DOANH
 
-Trên toàn bộ 24 tháng (`01/2012 – 12/2013`, 4.248 dòng quan sát), kết quả tổng hợp từ tầng mart (`mart.vw_Detail` và `mart.vw_MarketPeriod`) trên cả SQLite và SQL Server 2022 (`Chi-Chie`) khớp tuyệt đối với phép tính trực tiếp trên `Coffee.csv`:
+## 5.1. Xây dựng lớp Data Mart và hệ thống chỉ tiêu phân tích
 
-| Thị trường (`Market`) | Doanh số (`Sales`) | Ngân sách (`BudgetSales`) | Chênh lệch (`Gap`) | Lợi nhuận (`Profit`) | Tỷ lệ đạt ngân sách (`BudgetAchievement`) | Biên lợi nhuận (`ProfitMargin`) |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Central** | 265.045 | 250.360 | +14.685 | 93.852 | 105,87% | 35,41% |
-| **East** | 178.576 | 157.900 | +20.676 | 59.217 | 113,09% | 33,16% |
-| **South** | 103.926 | 98.200 | +5.726 | 32.478 | 105,83% | 31,25% |
-| **West** | 272.264 | 239.700 | +32.564 | 73.996 | 113,59% | 27,18% |
-| **Toàn chuỗi** | **819.811** | **746.160** | **+73.651** | **259.543** | **109,87%** | **31,66%** |
+### 5.1.1. Thiết kế các View phục vụ phân tích tại lớp Data Mart
 
-- **Nhận xét quản trị:**
-  - `West` dẫn đầu về quy mô doanh số (`272.264`) và mức vượt ngân sách (`+32.564`, đạt `113,59%`), nhưng biên lợi nhuận thấp nhất (`27,18%`).
-  - `Central` đứng thứ hai về doanh số (`265.045`) nhưng tạo ra lợi nhuận tuyệt đối cao nhất toàn chuỗi (`93.852`, biên lợi nhuận `35,41%`).
-  - Dù cả bốn thị trường đều vượt ngân sách khi gộp cả 24 tháng, việc phân rã theo từng kỳ tháng (`mart.vw_MarketPeriod`) phát hiện lát cắt hụt ngân sách tại **`South` kỳ `08/2013`** (`Sales = 4.601`, `BudgetSales = 4.610`, `Gap = -9`), mở ra nhu cầu truy sâu (drill-down) xuống từng sản phẩm.
+Để cung cấp một giao diện dữ liệu thống nhất, an toàn và hiệu năng cao cho các công cụ khai thác phía sau (bao gồm khối OLAP SSAS Multidimensional, ứng dụng Dashboard phân tích và mô-đun dự báo doanh số ở Chương 6–7), hệ thống CoffeeDW xây dựng lớp **Data Mart** (`sql/sqlserver/02_marts.sql`) gồm ba View chuẩn hóa:
 
----
+| Tên View trong Data Mart | Độ hạt (Grain) của dữ liệu trả về | Số dòng trên bộ nguồn chuẩn | Mục đích sử dụng chính |
+| --- | --- | ---: | --- |
+| `mart.vw_Detail` | `MonthStart × AreaCode × ProductName` | 4.248 | Kết nối sẵn `FactSalesPerformance` với `DimDate`, `DimLocation`, `DimProduct`; phục vụ truy sâu chi tiết theo bang, mã vùng, sản phẩm và xuất CSV |
+| `mart.vw_MarketPeriod` | `MonthStart × Market` | 96 (`24 tháng × 4 thị trường`) | Tổng hợp sẵn các chỉ tiêu theo tháng và thị trường; phục vụ thẻ KPI tổng quan, biểu đồ xu hướng và làm chuỗi đầu vào chuẩn cho bài toán dự báo |
+| `mart.vw_MarketProductPeriod` | `MonthStart × Market × ProductName` | 1.008 | Tổng hợp doanh số, ngân sách, lợi nhuận và chênh lệch `Gap` theo từng thị trường và sản phẩm trong tháng; phục vụ phân tích đóng góp sản phẩm |
 
-## 5.2 Hợp đồng Data Mart, Quy tắc KPI và Kiểm chứng Drill-Across (TN05)
+*Bảng 5.1. Danh mục các View công bố tại lớp Data Mart của hệ thống CoffeeDW*
 
-### 5.2.1 Ba View công bố tại tầng Mart (`sql/sqlserver/02_marts.sql` & `src/coffee_dw/warehouse.py`)
+### 5.1.2. Quy tắc tổng hợp KPI, tỷ lệ hoàn thành và tồn kho bán cộng
 
-1. **`mart.vw_Detail` (`vw_Detail`):** Kết nối `FactSalesPerformance` với `DimDate`, `DimLocation`, `DimProduct` theo quan hệ nhiều–một, bảo toàn đúng `4.248` dòng, cung cấp đủ các thuộc tính chiều và 11 chỉ tiêu số đo phục vụ truy sâu chi tiết theo `State`, `AreaCode`, `ProductName`, `ProductType`, `ProductLine`, `Type`.
-2. **`mart.vw_MarketPeriod` (`vw_MarketPeriod`):** Tổng hợp theo `(MonthStart, Market)` gồm đúng `96` nhóm (`24 tháng × 4 thị trường`), là nguồn dữ liệu chuẩn cho trang tổng quan KPI và đầu vào huấn luyện dự báo theo thị trường.
-3. **`mart.vw_MarketProductPeriod` (`vw_MarketProductPeriod`):** Tổng hợp theo `(MonthStart, Market, ProductName)` gồm `1.008` nhóm có mặt trong nguồn, phục vụ phân tích đóng góp chênh lệch ngân sách theo sản phẩm.
+Một sai lầm phổ biến trong các hệ thống báo cáo là tính trung bình cộng của các tỷ lệ phần trăm ở dòng chi tiết hoặc cộng dồn chỉ tiêu tồn kho qua nhiều kỳ. Để đảm bảo tính chính xác về mặt toán học và nghiệp vụ kế toán, lớp Data Mart và khối OLAP của CoffeeDW áp dụng thống nhất các quy tắc tổng hợp sau:
 
-**Quy tắc tính KPI bán cộng và tỷ lệ:**
-- $\text{Gap} = \sum \text{Sales} - \sum \text{BudgetSales}$
-- $\text{BudgetAchievement} = \frac{\sum \text{Sales}}{\text{NULLIF}(\sum \text{BudgetSales}, 0)}$
-- $\text{ProfitMargin} = \frac{\sum \text{Profit}}{\text{NULLIF}(\sum \text{Sales}, 0)}$
-- **Inventory (tồn kho bán cộng):** Không cộng dồn qua nhiều tháng. Khi người dùng chọn một khoảng kỳ, hệ thống lấy tổng `Inventory` theo địa bàn/sản phẩm tại **kỳ cuối cùng** trong khoảng được chọn (tại kỳ cuối `2013-12-01`: `Central = 45.252`, `East = 31.529`, `South = 11.444`, `West = 58.933`, toàn chuỗi = `147.158`).
+1. **Các chỉ tiêu cộng được hoàn toàn (Fully Additive Measures):** Gồm 10 chỉ tiêu dòng chảy trong kỳ là `Sales`, `BudgetSales`, `Profit`, `BudgetProfit`, `COGS`, `BudgetCOGS`, `Margin`, `BudgetMargin`, `Marketing` và `TotalExpenses`. Các chỉ tiêu này được phép cộng (`SUM`) tự do theo mọi chiều Thời gian, Địa lý và Sản phẩm.
+2. **Chênh lệch thực hiện so với ngân sách (`Gap`):**
+   $$\text{Gap} = \sum \text{Sales} - \sum \text{BudgetSales}$$
+   Khi xếp hạng để tìm khu vực hoặc sản phẩm hụt ngân sách nặng nhất, hệ thống bắt buộc sắp xếp theo giá trị **`Gap` có dấu tăng dần** (giá trị âm lớn nhất đứng đầu, ví dụ `-268` đứng trước `-105`), tuyệt đối không sắp xếp theo giá trị tuyệt đối `|Gap|`.
+3. **Tỷ lệ hoàn thành ngân sách (`BudgetAchievement`) và Biên lợi nhuận (`ProfitMargin`) — Chỉ tiêu không cộng được (Non-Additive):**
+   $$\text{BudgetAchievement} = \frac{\sum \text{Sales}}{\text{NULLIF}(\sum \text{BudgetSales}, 0)}, \quad \text{ProfitMargin} = \frac{\sum \text{Profit}}{\text{NULLIF}(\sum \text{Sales}, 0)}$$
+   Các tỷ lệ này luôn được tính bằng **tổng tử số chia cho tổng mẫu số** trên cùng tập bản ghi sau khi lọc. Nếu tổng mẫu số bằng `0` hoặc `NULL`, biểu thức trả về `NULL` (thiếu dữ liệu) chứ không ép về `0%`.
+4. **Tồn kho (`Inventory`) — Chỉ tiêu bán cộng (Semi-Additive):**
+   `Inventory` là chỉ tiêu phản ánh trạng thái tồn kho tại một thời điểm (snapshot cuối kỳ). Do đó, `Inventory` chỉ được phép cộng (`SUM`) theo chiều Địa lý (`Location`) và Sản phẩm (`Product`) trong **cùng một kỳ tháng**, nhưng tuyệt đối không được cộng dồn xuyên qua nhiều tháng. Khi người dùng chọn một khoảng thời gian nhiều tháng (hoặc xem cấp Quý/Năm trên Cube), hệ thống lấy tổng tồn kho tại **kỳ tháng cuối cùng** có trong khoảng thời gian đang xét (`Closing Period` / `LastChild`).
 
-### 5.2.2 Đối soát từng ô (Cell-by-cell) và Thực nghiệm Drill-Across không Fan-out (TN05)
+### 5.1.3. Đối soát liên quy trình Drill-Across và phòng tránh lỗi nhân bản Fan-out
 
-Thực nghiệm **TN05** (`learning/experiments/mart_olap.py`, `sql/sqlserver/10_drill_across.sql`, `sql/sqlserver/11_tn05_budget_demo.sql`) chứng minh ba kết quả cốt lõi:
+Khi doanh nghiệp cần đối chiếu hai quy trình nghiệp vụ khác nhau (ví dụ: doanh số thực tế chi tiết từ bảng sự kiện `FactSalesPerformance` ở độ hạt `Tháng × Mã vùng × Sản phẩm` với kế hoạch ngân sách hoặc dự báo doanh số ở độ hạt `Tháng × Thị trường` trong bảng `ml.ForecastSales`), việc thực hiện phép nối trực tiếp (`JOIN`) giữa bảng chi tiết và bảng tổng hợp trước khi gom nhóm (`SUM`) sẽ gây ra lỗi **nhân bản số liệu (Fan-out Trap)**.
 
-1. **Đối soát từng ô (Cell-by-cell reconciliation):**
-   - So sánh toàn bộ `96` dòng của `vw_MarketPeriod` và `1.008` dòng của `vw_MarketProductPeriod` với kết quả `groupby` trực tiếp từ `Coffee.csv` bằng `pandas`: sai lệch tuyệt đối lớn nhất (`max_abs_diff`) trên tất cả các cột `Sales`, `BudgetSales`, `Profit`, `Gap`, `BudgetAchievement` đều bằng **`0.0`**.
-2. **Minh họa lỗi nhân bản ngân sách (Fan-out Anti-pattern):**
-   - Nếu nối trực tiếp bảng ngân sách cấp `MonthStart × Market` (`#Budget`, tổng `746.160`) vào bảng chi tiết `mart.vw_Detail` trước khi `SUM`, mỗi dòng chi tiết trong cùng một thị trường–tháng sẽ lặp lại toàn bộ ngân sách của thị trường đó:
-     - Tại `West` kỳ `01/2012` có `56` dòng chi tiết (`AreaCode × Product`), khiến ngân sách `9.460` bị nhân gấp 56 lần thành **`529.760`**.
-     - Trên toàn bộ 4.248 dòng, tổng ngân sách bị phóng đại lên **`36.035.260`** (gấp `48,29` lần tổng đúng `746.160`).
-   - **Quy tắc bắt buộc khi Drill-Across:** Phải tổng hợp độc lập mỗi bảng fact (`#Actual` và `#Budget`, hoặc `mart.vw_Detail` và `ml.ForecastSales`) về đúng độ hạt chung `(MonthStart, Market)` trước khi thực hiện phép nối 1–1.
-3. **Bảo toàn nhóm thiếu bằng `FULL OUTER JOIN` và cờ trạng thái:**
-   - Khi xóa dòng ngân sách của `West` kỳ `2012-01-01` và chèn thêm dòng kế hoạch tương lai `West` kỳ `2014-01-01` (`BudgetSales = 1.000`) trên bản thử `#Budget`, phép `FULL OUTER JOIN` sau khi tiền tổng hợp giữ nguyên cả hai nhóm mà không làm mất doanh số thực tế hay kế hoạch tương lai:
+Cụ thể, vì một thị trường trong một tháng có nhiều dòng chi tiết `(AreaCode × ProductName)` (như thị trường `West` tháng `01/2012` có `56` dòng chi tiết), nếu nối trực tiếp bảng ngân sách cấp thị trường vào bảng chi tiết rồi mới `SUM(BudgetSales)`, con số ngân sách của thị trường đó sẽ bị cộng lặp lại `56` lần.
 
-| `MonthStart` | `Market` | `Sales` | `BudgetSales` | `Gap` | `MissingActual` | `MissingBudget` | Ý nghĩa |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| `2012-01-01` | `West` | 10.453,0000 | `NULL` | `NULL` | 0 | 1 | Có doanh số thực tế, thiếu ngân sách (không thay `NULL` bằng `0`) |
-| `2014-01-01` | `West` | `NULL` | 1.000,0000 | `NULL` | 1 | 0 | Kỳ tương lai chỉ có kế hoạch/dự báo, chưa phát sinh thực tế |
-
-![TN05_join.png](../../results/TN05/chi_2026-11-15/TN05_join.png)
+Để loại bỏ hoàn toàn lỗi Fan-out, hệ thống áp dụng mẫu truy vấn **Drill-Across chuẩn** (`sql/sqlserver/10_drill_across.sql` và `11_tn05_budget_demo.sql`):
+* **Bước 1 (Tiền tổng hợp độc lập):** Tổng hợp riêng từng bảng sự kiện về đúng độ hạt chung là `MonthStart × Market` thông qua các biểu thức bảng chung (CTE `ActualByMarketMonth` và `BudgetByMarketMonth` / `ForecastByMarketMonth`).
+* **Bước 2 (Kết nối toàn phần `FULL OUTER JOIN`):** Nối hai tập kết quả đã có cùng độ hạt `MonthStart × Market` bằng `FULL OUTER JOIN`, sử dụng `COALESCE(a.MonthStart, b.MonthStart)` và `COALESCE(a.Market, b.Market)` cùng hai cờ trạng thái `MissingActual` và `MissingBudget` để bảo toàn cả những kỳ chỉ có thực tế (thiếu ngân sách) lẫn những kỳ tương lai chỉ có kế hoạch/dự báo (chưa phát sinh doanh số thực tế).
 
 ---
 
-## 5.3 Thiết kế Cube SSAS Multidimensional (`ssas/CoffeeCube/`)
+## 5.2. Thiết kế khối đa chiều Data Cube trên SSAS Multidimensional
 
-![TN06_datacube_3d.png](../../results/TN06/chi_2026-11-15/TN06_datacube_3d.png)
+### 5.2.1. Cấu trúc Data Source View và các chiều phân cấp
 
-![TN06_cube_structure_vs.jpg](../../results/TN06/chi_2026-11-15/TN06_cube_structure_vs.jpg)
+Dự án phân tích đa chiều native được xây dựng bằng Microsoft SQL Server Analysis Services (SSAS Multidimensional) tại thư mục `ssas/CoffeeCube/CoffeeCube.dwproj` (cùng bản triển khai tích hợp `ssas/CoffeeCubeTrang/CoffeeCube.dwproj`).
+
+Trên lớp `CoffeeDW.dsv` (Data Source View), lược đồ hình sao của kho dữ liệu `CoffeeDW` được ánh xạ gồm bảng sự kiện `dw.FactSalesPerformance` ở trung tâm nối với ba bảng chiều `dw.DimDate`, `dw.DimLocation` và `dw.DimProduct` qua các khóa chính – khóa ngoại tương ứng.
 
 ![TN06_dsv_vs.jpg](../../results/TN06/chi_2026-11-15/TN06_dsv_vs.jpg)
+*Hình 5.1. Lược đồ hình sao trong `CoffeeDW.dsv` trên Visual Studio SSDT với 0 lỗi và 0 cảnh báo*
 
-Project SSAS Multidimensional tại `ssas/CoffeeCube/CoffeeCube.dwproj` (cùng script triển khai `DeployCoffeeCube.xmla`) được xây dựng trên `CoffeeDW.dsv` với một Measure Group `Fact Sales Performance` và ba chiều dùng chung:
+Ba chiều phân tích (`Dimensions`) được thiết kế với hệ thống phân cấp (`User Hierarchies`) và quan hệ thuộc tính (`Attribute Relationships`) chặt chẽ:
 
-1. **Chiều Thời gian (`Dim Date.dim`):**
-   - Khóa chính: `Date Key` (`DateKey` dạng `YYYYMMDD`, hiển thị `MonthStart`).
-   - Phân cấp `Calendar`: `Year -> Quarter -> Month`.
-   - **Thiết kế khóa chống gộp nhầm qua các năm:** Thuộc tính `Quarter` dùng khóa ghép `(Year, Quarter)` và thuộc tính `Month` dùng khóa `DateKey` (`YYYYMMDD`), kèm quan hệ thuộc tính cứng (`Rigid` Attribute Relationships: `Date Key -> Month -> Quarter -> Year`). Nhờ đó tháng `01/2012` (`20120101`) và tháng `01/2013` (`20130101`) là hai thành viên tách biệt.
-2. **Chiều Địa lý (`Dim Location.dim`):**
-   - Khóa chính: `Location Key` (`LocationKey`, hiển thị `AreaCode`).
-   - Quan hệ thuộc tính đã kiểm chứng phụ thuộc hàm 100% trên nguồn: `Location Key -> Area Code -> State -> Market` và `Location Key -> Market Size`.
-   - Phân cấp `Geography`: `Market -> State -> Area Code`.
-3. **Chiều Sản phẩm (`Dim Product.dim`):**
-   - Khóa chính: `Product Key` (`ProductKey`, hiển thị `ProductName`).
-   - Quan hệ thuộc tính: `Product Key -> Product Name -> Product Type -> Product Line` và `Product Name -> Type` (`Regular` / `Decaf` là thuộc tính phân tích độc lập).
-   - Phân cấp `Product Hierarchy`: `Product Line -> Product Type -> Product Name`.
-4. **Measure Group và MDX Script (`Coffee Performance.cube`):**
-   - **Dimension Usage:** Cả 3 chiều `Dim Date`, `Dim Location`, `Dim Product` nối với `Fact Sales Performance` theo quan hệ **Regular** tại đúng khóa hạt lá (`DateKey`, `LocationKey`, `ProductKey`).
-   - **Số đo cộng được (`AggregateFunction = Sum`):** `Sales`, `Budget Sales`, `Profit`, `Budget Profit`, `COGS`, `Budget COGS`, `Margin`, `Budget Margin`, `Marketing`, `Total Expenses`.
-   - **Số đo bán cộng (`Inventory`):** Trong `MdxScript`, `SCOPE ([Measures].[Inventory], ...)` trên các cấp `Year`, `Quarter`, `All` của `[Dim Date].[Calendar]` lấy giá trị của tháng cuối cùng có mặt trong ngữ cảnh lọc: `(TAIL(EXISTING [Dim Date].[Date Key].[Date Key].Members, 1).Item(0), [Measures].[Inventory])`.
-   - **Calculated Measures:**
-     - `[Measures].[Gap] = [Measures].[Sales] - [Measures].[Budget Sales]`
-     - `[Measures].[Budget Achievement] = IIF(IsEmpty([Measures].[Budget Sales]) OR [Measures].[Budget Sales] = 0, NULL, [Measures].[Sales] / [Measures].[Budget Sales])`
-     - `[Measures].[Profit Margin] = IIF(IsEmpty([Measures].[Sales]) OR [Measures].[Sales] = 0, NULL, [Measures].[Profit] / [Measures].[Sales])`
+| Chiều (`Dimension`) | Tên cây phân cấp (`Hierarchy`) | Các cấp độ từ tổng quát đến chi tiết (`Levels`) | Thiết kế khóa thuộc tính (`KeyColumns`) và quan hệ thuộc tính (`Attribute Relationships`) |
+| --- | --- | --- | --- |
+| `Dim Date` | `Calendar` | `Year` → `Quarter` → `Month` | `Date Key` (`YYYYMMDD`, hiển thị `MonthStart`) → `Month` (khóa `DateKey`) → `Quarter` (khóa ghép `Year, Quarter`) → `Year` (`RelationshipType = Rigid`). Khóa ghép giúp tách biệt quý/tháng của năm 2012 với năm 2013 |
+| `Dim Location` | `Geography` | `Market` → `State` → `Area Code` | `Location Key` → `Area Code` → `State` → `Market`; thuộc tính độc lập `Market Size` nối từ `Location Key`. Phản ánh đúng phụ thuộc hàm `AreaCode → State → Market` |
+| `Dim Product` | `Product Hierarchy` | `Product Line` → `Product Type` → `Product Name` | `Product Key` → `Product Name` → `Product Type` → `Product Line`; thuộc tính `Type` (`Regular` / `Decaf`) là thuộc tính phân tích độc lập gắn với `Product Name` |
+
+*Bảng 5.2. Cấu trúc phân cấp và quan hệ thuộc tính của ba chiều trong khối `Coffee Performance`*
+
+### 5.2.2. Thiết kế Measure Group, Dimension Usage và MDX Script
+
+Khối đa chiều `Coffee Performance.cube` được cấu hình với một Measure Group trung tâm là `Fact Sales Performance`:
+
+![TN06_cube_structure_vs.jpg](../../results/TN06/chi_2026-11-15/TN06_cube_structure_vs.jpg)
+*Hình 5.2. Giao diện thiết kế Cube Structure với các Measures và Dimensions trong Visual Studio SSDT*
+
+![TN06_usage.png](../../results/TN06/chi_2026-11-15/TN06_usage.png)
+*Hình 5.3. Cấu hình Dimension Usage với liên kết Regular tại các khóa hạt lá `Date Key`, `Location Key` và `Product Key`*
+
+* **Liên kết Dimension Usage:** Cả ba chiều `Dim Date`, `Dim Location` và `Dim Product` đều liên kết với Measure Group `Fact Sales Performance` theo kiểu quan hệ **Regular** thông qua đúng khóa hạt lá (`DateKey`, `LocationKey`, `ProductKey`).
+* **Cấu hình hàm tổng hợp và MDX Script (`Calculations`):**
+  * 10 chỉ tiêu cộng được (`Sales`, `Budget Sales`, `Profit`, `Budget Profit`, `COGS`, `Budget COGS`, `Margin`, `Budget Margin`, `Marketing`, `Total Expenses`) sử dụng `AggregateFunction = Sum`.
+  * Chỉ tiêu bán cộng `Inventory` được định nghĩa quy tắc lấy kỳ cuối thông qua lệnh `SCOPE` trong `MdxScript` (hoặc hàm bán cộng `LastChild` trên chiều thời gian): khi truy vấn ở cấp `Year`, `Quarter` hoặc `[All]`, giá trị `[Measures].[Inventory]` tự động lấy theo thành viên tháng cuối cùng hiện hữu trong ngữ cảnh lọc (`TAIL(EXISTING [Dim Date].[Date Key].[Date Key].Members, 1).Item(0)`).
+  * Ba chỉ tiêu tính toán (`Calculated Measures`) được định nghĩa trực tiếp trong `MdxScript` của Cube:
+    * `[Measures].[Gap] = [Measures].[Sales] - [Measures].[Budget Sales]`
+    * `[Measures].[Budget Achievement] = IIF(IsEmpty([Measures].[Budget Sales]) OR [Measures].[Budget Sales] = 0, NULL, [Measures].[Sales] / [Measures].[Budget Sales])`
+    * `[Measures].[Profit Margin] = IIF(IsEmpty([Measures].[Sales]) OR [Measures].[Sales] = 0, NULL, [Measures].[Profit] / [Measures].[Sales])`
+
+### 5.2.3. Mô hình khối lập phương 3D Data Cube và các phép toán OLAP
+
+Khi dữ liệu từ mô hình Star Schema được xử lý (`ProcessFull`) vào khối `Coffee Performance`, không gian phân tích của CoffeeDW có thể được hình dung như một **khối lập phương 3 chiều (3D Data Cube)** với ba trục tọa độ vuông góc: trục Thời gian (`Dim Date`: 24 tháng), trục Địa lý (`Dim Location`: 4 thị trường → 20 bang → 156 mã vùng) và trục Sản phẩm (`Dim Product`: 2 dòng → 4 nhóm → 13 sản phẩm).
+
+![TN06_datacube_3d.png](../../results/TN06/chi_2026-11-15/TN06_datacube_3d.png)
+*Hình 5.4. Biểu diễn trực quan khối lập phương 3D Data Cube và các lát cắt doanh số theo Thời gian × Thị trường × Nhóm sản phẩm*
+
+Trên không gian khối lập phương này, người phân tích thực hiện 5 phép toán OLAP kinh điển để trả lời các câu hỏi quản trị:
+1. **Slice (Cắt một lát phẳng):** Cố định một giá trị trên một chiều (ví dụ: cố định chiều Thời gian tại tháng `01/2012` hoặc tháng `11/2013`) để quan sát bảng 2 chiều còn lại (`Market × Product` hoặc `Market × Measures`).
+2. **Drill-down (Truy sâu xuống cấp chi tiết):** Đi từ cấp tổng hợp cao xuống cấp chi tiết hơn theo cây phân cấp (ví dụ: từ `Market = Central` mở xuống 6 `State` trực thuộc, hoặc từ `Market = South` mở xuống 7 `Product Name`).
+3. **Roll-up (Cuộn tổng hợp lên cấp cao):** Cộng gộp các thành phần con lên cấp cha (ví dụ: cộng 6 bang của `Central` về tổng `Central`, hoặc gộp các tháng lên Quý và Năm) đồng thời tính lại các tỷ lệ phần trăm từ tổng tử và tổng mẫu.
+4. **Dice (Cắt khối con đa điều kiện):** Lọc đồng thời trên nhiều chiều để trích xuất một khối con (sub-cube), chẳng hạn cố định `Month = 01/2012`, chọn tập thị trường `{Central, East}` và nhóm sản phẩm `Product Type = Coffee`.
+5. **Pivot (Xoay trục phân tích):** Hoán đổi vị trí giữa các chiều trên trục hàng (`ROWS`) và trục cột (`COLUMNS`) của báo cáo (ví dụ: đưa `Product Name` lên hàng và `Market` lên cột) mà vẫn giữ nguyên tổng đại số của lát cắt.
 
 ---
 
-## 5.4 Thực nghiệm các phép toán OLAP: Slice, Drill-down, Roll-up, Dice và Pivot (TN06)
+## 5.3. Phân tích kết quả kinh doanh chuỗi cà phê từ kho dữ liệu
 
-Các truy vấn MDX trong `ssas/queries.mdx` và truy vấn SQL đối chứng trong `sql/sqlserver/13_tn06_olap_checks.sql` đã được chạy kiểm tra trên SQL Server 2022 (`Chi-Chie`):
+### 5.3.1. Phân tích tổng quan hiệu quả kinh doanh theo thị trường
 
-### 5.4.1 Slice, Drill-down và Roll-up tại `Central` và `West` kỳ `01/2012`
+Tổng hợp toàn bộ 24 tháng hoạt động (`01/2012 – 12/2013`, gồm `4.248` bản ghi sự kiện) từ lớp Data Mart (`mart.vw_MarketPeriod`) và khối OLAP `Coffee Performance` cho kết quả bức tranh kinh doanh tổng thể của chuỗi theo 4 thị trường như sau:
 
-**Bảng 5.1. Lát cắt kỳ `2012-01-01` (`DateKey = 20120101`), mở từ `Market` xuống `State` và Roll-up ngược về `Market`:**
+| Thị trường (`Market`) | Số dòng Fact | Doanh số thực tế (`Sales`) | Ngân sách (`BudgetSales`) | Chênh lệch (`Gap`) | Lợi nhuận (`Profit`) | Tỷ lệ đạt ngân sách (`BudgetAchievement`) | Biên lợi nhuận (`ProfitMargin`) | Tồn kho kỳ cuối `12/2013` (`Inventory`) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **Central** | 1.344 | 265.045 | 250.360 | +14.685 | 93.852 | 105,87% | 35,41% | 45.252 |
+| **East** | 888 | 178.576 | 157.900 | +20.676 | 59.217 | 113,09% | 33,16% | 31.529 |
+| **South** | 672 | 103.926 | 98.200 | +5.726 | 32.478 | 105,83% | 31,25% | 11.444 |
+| **West** | 1.344 | 272.264 | 239.700 | +32.564 | 73.996 | 113,59% | 27,18% | 58.933 |
+| **Toàn chuỗi** | **4.248** | **819.811** | **746.160** | **+73.651** | **259.543** | **109,87%** | **31,66%** | **147.158** |
 
-| Thị trường (`Market`) | Bang (`State`) | `Sales` | `BudgetSales` | `Profit` | `Gap` | `BudgetAchievement` |
+*Bảng 5.3. Tổng hợp kết quả kinh doanh toàn chuỗi theo thị trường giai đoạn 2012–2013*
+
+Từ Bảng 5.3 có thể rút ra các nhận định quản trị quan trọng:
+* **Về quy mô doanh số và hoàn thành kế hoạch:** Toàn chuỗi đạt doanh số `819.811`, vượt ngân sách `+73.651` (tương ứng tỷ lệ hoàn thành `109,87%`). Thị trường **West** dẫn đầu về doanh số (`272.264`, chiếm `33,21%` toàn chuỗi) và có mức vượt ngân sách cao nhất (`+32.564`, đạt `113,59%`).
+* **Về hiệu quả sinh lời:** Mặc dù đứng thứ hai về doanh số (`265.045`), thị trường **Central** lại dẫn đầu toàn chuỗi về lợi nhuận tuyệt đối (`93.852`) với biên lợi nhuận trên doanh thu đạt tới `35,41%`, cao hơn đáng kể so với `West` (`27,18%`). Ngược lại, `West` có quy mô doanh thu và tồn kho cuối kỳ lớn nhất (`58.933`) nhưng biên lợi nhuận thấp nhất, cho thấy chi phí giá vốn và chi phí vận hành/tiếp thị tại `West` đang chiếm tỷ trọng lớn.
+* **Về rủi ro tiềm ẩn dưới mức tổng hợp:** Khi nhìn ở cấp tổng hợp 24 tháng, cả 4 thị trường đều có `Gap > 0`. Tuy nhiên, khi phân rã theo từng tháng trên `mart.vw_MarketPeriod`, hệ thống phát hiện những kỳ bị hụt ngân sách cục bộ, điển hình là thị trường **South kỳ tháng 08/2013** (`Sales = 4.601`, `BudgetSales = 4.610`, `Gap = -9`).
+
+### 5.3.2. Phân tích lát cắt theo bang và nhóm sản phẩm
+
+Khi thực hiện lát cắt tại kỳ khởi đầu **`01/2012` (`DateKey = 20120101`)** và truy sâu từ cấp `Market` xuống cấp `State` cho hai thị trường lớn nhất là `Central` và `West`, kết quả phân bổ theo từng bang như sau:
+
+| Thị trường (`Market`) | Bang (`State`) | Doanh số (`Sales`) | Ngân sách (`BudgetSales`) | Lợi nhuận (`Profit`) | Chênh lệch (`Gap`) | Tỷ lệ đạt ngân sách (`BudgetAchievement`) |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | **Central** | Colorado | 1.958 | 1.870 | 585 | +88 | 104,71% |
 | **Central** | Illinois | 2.538 | 2.580 | 912 | −42 | 98,37% |
@@ -147,52 +173,136 @@ Các truy vấn MDX trong `ssas/queries.mdx` và truy vấn SQL đối chứng t
 | **West** | Washington | 1.605 | 1.420 | 405 | +185 | 113,03% |
 | **Tổng Roll-up West** | **5 bang** | **10.453** | **9.460** | **2.356** | **+993** | **110,50%** |
 
-- Tổng cộng các bang thành phần khớp 100% với số cấp `Market` (chênh lệch = `0`), và tỷ lệ `BudgetAchievement` cấp `Market` được tính lại từ tổng tử chia tổng mẫu (`10.346 / 9.970 = 103,77%` và `10.453 / 9.460 = 110,50%`).
+*Bảng 5.4. Kết quả Drill-down từ `Market` xuống `State` và Roll-up ngược lại tại kỳ tháng `01/2012`*
 
-### 5.4.2 Phép cắt đa chiều (Dice) và Xoay trục (Pivot) kỳ `01/2012`, `Central + East`, nhóm `Coffee`
+Bảng 5.4 cho thấy phép truy sâu giúp phát hiện sự phân hóa ngay trong một thị trường đang vượt kế hoạch: tại `Central` tháng `01/2012` (`Gap = +376`), bang `Illinois` có doanh số lớn nhất (`2.538`) nhưng thực chất lại đang hụt ngân sách (`Gap = -42`, chỉ đạt `98,37%`), trong khi mức vượt kế hoạch của toàn vùng được kéo lên chủ yếu bởi bang `Iowa` (`Gap = +219`, đạt `112,10%`).
 
-- **Trước khi Pivot (nhóm theo `Market`):** `Central = 2.663`, `East = 2.105` → Tổng lát cắt = **`4.768`** (`BudgetSales = 4.640`, `Profit = 1.648`).
-- **Sau khi Pivot (đưa `ProductName` lên hàng, `Market` lên cột):**
+### 5.3.3. Truy sâu phát hiện điểm hụt ngân sách tại thị trường South kỳ 08/2013
 
-| Sản phẩm (`ProductName` thuộc `Coffee`) | `Central` (`Sales`) | `East` (`Sales`) | Tổng `Sales` theo sản phẩm |
+Để làm rõ nguyên nhân thị trường **South** bị hụt ngân sách tại kỳ **`08/2013`** (`Sales = 4.601`, `BudgetSales = 4.610`, `Gap = -9`), nhóm thực hiện truy sâu xuống cấp sản phẩm (`mart.vw_MarketProductPeriod` / MDX Query 7) và sắp xếp theo `Gap` có dấu tăng dần:
+
+| Thứ hạng hụt | Sản phẩm (`ProductName`) | Nhóm (`ProductType`) | Doanh số (`Sales`) | Ngân sách (`BudgetSales`) | Chênh lệch (`Gap`) | Lợi nhuận (`Profit`) | Tỷ lệ đạt (`BudgetAchievement`) | Đánh giá đóng góp |
+| ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| 1 | **Colombian** | Coffee | 1.102 | 1.370 | **−268** | 542 | 80,44% | Hụt ngân sách nghiêm trọng nhất cần ưu tiên xử lý |
+| 2 | **Decaf Irish Cream** | Coffee | 465 | 570 | **−105** | 105 | 81,58% | Hụt ngân sách lớn thứ hai (tổng 2 món hụt `−373`) |
+| 3 | Chamomile | Herbal Tea | 482 | 460 | +22 | 164 | 104,78% | Vượt nhẹ ngân sách |
+| 4 | Lemon | Herbal Tea | 646 | 620 | +26 | 133 | 104,19% | Vượt nhẹ ngân sách |
+| 5 | Caffe Latte | Espresso | 573 | 480 | +93 | 161 | 119,38% | Tăng trưởng tốt, bù đắp thiếu hụt |
+| 6 | Decaf Espresso | Espresso | 719 | 610 | +109 | 341 | 117,87% | Tăng trưởng tốt, bù đắp thiếu hụt |
+| 7 | Caffe Mocha | Espresso | 614 | 500 | +114 | 258 | 122,80% | Vượt ngân sách cao nhất trong kỳ |
+| **—** | **Tổng South 08/2013** | **7 sản phẩm** | **4.601** | **4.610** | **−9** | **1.704** | **99,80%** | **5 món vượt (`+364`) bù gần hết 2 món hụt (`−373`)** |
+
+*Bảng 5.5. Phân tích đóng góp chênh lệch ngân sách theo sản phẩm tại thị trường `South` kỳ `08/2013`*
+
+Kết quả ở Bảng 5.5 minh chứng rõ giá trị của kho dữ liệu đa chiều: nếu nhà quản lý chỉ nhìn con số tổng `Gap = -9` ở cấp thị trường `South`, họ có thể đánh giá sai rằng mọi sản phẩm đều bám sát kế hoạch (`99,80%`). Tuy nhiên, khi drill-down xuống cấp sản phẩm, hai mặt hàng dòng `Coffee` là **Colombian** (`Gap = -268`) và **Decaf Irish Cream** (`Gap = -105`) thực tế bị hụt tới **`-373`** đơn vị doanh số, nhưng đã bị che lấp bởi mức vượt kế hoạch `+364` của 5 sản phẩm dòng `Espresso` và `Herbal Tea`.
+
+---
+
+## 5.4. Thực nghiệm TN05 – Kiểm chứng Data Mart và Drill-Across không gây Fan-out
+
+### 5.4.1. Mục tiêu và phương pháp thực hiện
+
+Thực nghiệm TN05 được thực hiện nhằm đạt ba mục tiêu:
+1. Kiểm chứng độ chính xác từng ô (cell-by-cell) của ba View tại tầng Data Mart (`mart.vw_Detail`, `mart.vw_MarketPeriod`, `mart.vw_MarketProductPeriod`) so với dữ liệu nguồn `Coffee.csv`.
+2. Định lượng sai số phóng đại ngân sách khi cố tình nối trực tiếp bảng tổng hợp cấp `MonthStart × Market` vào bảng chi tiết trước khi `SUM` (lỗi Fan-out).
+3. Kiểm chứng mẫu truy vấn **Drill-Across** sử dụng tiền tổng hợp độc lập kết hợp `FULL OUTER JOIN` trên kịch bản có nhóm thiếu ngân sách và nhóm tương lai chỉ có kế hoạch (`learning/experiments/mart_olap.py`, `sql/sqlserver/10_drill_across.sql` và `sql/sqlserver/11_tn05_budget_demo.sql`).
+
+Trong kịch bản thử nghiệm nhóm thiếu (`11_tn05_budget_demo.sql`), nhóm khởi tạo bảng `#Actual` (`96` nhóm `MonthStart × Market` từ nguồn) và bảng `#Budget` (`96` nhóm), sau đó:
+* Xóa dòng ngân sách của thị trường `West` kỳ `2012-01-01` khỏi `#Budget` (mô phỏng trường hợp có doanh số thực tế nhưng thiếu kế hoạch ngân sách).
+* Chèn thêm một dòng kế hoạch tương lai cho thị trường `West` kỳ `2014-01-01` với `BudgetSales = 1.000` vào `#Budget` (mô phỏng trường hợp kỳ kế hoạch tương lai chưa có doanh số thực tế).
+
+### 5.4.2. Kết quả thực nghiệm
+
+Thứ nhất, phép đối soát từng ô trên toàn bộ `96` nhóm của `mart.vw_MarketPeriod`, `1.008` nhóm của `mart.vw_MarketProductPeriod` và `4.248` dòng của `mart.vw_Detail` giữa SQL Server 2022 (`CoffeeDW`), SQLite và kết quả tính trực tiếp từ `Coffee.csv` đều cho độ lệch tuyệt đối lớn nhất (`max_abs_diff`) bằng **`0,0000`** trên mọi cột số đo và KPI.
+
+Thứ hai, kết quả so sánh giữa phép nối sai (Anti-pattern Fan-out) và phép nối đúng (Drill-Across sau tiền tổng hợp) trên SQL Server 2022 được tổng hợp trong Bảng 5.6:
+
+| Phương pháp kết nối Actual và Budget | Phạm vi kiểm tra | Số dòng chi tiết bị nhân bản | Tổng `Sales` thu được | Tổng `BudgetSales` thu được | Hệ số phóng đại `BudgetSales` | Đánh giá tính đúng đắn |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| **Nối sai (Fan-out):** Nối trực tiếp `#Budget` (`MonthStart × Market`) vào `mart.vw_Detail` rồi mới `SUM` | Riêng `West` kỳ `01/2012` | 56 dòng | 10.453,0000 | **529.760,0000** | Gấp **56,00 lần** số đúng (`9.460`) | **Sai** – Ngân sách thị trường bị cộng lặp theo số dòng chi tiết |
+| **Nối sai (Fan-out):** Nối trực tiếp `#Budget` vào `mart.vw_Detail` trên toàn bộ 24 tháng | Toàn chuỗi 24 tháng | 4.248 dòng | 819.811,0000 | **36.035.260,0000** | Gấp **48,29 lần** số đúng (`746.160`) | **Sai** – Báo cáo ngân sách bị thổi phồng nghiêm trọng |
+| **Nối đúng (Drill-Across):** Tiền tổng hợp độc lập từng bảng về `MonthStart × Market` rồi `FULL OUTER JOIN` | Riêng `West` kỳ `01/2012` | 1 nhóm | 10.453,0000 | **9.460,0000** | **1,00 lần** (Chính xác) | **Đúng** – Bảo toàn tuyệt đối cả `Sales` và `BudgetSales` |
+| **Nối đúng (Drill-Across):** Tiền tổng hợp độc lập trên toàn bộ 24 tháng | Toàn chuỗi 24 tháng | 96 nhóm | 819.811,0000 | **746.160,0000** | **1,00 lần** (Chính xác) | **Đúng** – Khớp 100% với tổng nguồn |
+
+*Bảng 5.6. Đối chiếu định lượng giữa phép nối gây lỗi Fan-out và phép nối Drill-Across chuẩn trong TN05*
+
+Thứ ba, khi chạy truy vấn Drill-Across có `FULL OUTER JOIN` trên tập dữ liệu thử nghiệm có kỳ thiếu ngân sách và kỳ tương lai chỉ có kế hoạch, hệ thống trả về đúng `97` nhóm (`95` nhóm khớp đủ hai phía, `1` nhóm thiếu Budget và `1` nhóm thiếu Actual):
+
+| Kỳ tháng (`MonthStart`) | Thị trường (`Market`) | Doanh số thực tế (`Sales`) | Ngân sách (`BudgetSales`) | Chênh lệch (`Gap`) | Cờ `MissingActual` | Cờ `MissingBudget` | Ý nghĩa đối soát |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `2012-01-01` | `West` | 10.453,0000 | `NULL` | `NULL` | 0 | 1 | Giữ nguyên doanh số thực tế `10.453`; không biến ngân sách thiếu thành `0` |
+| `2014-01-01` | `West` | `NULL` | 1.000,0000 | `NULL` | 1 | 0 | Giữ nguyên kế hoạch kỳ tương lai `1.000` dù chưa có doanh số thực tế |
+
+*Bảng 5.7. Kết quả bảo toàn nhóm thiếu bằng `FULL OUTER JOIN` và cờ trạng thái trong TN05*
+
+![TN05_join.png](../../results/TN05/chi_2026-11-15/TN05_join.png)
+*Hình 5.5. Kết quả thực thi kịch bản TN05 kiểm chứng `FULL OUTER JOIN` và lỗi nhân bản ngân sách Fan-out*
+
+### 5.4.3. Nhận xét kết quả
+
+Thực nghiệm TN05 chứng minh rằng khi làm việc với các bảng sự kiện hoặc bảng kế hoạch/dự báo có độ hạt khác nhau, việc tiền tổng hợp độc lập từng nguồn về cùng độ hạt chung trước khi thực hiện `FULL OUTER JOIN` là điều kiện bắt buộc để tránh sai số nhân bản gấp hàng chục lần, đồng thời bảo toàn đầy đủ các kỳ dữ liệu bất đối xứng ở biên thời gian.
+
+---
+
+## 5.5. Thực nghiệm TN06 – Triển khai Data Cube, truy vấn MDX và đối soát OLAP đa chiều
+
+### 5.5.1. Mục tiêu và phương pháp thực hiện
+
+Thực nghiệm TN06 được thực hiện nhằm triển khai khối đa chiều `Coffee Performance` từ dự án `ssas/CoffeeCube/CoffeeCube.dwproj`, thực thi bộ 9 truy vấn MDX trong `ssas/queries.mdx` (bao phủ các phép toán Slice, Drill-down, Roll-up, Dice, Pivot, xếp hạng `Gap` có dấu tại `South 08/2013` và kiểm tra tồn kho bán cộng `Inventory`) và đối chiếu chéo từng con số với tập truy vấn SQL chuẩn `sql/sqlserver/13_tn06_olap_checks.sql` cũng như tệp nguồn `Coffee.csv`.
+
+Bên cạnh việc kiểm chứng trên máy Chi (`Chi-Chie`) và bản tham chiếu Python, trong đợt tích hợp nhánh `dev` ngày `20/11/2026`, khối SSAS native (`CoffeeCube_Trang_20261120` trên instance `localhost\TRANGTRETRAU`, SSAS Server v17.0.25.218) cũng đã được `ProcessFull` trực tiếp trên chính cơ sở dữ liệu vừa nạp qua SSIS (`CoffeeDW_Trang_SSIS_TN03_20261120`) và vượt qua toàn bộ `17/17` ca đối soát MDX – SQL tự động cùng `6/6` ô kiểm tra xoay trục Pivot qua giao thức ADOMD.
+
+![TN06_mdx_query.png](../../results/TN06/chi_2026-11-15/TN06_mdx_query.png)
+*Hình 5.6. Nội dung các truy vấn MDX thực hiện Slice, Drill-down, Roll-up, Dice, Pivot và xử lý tồn kho bán cộng*
+
+### 5.5.2. Kết quả thực nghiệm
+
+Thứ nhất, kết quả phép **cắt khối con (Dice)** và **xoay trục (Pivot)** tại kỳ `01/2012` (`DateKey = 20120101`), lọc hai thị trường `{Central, East}` và nhóm sản phẩm `Product Type = Coffee` (MDX Query 5 & Query 6 / SQL Check 4 & Check 5):
+
+* **Trước khi Pivot (nhóm theo `Market`):** Thị trường `Central` đạt `Sales = 2.663` (`BudgetSales = 2.650`, `Profit = 860`, `Gap = +13`); thị trường `East` đạt `Sales = 2.105` (`BudgetSales = 1.990`, `Profit = 788`, `Gap = +115`). Tổng doanh số của khối con là **`4.768`** (`BudgetSales = 4.640`, `Profit = 1.648`, `Gap = +128`).
+* **Sau khi Pivot (đưa `Product Name` lên trục hàng và `Market` lên trục cột):**
+
+| Sản phẩm thuộc nhóm `Coffee` (`ProductName`) | Thị trường `Central` (`Sales`) | Thị trường `East` (`Sales`) | Tổng theo sản phẩm (`Row Total`) |
 | --- | ---: | ---: | ---: |
 | Amaretto | 524 | 93 | 617 |
 | Colombian | 1.117 | 1.812 | 2.929 |
 | Decaf Irish Cream | 1.022 | 200 | 1.222 |
-| **Tổng lát cắt (Grand Total)** | **2.663** | **2.105** | **4.768** |
+| **Tổng theo thị trường (`Column Total`)** | **2.663** | **2.105** | **4.768** |
 
-- Phép xoay trục giữ nguyên tổng lát cắt bằng **`4.768`**, chứng minh tính giao hoán và bảo toàn độ hạt của mô hình đa chiều.
+*Bảng 5.8. Ma trận kết quả sau phép xoay trục Pivot cho khối con `Coffee` tại `Central` và `East` kỳ `01/2012`*
 
----
-
-## 5.5 Phân tích truy sâu điểm hụt ngân sách: `South` kỳ `08/2013`
-
-Khi lọc kỳ `2013-08-01` và thị trường `South` (`Sales = 4.601`, `BudgetSales = 4.610`, `Gap = -9`), truy sâu xuống cấp sản phẩm (`mart.vw_MarketProductPeriod` / MDX Query 7) và sắp xếp theo `Gap` có dấu tăng dần cho kết quả:
-
-| Hạng | Sản phẩm (`ProductName`) | `Sales` | `BudgetSales` | Chênh lệch (`Gap`) | `Profit` | Nhận định đóng góp |
-| ---: | --- | ---: | ---: | ---: | ---: | --- |
-| 1 | **Colombian** | 1.102 | 1.370 | **−268** | 542 | Hụt ngân sách lớn nhất cần rà soát đầu tiên |
-| 2 | **Decaf Irish Cream** | 465 | 570 | **−105** | 105 | Hụt ngân sách lớn thứ hai (tổng 2 món hụt −373) |
-| 3 | Chamomile | 482 | 460 | +22 | 164 | Vượt nhẹ ngân sách |
-| 4 | Lemon | 646 | 620 | +26 | 133 | Vượt nhẹ ngân sách |
-| 5 | Caffe Latte | 573 | 480 | +93 | 161 | Bù đắp một phần thiếu hụt |
-| 6 | Decaf Espresso | 719 | 610 | +109 | 341 | Bù đắp phần thiếu hụt |
-| 7 | Caffe Mocha | 614 | 500 | +114 | 258 | Vượt ngân sách cao nhất trong kỳ |
-| **—** | **Tổng South 08/2013** | **4.601** | **4.610** | **−9** | **1.704** | **5 món vượt (+364) bù gần hết 2 món hụt (−373)** |
-
-- **Ý nghĩa nghiệp vụ:** Ở cấp toàn thị trường `South`, mức hụt `−9` trông rất nhỏ, nhưng khi mở xuống cấp sản phẩm, hai món `Colombian` (`−268`) và `Decaf Irish Cream` (`−105`) thực chất bị hụt tới `−373` đơn vị doanh số và được che lấp bởi 5 sản phẩm vượt kế hoạch (`+364`). Điều này chứng minh giá trị cốt lõi của tính năng drill-down đa chiều và quy tắc sắp xếp theo `Gap` có dấu tăng dần.
-
-![TN06_usage.png](../../results/TN06/chi_2026-11-15/TN06_usage.png)
-
-![TN06_mdx_query.png](../../results/TN06/chi_2026-11-15/TN06_mdx_query.png)
+Phép xoay trục giữ nguyên tổng từng cột (`2.663` và `2.105`), tổng từng hàng (`617 + 2.929 + 1.222`) và tổng toàn lát cắt bằng **`4.768`**, khớp `100%` giữa truy vấn MDX và truy vấn SQL `PIVOT`.
 
 ![TN06_browser.png](../../results/TN06/chi_2026-11-15/TN06_browser.png)
+*Hình 5.7. Kết quả duyệt khối đa chiều trên SSAS Cube Browser với các bộ lọc thời gian, thị trường và nhóm sản phẩm*
 
 ![TN06_sql.png](../../results/TN06/chi_2026-11-15/TN06_sql.png)
+*Hình 5.8. Kết quả thực thi bộ truy vấn SQL đối chứng `13_tn06_olap_checks.sql` trên SQL Server 2022*
+
+Thứ hai, bảng tổng hợp đối soát chéo toàn bộ các kịch bản trong TN06 giữa dữ liệu nguồn (`Coffee.csv`), truy vấn SQL Server (`13_tn06_olap_checks.sql`) và truy vấn MDX trên khối SSAS (`ssas/queries.mdx`) được trình bày tại Bảng 5.9:
+
+| Kịch bản kiểm thử OLAP (TN06) | Bộ lọc áp dụng (`Time / Location / Product`) | Kết quả từ nguồn `Coffee.csv` | Kết quả từ SQL Server (`CoffeeDW`) | Kết quả từ SSAS Cube (`queries.mdx`) | Độ lệch |
+| --- | --- | --- | --- | --- | ---: |
+| **1. Tổng toàn khối (All Periods)** | `24 tháng`, `4 Market`, `13 Product` | `Sales = 819.811`, `Budget = 746.160`, `Profit = 259.543`, `Gap = +73.651` | `Sales = 819.811`, `Budget = 746.160`, `Profit = 259.543`, `Gap = +73.651` | `Sales = 819.811`, `Budget = 746.160`, `Profit = 259.543`, `Gap = +73.651` | 0 |
+| **2. Slice kỳ `11/2013`** | `DateKey = 20131101` (`4 Market`) | `Central = 10.966`, `East = 7.302`, `South = 4.467`, `West = 11.300` (Tổng `34.035`) | `Central = 10.966`, `East = 7.302`, `South = 4.467`, `West = 11.300` (Tổng `34.035`) | `Central = 10.966`, `East = 7.302`, `South = 4.467`, `West = 11.300` (Tổng `34.035`) | 0 |
+| **3. Slice & Roll-up `Central 01/2012`** | `DateKey = 20120101`, `Market = Central` (gộp 6 bang) | `Sales = 10.346`, `Budget = 9.970`, `Profit = 2.956`, `Ach = 103,77%` | `Sales = 10.346`, `Budget = 9.970`, `Profit = 2.956`, `Ach = 103,77%` | `Sales = 10.346`, `Budget = 9.970`, `Profit = 2.956`, `Ach = 103,77%` | 0 |
+| **4. Slice & Roll-up `West 01/2012`** | `DateKey = 20120101`, `Market = West` (gộp 5 bang) | `Sales = 10.453`, `Budget = 9.460`, `Profit = 2.356`, `Ach = 110,50%` | `Sales = 10.453`, `Budget = 9.460`, `Profit = 2.356`, `Ach = 110,50%` | `Sales = 10.453`, `Budget = 9.460`, `Profit = 2.356`, `Ach = 110,50%` | 0 |
+| **5. Dice & Pivot nhóm `Coffee`** | `DateKey = 20120101`, `{Central, East}`, `ProductType = Coffee` | `Central = 2.663`, `East = 2.105`, Tổng = `4.768` (`Budget = 4.640`) | `Central = 2.663`, `East = 2.105`, Tổng = `4.768` (`Budget = 4.640`) | `Central = 2.663`, `East = 2.105`, Tổng = `4.768` (`Budget = 4.640`) | 0 |
+| **6. Drill-down `South 08/2013`** | `DateKey = 20130801`, `Market = South` (7 sản phẩm) | `Sales = 4.601`, `Budget = 4.610`, `Gap = -9`; `Colombian = -268`, `Decaf Irish Cream = -105` | `Sales = 4.601`, `Budget = 4.610`, `Gap = -9`; `Colombian = -268`, `Decaf Irish Cream = -105` | `Sales = 4.601`, `Budget = 4.610`, `Gap = -9`; `Colombian = -268`, `Decaf Irish Cream = -105` | 0 |
+| **7. Tồn kho bán cộng (`Inventory`)** | Kỳ cuối `2013-12-01` (không cộng dồn 24 tháng `3.182.971`) | `Central = 45.252`, `East = 31.529`, `South = 11.444`, `West = 58.933` (Tổng `147.158`) | `Central = 45.252`, `East = 31.529`, `South = 11.444`, `West = 58.933` (Tổng `147.158`) | `Central = 45.252`, `East = 31.529`, `South = 11.444`, `West = 58.933` (Tổng `147.158`) | 0 |
+
+*Bảng 5.9. Bảng đối soát toàn diện kết quả phân tích đa chiều giữa Tệp nguồn – SQL Server – SSAS Cube*
+
+### 5.5.3. Nhận xét kết quả
+
+Thực nghiệm TN06 xác nhận khối đa chiều `Coffee Performance` trên SSAS Multidimensional và lớp Data Mart trên SQL Server đã được thiết kế đồng bộ, chính xác về mặt ngữ nghĩa dữ liệu:
+* Thiết kế khóa ghép `(Year, Quarter)` và khóa tháng `DateKey` (`YYYYMMDD`) trong chiều `Dim Date` đã ngăn chặn triệt để lỗi gộp nhầm các tháng cùng tên của hai năm khác nhau.
+* Các phép biến đổi không gian đa chiều (`Slice`, `Drill-down`, `Roll-up`, `Dice`, `Pivot`) bảo toàn tuyệt đối tổng số đo, đồng thời tính lại chính xác các chỉ tiêu tỷ lệ (`BudgetAchievement`, `ProfitMargin`) và chỉ tiêu bán cộng (`Inventory` theo kỳ cuối).
+* Toàn bộ hệ thống View tại lớp Data Mart (`mart.vw_Detail`, `mart.vw_MarketPeriod`, `mart.vw_MarketProductPeriod`) đã được kiểm chứng khớp 100% với nguồn và Cube, tạo nền tảng dữ liệu tin cậy để bàn giao cho mô-đun dự báo chuỗi thời gian (Chương 6) và hệ thống Dashboard phục vụ người dùng cuối (Chương 7).
 
 ---
 
-## 5.6 Điểm bàn giao cho Chương 6–7 (Trang)
+## 5.6. Điểm bàn giao cho Chương 6–7 (Trang)
 
 1. **Hợp đồng Mart đã chốt và kiểm chứng trên cả SQLite & SQL Server 2022 (`CoffeeDW`):**
    - `mart.vw_Detail`, `mart.vw_MarketPeriod`, `mart.vw_MarketProductPeriod` giữ nguyên tên cột và kiểu dữ liệu như đặc tả `docs/architecture.md`.
