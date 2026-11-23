@@ -1,8 +1,37 @@
 # Coffee Datacube — giao diện riêng của Trang
 
-Ứng dụng khám phá Sales so với Budget theo **tháng × Market × sản phẩm**, dùng trực tiếp mart theo hợp đồng chương 4–5 của Chi. Giao diện này nằm riêng ở cổng **8503**; không thay dashboard cũ ở cổng 8501, không gọi mô hình AI hoặc dự báo và không ghi kho dữ liệu.
+Ứng dụng khám phá Sales so với Budget theo **tháng × Market × sản phẩm**, dùng trực tiếp mart theo hợp đồng chương 4–5 của Chi. Bản tích hợp SQL Server chạy ở cổng **8504** và chứa Cube 3D, drill-down quý, Query Studio cùng Linear Lab; không tạo thêm cổng cho từng chức năng và không ghi kho dữ liệu. Cổng 8503 chỉ là lựa chọn khi chủ động chạy một server SQLite riêng. Dashboard Streamlit cũ vẫn ở cổng 8501. Query Studio có thể dùng Gemini API để đề xuất SELECT; SQL chỉ được chạy sau khi parser AST và hợp đồng mart chấp nhận.
+
+Lộ trình thống nhất trên thanh điều hướng là **01 Chênh lệch → 02 Cube 3D beta → 03 Truy vấn → 04 Mô hình thử**. Khi bảo vệ, bắt đầu ở drill-down quý và dùng bảng SQL/SSAS đã đối soát làm bằng chứng. Cube 3D, Gemini và Linear Lab mang trạng thái **đang phát triển**: có kiểm tra kỹ thuật nhưng chưa thay cho nghiệm thu người dùng, độ ổn định demo hoặc bằng chứng mô hình đủ tốt để ra quyết định.
+
+## Thử Linear Regression Marketing–Sales
+
+Mở [Linear Lab](http://127.0.0.1:8504/linear.html). Mỗi Market có một đường `Sales = intercept + coefficient × Marketing`, học trên 18 tháng đầu và kiểm tra trên 6 tháng cuối. Trang hiển thị scatter train/test, Pearson r, MAE, RMSE, R² test và thanh thử Marketing từ −30% đến +50%.
+
+Đây là mô hình quan hệ cùng tháng, không phải dự báo tương lai hoặc bằng chứng nhân quả. R² test hiện âm ở cả bốn Market, nên chức năng được giữ riêng để giải thích/what-if và **không thay model dự báo Sales hiện có**. Không sinh thêm Sales để nâng metric. Xem [protocol, bảng kết quả và quyết định tích hợp](../../docs/trang/linear_marketing.md).
+
+## Tạo truy vấn SUM/AVG và hỏi Gemini
+
+Mở [Coffee Query Studio](http://127.0.0.1:8504/query.html). Tab **Tạo truy vấn bằng lựa chọn** chạy độc lập, không cần AI: chọn `SUM` hoặc `AVG`, tối đa bốn chỉ tiêu, tối đa ba chiều và nhiều Market/sản phẩm. Trang hiển thị cả bảng kết quả, SQL được tạo và các tham số đã bind. `Inventory` không có trong danh sách vì hợp đồng kho cấm cộng tồn kho xuyên thời gian.
+
+Tab **Hỏi bằng Gemini AI** là chức năng Text-to-SQL riêng. Gemini đề xuất đúng một `SELECT`/CTE theo dialect của backend; server dùng SQLGlot parse AST, chỉ cho phép `vw_Detail`, cột/hàm phân tích trong allowlist, giới hạn tối đa 200 dòng hiển thị và chạy bằng kết nối chỉ-đọc. DDL/DML, system table, nguồn khác, self-join và Inventory không có filter đúng một tháng đều bị từ chối. Server lấy model thật từ `models.list` và tự chuyển model khi gặp quota hoặc SQL không qua validator. Nếu chưa có key hoặc mọi model đều hết quota, bộ chọn SQL vẫn dùng bình thường. Xem [thiết kế, công thức, ca kiểm và kịch bản thuyết trình](../../docs/trang/query_studio.md).
+
+Sau mỗi truy vấn, nút **Mở trên Data Cube 3D** chuyển các chiều đã xác định sang khối 3D. Nếu truy vấn có đúng tháng, Market và sản phẩm, cube mở đúng lát cắt đó. Nếu chỉ biết năm, cube mở toàn bộ năm; Market/sản phẩm còn thiếu giữ ở “tất cả”, không tự chọn một giá trị. Với bảng xếp hạng top-N tối đa 10 sản phẩm, cube mang theo toàn bộ danh sách kết quả, làm nổi bật tất cả sản phẩm đó và tính KPI cùng tháng trên đúng nhóm; không biến dòng đầu thành bộ lọc duy nhất. Với một số đo `GROUP BY Market`, mỗi dòng kết quả trở thành đúng một khối roll-up, nên truy vấn đếm bốn Market hiển thị bốn khối thay vì bung lại thành các tháng và sản phẩm.
 
 Mục tiêu của màn trình diễn: từ một khối số liệu, chọn lát cắt tháng/thị trường, xem sản phẩm đang hụt hay vượt kế hoạch, rồi phân rã một sản phẩm xuống State. Kết quả là xác định nơi cần kiểm tra tiếp; chênh lệch số liệu không tự chứng minh nguyên nhân kinh doanh.
+
+## Phần trình diễn chính: drill-down theo quý
+
+Mở [Giải thích chênh lệch](http://127.0.0.1:8504/quarter.html). Người dùng chọn Market và quý; ứng dụng cộng từ mart tháng–Market–Product rồi dẫn qua ba cấp **quý → tháng → nhóm sản phẩm → sản phẩm**. Ở mỗi cấp, tổng Sales và BudgetSales của các nhánh con phải khớp nút cha. Thanh bên trái mốc 0 là phần hụt kế hoạch; thanh bên phải là phần vượt kế hoạch.
+
+Ca mặc định `South · Q3/2013` tạo một câu chuyện dễ kiểm tra:
+
+- Cả quý đạt Sales **13.554**, BudgetSales **13.180**, Gap **+374**.
+- Ba tháng lần lượt có Gap **+16**, **−9**, **+367**. Tháng 08/2013 là tháng duy nhất hụt kế hoạch.
+- Trong tháng 08/2013, Coffee **−373**, Herbal Tea **+48**, Espresso **+316**; ba nhóm cộng lại bằng **−9**.
+- Trong Coffee, Colombian **−268** và Decaf Irish Cream **−105**; hai sản phẩm cộng lại bằng **−373**.
+
+Chọn một nhánh sẽ cập nhật tất cả cấp phía sau. Nút **Mở ô này trên cube 3D** mang theo đúng tháng, Market và Product để khối 3D chọn lại cùng một ô. Đây là phép phân rã đóng góp số học của KPI `Gap = SUM(Sales) − SUM(BudgetSales)`, không phải kết luận về nguyên nhân kinh doanh.
 
 ## Mở thử
 
@@ -12,7 +41,7 @@ Tại root repo, dùng venv đã setup:
 .\.venv\Scripts\python.exe apps/cube_explorer/server.py
 ```
 
-Mở [http://127.0.0.1:8503](http://127.0.0.1:8503). Mặc định đọc kho SQLite có sẵn tại `data/warehouse/coffee_dw.sqlite`. Nếu chưa có kho, chạy `python -m coffee_dw.cli demo` theo README root trước khi mở ứng dụng. Server không tự tạo database rỗng hoặc tự nạp nguồn khi một đường dẫn sai.
+Lệnh mặc định mở [http://127.0.0.1:8503](http://127.0.0.1:8503) và đọc kho SQLite có sẵn tại `data/warehouse/coffee_dw.sqlite`. Đây là chế độ phát triển độc lập. Nếu chưa có kho, chạy `python -m coffee_dw.cli demo` theo README root trước khi mở ứng dụng. Server không tự tạo database rỗng hoặc tự nạp nguồn khi một đường dẫn sai.
 
 Để xem dữ liệu **SQL Server thật** trên database SSIS đã đối soát trên máy Trang:
 
@@ -22,7 +51,7 @@ Mở [http://127.0.0.1:8503](http://127.0.0.1:8503). Mặc định đọc kho SQ
 
 Lệnh trên dùng instance local `.` và Windows authentication qua ODBC Driver 18. Không ghi connection string vào file hoặc log. Đối với cấu hình riêng khác, dùng `COFFEE_DW_SQLSERVER_CONNECTION` theo `.env.example`, rồi chạy với `--backend sqlserver` và **bỏ `--database`** để không nhầm hai cấu hình. Quyền tài khoản nên giới hạn ở SELECT mart/dimension phục vụ; runner yêu cầu kết nối ODBC read-only và chỉ thực thi SELECT cố định có parameter binding.
 
-Đổi cổng bằng `--port 8504`; đổi kho tham chiếu có sẵn bằng `--db đường_dẫn.sqlite`. Server chỉ bind loopback (`127.0.0.1` hoặc `localhost`). Không chạy hai tiến trình trên cùng cổng; dừng server cũ bằng Ctrl+C trong terminal trước khi đổi backend. Backend được cố định lúc khởi động, không có chuyển nguồn ngầm.
+Với bản tích hợp, thêm `--port 8504` vào lệnh SQL Server và dùng một địa chỉ cho mọi chức năng. Đổi kho tham chiếu có sẵn bằng `--db đường_dẫn.sqlite`. Server chỉ bind loopback (`127.0.0.1` hoặc `localhost`). Không chạy hai tiến trình trên cùng cổng; dừng server cũ bằng Ctrl+C trong terminal trước khi đổi backend. Backend được cố định lúc khởi động, không có chuyển nguồn ngầm.
 
 ## Liên hệ với phần Chi
 
@@ -48,7 +77,14 @@ Một ô không có bản ghi không bị đổi thành số 0. `BudgetAchieveme
 
 - `server.py`: HTTP local, API chỉ-đọc và phục vụ các tài nguyên giao diện trong allowlist.
 - `data.py`: đọc hai mart, dimension sản phẩm và drill-down; đối soát grain, số đo, tỷ lệ và tổng từng ô.
-- `index.html`, `styles.css`, `app.js`: giao diện tương tác riêng.
+- `index.html`, `styles.css`, `app.js`: khối 3D và phân tích theo tháng.
+- `quarter.html`, `quarter.css`, `quarter.js`: drill-down quý → tháng → nhóm → sản phẩm.
+- `query.py`: kiểm tra đặc tả, sinh SQL từ allowlist và chạy truy vấn chỉ-đọc.
+- `gemini.py`: khám phá model Gemini text, fallback theo quota và sinh kế hoạch SELECT có cấu trúc.
+- `ai_sql.py`: kiểm phạm vi câu hỏi, parse/validate AST, giới hạn dòng và chạy SELECT chỉ-đọc.
+- `query.html`, `query.css`, `query.js`: bộ chọn nhiều lựa chọn, tab Gemini, bảng kết quả/SQL và link ngữ cảnh sang cube 3D.
+- `linear.html`, `linear.css`, `linear.js`: scatter train/test, metric và thanh kịch bản Marketing–Sales.
+- `../../src/coffee_dw/linear_marketing.py`: tổng hợp grain, kiểm tra lịch, fit và chấm Linear Regression theo thời gian.
 - `vendor/`: thư viện giao diện được lưu cục bộ theo phiên bản và giấy phép kèm theo.
 
 Các API dùng JSON số hữu hạn, ngày `YYYY-MM-DD`, tỷ lệ thiếu là `null`:
@@ -56,14 +92,20 @@ Các API dùng JSON số hữu hạn, ngày `YYYY-MM-DD`, tỷ lệ thiếu là 
 - `GET /api/data`: `{meta, marketPeriod, productPeriod}`; snapshot đã kiểm nhất quán khi khởi động.
 - `GET /api/drill?month=2013-08-01&market=South&product=Colombian`: `{rows,month,market,product,reconciliation}`; từ chối nếu kết quả đã đổi và không khớp snapshot.
 - `GET /api/health`: trạng thái server và backend.
+- `GET /api/query/config`: miền chỉ tiêu, chiều, năm, Market và sản phẩm được phép.
+- `POST /api/query`: nhận đặc tả có cấu trúc, trả SQL, params, ngữ cảnh mở cube và tối đa 200 dòng hiển thị.
+- `GET /api/ai/status`: trạng thái key và danh sách model Gemini text đang dùng được.
+- `POST /api/ai/query`: câu hỏi → fallback model → SELECT → AST validator → kết quả mart và ngữ cảnh mở cube.
+- `GET /api/linear`: phương trình, điểm train/test và metric Marketing–Sales cho bốn Market.
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest tests/test_cube_explorer.py -q
+.\.venv\Scripts\python.exe -m pytest tests/test_linear_marketing.py tests/test_cube_explorer.py -q -p no:cacheprovider
+node --check apps/cube_explorer/linear.js
 ```
 
-Đợt kiểm tra 21/11/2026: **13/13 test backend đạt**, gồm snapshot gốc, không ghi SQLite, không tự tạo file kho thiếu, khóa/grain, số không hữu hạn, tổng hai mart, mẫu budget 0, drill có tham số, snapshot drift, JSON/API và bảo vệ đường dẫn static. Chạy thêm `-p no:cacheprovider` để không ghi cache trong workspace.
+Đợt kiểm tra 22/11/2026: test backend bao phủ snapshot gốc, không ghi SQLite, khóa/grain, tổng hai mart, drill có tham số, snapshot drift, JSON/API, bảo vệ đường dẫn static, SUM/AVG/Gap của Query Studio, parameter binding, từ chối Inventory/identifier ngoài allowlist và Gemini fallback sau lỗi quota mà không tạo SQL. Chạy thêm `-p no:cacheprovider` để không ghi cache trong workspace.
 
-Controller giao diện có **10/10 kiểm tra Node VM đạt**, dùng API SQL Server thực: tổng hợp nhóm, ca South, drill State, export đúng filter, giữ số âm, chọn ô→bộ lọc, đổi trục không đổi tổng, đổi năm, ô thiếu và mẫu ngân sách 0. Chạy khi server SQL Server cổng 8503 đang mở:
+Controller giao diện có **10/10 kiểm tra Node VM đạt**, dùng API SQL Server thực: tổng hợp nhóm, ca South, drill State, export đúng filter, giữ số âm, chọn ô→bộ lọc, đổi trục không đổi tổng, đổi năm, ô thiếu và mẫu ngân sách 0. Chạy khi server SQL Server tích hợp cổng 8504 đang mở:
 
 ```powershell
 node --test tests/test_cube_explorer_frontend.js
@@ -93,7 +135,7 @@ Giao diện chia ba tab và giữ cùng bộ lọc giữa các tab:
 
 Các tab hỗ trợ phím mũi tên, Home và End. Phần dữ liệu, công thức và quyền chỉ-đọc không đổi. Các kiểm tra controller bổ sung xác nhận tab chỉ hiện nội dung tương ứng, giữ lựa chọn và đồng bộ KPI/drill/CSV; kết quả kiểm tra hình hiển thị được lưu riêng theo phiên browser, không gọi là UX người thật.
 
-**Kiểm tra bản làm mới:** 20/20 kiểm tra Node đạt, gồm 6 ca tab/bộ lọc mới. Browser thực đã được xem ở khung rộng1440px, khung hẹp527px và điện thoại390px; không thấy tràn ngang hoặc lỗi console. Chữ thân15px, nhãn13px, tiêu đề tab16px trên desktop; các vùng số liệu và khối 3D có màu riêng. Ca South/Colombian08/2013 trên tab phân tích cho Sales1102/Budget1370/Gap−268/80,4%, bốn State giữ tổng. Ảnh [bản desktop](../../results/cube_explorer/design_desktop_20261121.jpg) và [biên bản kiểm](../../results/cube_explorer/design_verification_20261121.json) lưu cục bộ; `results/` vẫn ignore. Viewport thử nghiệm đã reset về khung ban đầu sau kiểm tra. Chưa có phiên người tham gia hoặc bằng chứng tiết kiệm thời gian tác vụ.
+**Kiểm tra bản hiện tại:** 23/23 kiểm tra Node đạt, gồm các ca tab/bộ lọc, deep-link một lát cắt, nhóm top-N làm nổi đủ mọi sản phẩm và `GROUP BY Market` dựng đúng bốn khối roll-up hữu hạn. Browser thực đã được xem ở khung rộng1440px, khung hẹp527px và điện thoại390px; không thấy tràn ngang hoặc lỗi console. Chữ thân15px, nhãn13px, tiêu đề tab16px trên desktop; các vùng số liệu và khối 3D có màu riêng. Ca South/Colombian08/2013 trên tab phân tích cho Sales1102/Budget1370/Gap−268/80,4%, bốn State giữ tổng. Ảnh [bản desktop](../../results/cube_explorer/design_desktop_20261121.jpg) và [biên bản kiểm](../../results/cube_explorer/design_verification_20261121.json) lưu cục bộ; `results/` vẫn ignore. Viewport thử nghiệm đã reset về khung ban đầu sau kiểm tra. Chưa có phiên người tham gia hoặc bằng chứng tiết kiệm thời gian tác vụ.
 
 Đọc SQL Server chỉ-đọc trong cùng đợt trên cả `CoffeeDW_Trang_SSIS_TN03_20261120` và `CoffeeDW_Trang_20261119`: **96/1.008 ô, 13 ánh xạ sản phẩm**, tổng Sales **819.811**, BudgetSales **746.160**, Profit **259.543**; drill Colombian/South/08-2013 cộng đúng **−268**. Đây là kiểm tra dữ liệu/backend, không thay cho phiên UX với người tham gia hoặc chứng minh ứng dụng giúp quyết định nhanh hơn.
 

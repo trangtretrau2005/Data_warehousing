@@ -99,18 +99,19 @@ export class CubeScene {
     this.hoverIndex=-1;
     const wasEmpty=!this.rows.length;
     const previous=new Map(this.rows.map(r=>[r.key,r]));
-    const xSpace=8.1/Math.max(months.length,1);
+    const xSpace=state.rollup?1.45:8.1/Math.max(months.length,1);
     const ySpace=1.03;
-    const zSpace=4.7/Math.max(products.length,1);
+    const zSpace=state.rollup?1.45:4.7/Math.max(products.length,1);
     const maxAbs=Math.max(...rows.map(r=>Math.abs(r[state.measure])),1);
     const min=Math.min(...rows.map(r=>r[state.measure]),0);
     const max=Math.max(...rows.map(r=>r[state.measure]),1);
+    const focusProducts=Array.isArray(state.focusProducts)?state.focusProducts:[];
     this.state=state;this.months=months;this.products=products;this.markets=markets;
     this.rows=rows.map(r=>{
       const index=months.indexOf(r.MonthStart);
       const monthActive=r.MonthStart===state.month;
       const marketActive=!state.market||r.Market===state.market;
-      const productActive=!state.product||r.Product===state.product;
+      const productActive=state.product?r.Product===state.product:(!focusProducts.length||focusProducts.includes(r.Product));
       const active=monthActive&&marketActive&&productActive;
       const focus=marketActive&&productActive;
       const isHidden=state.mode==='slice'&&(!monthActive||!focus);
@@ -163,23 +164,24 @@ export class CubeScene {
         if(state.pivot)[pos.x,pos.z]=[pos.z,pos.x];
         addLabel(state.year==='all'?`${month.slice(5,7)}/${month.slice(2,4)}`:month.slice(5,7),pos,`time-label ${month===state.month?'selected-label':''}`);
       });
-      const timeTitle=months[0].slice(0,4)===months.at(-1).slice(0,4)?`THÁNG / ${months[0].slice(0,4)}`:`THÁNG / ${months[0].slice(0,4)}–${months.at(-1).slice(0,4)}`;
+      const timeTitle=state.rollup?'KẾT QUẢ SQL ĐÃ ROLL-UP':months[0].slice(0,4)===months.at(-1).slice(0,4)?`THÁNG / ${months[0].slice(0,4)}`:`THÁNG / ${months[0].slice(0,4)}–${months.at(-1).slice(0,4)}`;
       const pos=new THREE.Vector3(0,2.65,0);addLabel(timeTitle,pos,'title-label');
     }else{
       const pos=new THREE.Vector3(0,2.5,0);addLabel(`LÁT ${monthName(state.month)}`,pos,'title-label');
     }
     markets.forEach((market,index)=>{
-      const pos=new THREE.Vector3(-4.9,(index-(markets.length-1)/2)*ySpace,2.75);
+      const pos=new THREE.Vector3(state.rollup?-1.45:-4.9,(index-(markets.length-1)/2)*ySpace,state.rollup?0.8:2.75);
       if(state.mode==='slice')pos.x=-.8;
       if(state.pivot)[pos.x,pos.z]=[pos.z,pos.x];
       addLabel(market,pos,market===state.market?'selected-label':'');
     });
     products.forEach((product,index)=>{
-      if(products.length>6&&index%3!==0&&index!==products.length-1&&product!==state.product)return;
-      const pos=new THREE.Vector3(4.5,-2.08,(index-(products.length-1)/2)*zSpace);
+      const productSelected=product===state.product||focusProducts.includes(product);
+      if(products.length>6&&index%3!==0&&index!==products.length-1&&!productSelected)return;
+      const pos=new THREE.Vector3(state.rollup?1.5:4.5,-2.08,(index-(products.length-1)/2)*zSpace);
       if(state.mode==='slice')pos.x=.95;
       if(state.pivot)[pos.x,pos.z]=[pos.z,pos.x];
-      addLabel(shortName(product),pos,product===state.product?'selected-label':'');
+      addLabel(shortName(product),pos,productSelected?'selected-label':'');
     });
     this.tooltip.hidden=true;
     if(wasEmpty)this.drawMatrices(true);
@@ -203,11 +205,11 @@ export class CubeScene {
     this.canvas.style.cursor='pointer';
     const row=this.rows[hit],rect=this.viewport.getBoundingClientRect();
     this.tooltip.replaceChildren();
-    const title=document.createElement('strong');title.textContent=row.Product;this.tooltip.append(title);
-    const scope=document.createElement('p');scope.textContent=`${row.Market} · ${monthName(row.MonthStart)}`;this.tooltip.append(scope);
-    const values=document.createElement('p');values.textContent=`Sales ${fmt(row.Sales)} · Budget ${fmt(row.BudgetSales)}`;this.tooltip.append(values);
-    const gap=document.createElement('p');gap.textContent=`Gap ${row.Gap>0?'+':''}${fmt(row.Gap)}`;this.tooltip.append(gap);
-    const hint=document.createElement('small');hint.textContent='Bấm để mở lát cắt này ↗';this.tooltip.append(hint);
+    const title=document.createElement('strong');title.textContent=state.rollup?row.Market:row.Product;this.tooltip.append(title);
+    const scope=document.createElement('p');scope.textContent=state.rollup?'Một dòng GROUP BY Market':`${row.Market} · ${monthName(row.MonthStart)}`;this.tooltip.append(scope);
+    const values=document.createElement('p');values.textContent=state.rollup?`${row.RollupMetric} ${fmt(row.RollupValue)}`:`Sales ${fmt(row.Sales)} · Budget ${fmt(row.BudgetSales)}`;this.tooltip.append(values);
+    if(!state.rollup){const gap=document.createElement('p');gap.textContent=`Gap ${row.Gap>0?'+':''}${fmt(row.Gap)}`;this.tooltip.append(gap);}
+    const hint=document.createElement('small');hint.textContent=state.rollup?'Khối này tương ứng đúng một dòng SQL':'Bấm để mở lát cắt này ↗';this.tooltip.append(hint);
     this.tooltip.hidden=false;
     const tooltipWidth=this.tooltip.offsetWidth,tooltipHeight=this.tooltip.offsetHeight;
     this.tooltip.style.left=`${Math.max(8,Math.min(e.clientX-rect.left+16,rect.width-tooltipWidth-8))}px`;

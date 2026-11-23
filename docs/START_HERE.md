@@ -2,6 +2,8 @@
 
 Đây là code base của nhóm, đã có luồng Python/SQLite chạy được và hướng dẫn triển khai SQL Server/SSIS/SSAS. Mỗi thành viên đọc phần được giao, chạy bản demo, sau đó hoàn thiện code và báo cáo trên base hiện có. Checklist là việc cần nghiệm thu; code mẫu không đồng nghĩa mọi thực nghiệm đã hoàn thành.
 
+Để trình diễn hoặc xem hồ sơ TN03–TN06 của Chi, mở [mục bản tích hợp trong README](../README.md#bản-tích-hợp-chi-và-trang). Dùng bảng ứng dụng ở đó để chọn đúng cổng.
+
 ## Lần đầu nhận repo
 
 ```powershell

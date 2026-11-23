@@ -19,6 +19,10 @@ Người phụ trách: **Trang**. Chương này tích hợp ứng dụng và thu
 
 Điều kiện bàn giao: người khác chạy được theo README; SQL Server/SSIS/SSAS, benchmark và thử người dùng chỉ ghi đạt khi có minh chứng tương ứng. Nếu thời gian sát độ phân giải đồng hồ, kết luận chưa đủ bằng chứng về tốc độ dù plan cho thấy cơ chế hoạt động.
 
+## Linear Lab trong server tích hợp — 23/11/2026
+
+Trang `http://127.0.0.1:8504/linear.html` dùng cùng server/backend chỉ-đọc với Cube 3D và Query Studio, không tạo thêm cổng dashboard. API `GET /api/linear` tổng hợp Marketing/Sales từ mart, kiểm tra đủ 96 ô rồi trả phương trình, điểm train/test và metric cho bốn Market. Giao diện có scatter plot, đường hồi quy, thanh what-if −30% đến +50%, bảng so sánh và cảnh báo không phải dự báo/nhân quả. Xem [protocol và kết quả](../trang/linear_marketing.md).
+
 ## Hoàn thiện và bằng chứng ngày 19/11/2026
 
 - [Báo cáo chương 6–7, kết luận RQ, protocol/phiếu UX và kịch bản 4 phút](../trang/README.md) đã có bản Markdown cùng HTML in được. Không sửa hai Word gốc.
@@ -39,7 +43,7 @@ Trang phản hồi ba điểm: tương phản/cỡ chữ khó đọc, lời đ�
 
 ## Giao diện phân tích riêng — Coffee Atlas, 21/11/2026
 
-[Coffee Atlas / Cube Explorer](../../apps/cube_explorer/README.md) là ứng dụng riêng ở cổng8503, không sửa dashboard hoặc prototype forecast. Phạm vi là phân tích Sales/Budget/Profit theo tháng–Market–sản phẩm; không có AI hoặc dự báo. Khối 3D là lớp biểu diễn các mart quan hệ, không gọi là một engine SSAS mới.
+[Coffee Atlas / Cube Explorer](../../apps/cube_explorer/README.md) ban đầu là ứng dụng riêng ở cổng8503; bản tích hợp SQL Server hiện chạy ở cổng8504, không sửa dashboard hoặc prototype forecast cổng8501/8502. Phạm vi chính là phân tích Sales/Budget/Profit theo tháng–Market–sản phẩm; Query Studio và Linear Lab là các chức năng bổ sung trong cùng server. Khối 3D là lớp biểu diễn các mart quan hệ, không gọi là một engine SSAS mới.
 
 - [x] Đọc trực tiếp `mart.vw_MarketPeriod`, `mart.vw_MarketProductPeriod`, `dw.DimProduct` và drill State qua `mart.vw_Detail`. Chạy SELECT chỉ-đọc trên DB SSIS biệt lập `CoffeeDW_Trang_SSIS_TN03_20261120`; 96/1.008 ô, tổng819811/746160/259543 khớp nguồn.
 - [x] Có code khối 3D xoay/cắt lát/tách lớp/đổi trục; chọn tháng–Market–nhóm/sản phẩm và export cùng phạm vi. Kiểm tra controller với dữ liệu API SQL Server thực đạt10/10 và hình học Three.js thật đạt4/4; kiểm backend đạt13/13. Các phép kiểm logic/hình học chưa xác nhận hình hiển thị thực.

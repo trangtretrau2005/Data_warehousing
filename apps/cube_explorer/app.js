@@ -15,7 +15,7 @@ let months=[];
 let cubeRows=[];
 let requestId=0;
 let toastTimer;
-const state={year:'2013',month:'2013-08-01',market:'',product:'',level:'type',measure:'Gap',mode:'all',pivot:false,view:'explore'};
+const state={year:'2013',month:'2013-08-01',market:'',product:'',focusProducts:[],rollup:null,level:'type',measure:'Gap',mode:'all',pivot:false,view:'explore'};
 
 function sumRows(rows){
   if(!rows.length)return null;
@@ -34,8 +34,27 @@ function groupRows(rows, keyOf){
 }
 
 function productOf(row){return state.level==='type'?payload.meta.productTypes[row.ProductName]:row.ProductName;}
-function filteredRows({market=state.market,month=state.month,product=state.product}={}){
-  return payload.productPeriod.filter(row=>row.MonthStart===month&&(!market||row.Market===market)&&(!product||productOf(row)===product));
+function filteredRows(options={}){
+  const market=Object.hasOwn(options,'market')?options.market:state.market;
+  const month=Object.hasOwn(options,'month')?options.month:state.month;
+  const product=Object.hasOwn(options,'product')?options.product:state.product;
+  const focusProducts=Object.hasOwn(options,'focusProducts')?options.focusProducts:state.focusProducts;
+  return payload.productPeriod.filter(row=>{
+    const name=productOf(row);
+    const productMatch=product?name===product:(!focusProducts.length||focusProducts.includes(name));
+    return row.MonthStart===month&&(!market||row.Market===market)&&productMatch;
+  });
+}
+
+function productScopeLabel(){
+  if(state.product)return state.product;
+  if(state.focusProducts.length)return `${state.focusProducts.length} sản phẩm từ truy vấn`;
+  return state.level==='type'?'Tất cả nhóm sản phẩm':'Tất cả sản phẩm';
+}
+
+function selectSingleProduct(product){
+  if(product==='__query_products__')return;
+  state.rollup=null;state.focusProducts=[];state.product=product;
 }
 
 function toast(text){
@@ -61,7 +80,10 @@ function prepareOptions(){
 function syncProductOptions(){
   const names=state.level==='type'?[...new Set(Object.values(payload.meta.productTypes))].sort():payload.meta.products;
   if(state.product&&!names.includes(state.product))state.product='';
-  selectOptions($('product-select'),[{value:'',label:state.level==='type'?'Tất cả nhóm sản phẩm':'Tất cả sản phẩm'},...names.map(name=>({value:name,label:name}))],state.product);
+  if(state.level!=='product')state.focusProducts=[];
+  const queryGroup=state.focusProducts.length>1?[{value:'__query_products__',label:`${state.focusProducts.length} sản phẩm từ truy vấn`}]:[];
+  const selected=queryGroup.length?'__query_products__':state.product;
+  selectOptions($('product-select'),[{value:'',label:state.level==='type'?'Tất cả nhóm sản phẩm':'Tất cả sản phẩm'},...queryGroup,...names.map(name=>({value:name,label:name}))],selected);
   document.querySelector('label[for="product-select"]').textContent=state.level==='type'?'Nhóm sản phẩm':'Sản phẩm';
 }
 
@@ -70,11 +92,50 @@ function syncAnalysisFilters(){
   selectOptions($('analysis-month-select'),payload.meta.months.map(month=>({value:month,label:monthName(month)})),state.month);
   selectOptions($('analysis-market-select'),[{value:'',label:'Tất cả thị trường'},...payload.meta.markets.map(market=>({value:market,label:market}))],state.market);
   const names=state.level==='type'?[...new Set(Object.values(payload.meta.productTypes))].sort():payload.meta.products;
-  selectOptions($('analysis-product-select'),[{value:'',label:'Tất cả sản phẩm'},...names.map(name=>({value:name,label:name}))],state.product);
-  $('filter-summary').textContent=`${monthName(state.month)} · ${state.market||'Tất cả thị trường'}`;
+  const queryGroup=state.focusProducts.length>1?[{value:'__query_products__',label:`${state.focusProducts.length} sản phẩm từ truy vấn`}]:[];
+  selectOptions($('analysis-product-select'),[{value:'',label:'Tất cả sản phẩm'},...queryGroup,...names.map(name=>({value:name,label:name}))],queryGroup.length?'__query_products__':state.product);
+  $('filter-summary').textContent=`${monthName(state.month)} · ${state.market||'Tất cả thị trường'} · ${productScopeLabel()}`;
+}
+
+function setRollupControls(active){
+  $('month-slider').disabled=active;
+  for(const button of $('view-control').querySelectorAll('button'))button.disabled=active&&button.dataset.mode!=='all';
+  for(const button of $('level-control').querySelectorAll('button'))button.disabled=active;
+  $('axis-x-label').textContent=active?'Kết quả':'Tháng';
+  $('axis-y-label').textContent='Market';
+  $('axis-z-label').textContent=active?state.rollup.metric:'Sản phẩm';
+}
+
+function rebuildRollup(){
+  const rollup=state.rollup;
+  const rollupMonth=state.year!=='all'&&payload.meta.months.some(month=>month.startsWith(state.year))?`${state.year}-01-01`:payload.meta.months[0];
+  months=[rollupMonth];
+  cubeRows=rollup.items.map(item=>({
+    MonthStart:rollupMonth,Market:item.label,Product:rollup.metric,
+    RollupValue:Number(item.value),RollupMetric:rollup.metric,
+    Sales:0,BudgetSales:0,Profit:0,Gap:0,
+  }));
+  const sceneState={...state,month:rollupMonth,market:'',product:'',focusProducts:[],measure:'RollupValue',mode:'all'};
+  scene.setData(cubeRows,sceneState,months,rollup.items.map(item=>item.label),[rollup.metric]);
+  $('cube-grain').textContent=`${rollup.dimension.toUpperCase()} × ${rollup.metric.toUpperCase()}`;
+  $('cube-title').textContent=`${rollup.title} · ${rollup.items.length} ô roll-up`;
+  $('month-label').textContent=state.year==='all'?'TOÀN BỘ':'NĂM '+state.year;
+  $('month-slider').max=0;$('month-slider').value=0;
+  $('time-start').textContent='GROUP BY';$('time-end').textContent=rollup.dimension;
+  $('prev-month').disabled=true;$('next-month').disabled=true;
+  $('visible-cells').textContent=`${rollup.items.length} ô kết quả`;
+  const values=rollup.items.map(item=>Number(item.value));
+  $('legend-negative').textContent=`Thấp ${fmt(Math.min(...values))}`;
+  $('legend-positive').textContent=`Cao ${fmt(Math.max(...values))}`;
+  $('color-scale').style.background='linear-gradient(90deg,#c4cef6,#7a9be6)';
+  setRollupControls(true);
+  for(const button of $('view-control').querySelectorAll('button')){const active=button.dataset.mode==='all';button.classList.toggle('active',active);button.setAttribute('aria-pressed',active);}
+  $('filter-summary').textContent=`Kết quả SQL · ${rollup.items.length} ${rollup.dimension}`;
 }
 
 function rebuildCube(){
+  if(state.rollup){rebuildRollup();return;}
+  setRollupControls(false);
   months=payload.meta.months.filter(month=>state.year==='all'||month.startsWith(state.year));
   if(!months.includes(state.month))state.month=months[0];
   const rows=payload.productPeriod.filter(row=>months.includes(row.MonthStart)).map(row=>({...row,Product:productOf(row)}));
@@ -89,7 +150,10 @@ function rebuildCube(){
   $('time-start').textContent=monthName(months[0]);$('time-end').textContent=monthName(months.at(-1));
   $('prev-month').disabled=months.indexOf(state.month)===0;$('next-month').disabled=months.indexOf(state.month)===months.length-1;
   let visible=cubeRows.length;
-  if(state.mode==='slice')visible=cubeRows.filter(row=>row.MonthStart===state.month&&(!state.market||row.Market===state.market)&&(!state.product||row.Product===state.product)).length;
+  if(state.mode==='slice')visible=cubeRows.filter(row=>{
+    const productMatch=state.product?row.Product===state.product:(!state.focusProducts.length||state.focusProducts.includes(row.Product));
+    return row.MonthStart===state.month&&(!state.market||row.Market===state.market)&&productMatch;
+  }).length;
   $('visible-cells').textContent=`${fmt(visible)} ô ${state.mode==='slice'?'trong lát':'dữ liệu'}`;
   if(state.measure==='Gap'){
     $('legend-negative').textContent='Hụt kế hoạch';$('legend-positive').textContent='Vượt kế hoạch';
@@ -105,10 +169,15 @@ function rebuildCube(){
 }
 
 function updateKpis(){
+  $('primary-kpi-label').textContent='Sales thực tế';$('primary-kpi-note').textContent='Đơn vị theo nguồn dữ liệu';
+  $('secondary-kpi-label').textContent='Ngân sách';$('tertiary-kpi-label').textContent='Chênh lệch';$('achievement-card').hidden=false;
+  $('ranking-description').textContent='Âm là hụt, dương là vượt ngân sách. Bấm để xem ô tương ứng.';
+  $('clear-product').textContent='Xóa chọn';
   const rows=filteredRows();
   const marketRows=payload.marketPeriod.filter(row=>row.MonthStart===state.month&&(!state.market||row.Market===state.market));
-  const total=state.product?sumRows(rows):sumRows(marketRows);
-  $('scope-market').textContent=state.market||'Toàn chuỗi';$('scope-month').textContent=monthName(state.month);
+  const hasProductScope=Boolean(state.product||state.focusProducts.length);
+  const total=hasProductScope?sumRows(rows):sumRows(marketRows);
+  $('scope-market').textContent=state.focusProducts.length?`${state.focusProducts.length} sản phẩm · ${state.market||'Toàn chuỗi'}`:state.market||'Toàn chuỗi';$('scope-month').textContent=monthName(state.month);
   $('kpi-sales').textContent=fmt(total?.Sales??null);$('kpi-budget').textContent=fmt(total?.BudgetSales??null);$('kpi-gap').textContent=total?signed(total.Gap):'—';
   $('kpi-gap').className=total?.Gap<0?'negative':'positive';
   const ratio=total&&total.BudgetSales!==0?total.Sales/total.BudgetSales:null;
@@ -118,27 +187,53 @@ function updateKpis(){
   $('analysis-gap').textContent=total?signed(total.Gap):'—';
   $('analysis-gap').className=total?.Gap<0?'negative':'positive';
   $('analysis-ratio').textContent=ratio===null?'—':percent.format(ratio);
-  $('analysis-scope').textContent=`${monthName(state.month)} · ${state.market||'Toàn chuỗi'} · ${state.product||'Tất cả sản phẩm'}. Bộ lọc được giữ khi chuyển tab.`;
+  $('analysis-scope').textContent=`${monthName(state.month)} · ${state.market||'Toàn chuỗi'} · ${productScopeLabel()}. Bộ lọc được giữ khi chuyển tab.`;
   $('achievement-fill').style.width=`${ratio===null?0:Math.max(0,Math.min(ratio/1.2,1))*100}%`;
   $('achievement-fill').style.background=total?.Gap<0?'#e38c89':'#64baa8';
-  const subject=state.product?`${state.product} · ${state.market||'toàn chuỗi'}`:state.market||'Toàn chuỗi';
+  const subject=hasProductScope?`${productScopeLabel()} · ${state.market||'toàn chuỗi'}`:state.market||'Toàn chuỗi';
   $('scope-sentence').textContent=!total?`${subject}: không có bản ghi ở tháng này. Ô thiếu không được đổi thành 0.`:`${subject} ${total.Gap<0?'hụt':'vượt'} ${fmt(Math.abs(total.Gap))} so với ngân sách cùng kỳ.`;
-  const chosen=Boolean(state.product);
+  const chosen=hasProductScope;
   $('selected-cell').hidden=!chosen;$('clear-product').hidden=!chosen;
   if(chosen){
-    $('cell-title').textContent=state.product;
+    $('selection-label').textContent=state.focusProducts.length?'NHÓM TỪ KẾT QUẢ TRUY VẤN':'Ô ĐANG CHỌN';
+    $('cell-title').textContent=productScopeLabel();
     $('cell-values').textContent=total?`Sales ${fmt(total.Sales)} · Budget ${fmt(total.BudgetSales)} · Profit ${fmt(total.Profit)}`:'Tổ hợp này không có bản ghi trong mart.';
   }
   const baseline=payload.marketPeriod.filter(row=>row.MonthStart===state.month&&(!state.market||row.Market===state.market));
-  const baselineTotal=sumRows(baseline),fromProducts=sumRows(filteredRows({product:''}));
+  const baselineTotal=sumRows(baseline),fromProducts=sumRows(filteredRows({product:'',focusProducts:[]}));
   const match=Boolean(baselineTotal&&fromProducts&&moneyFields.every(key=>Math.abs(baselineTotal[key]-fromProducts[key])<.01));
   $('reconcile-text').textContent=match?'Tổng các sản phẩm khớp mart tháng–Market.':'Không đủ ô để đối chiếu tổng các cấp.';
-  $('lineage-month').textContent=monthName(state.month);$('lineage-market').textContent=state.market||'Tất cả thị trường';$('lineage-product').textContent=state.product||'Tất cả sản phẩm';
+  $('lineage-month').textContent=monthName(state.month);$('lineage-market').textContent=state.market||'Tất cả thị trường';$('lineage-product').textContent=productScopeLabel();
   $('lineage-sales').textContent=fmt(total?.Sales??null);$('lineage-budget').textContent=fmt(total?.BudgetSales??null);$('lineage-profit').textContent=fmt(total?.Profit??null);
 }
 
+function updateRollupInspector(){
+  const rollup=state.rollup,values=rollup.items.map(item=>Number(item.value));
+  const total=values.reduce((sum,value)=>sum+value,0),maximum=Math.max(...values);
+  $('scope-market').textContent=`${rollup.items.length} ${rollup.dimension}`;
+  $('scope-month').textContent=state.year==='all'?'Toàn bộ dữ liệu':`Năm ${state.year}`;
+  $('primary-kpi-label').textContent=`Tổng ${rollup.metric}`;$('primary-kpi-note').textContent='Cộng từ các dòng GROUP BY đang hiển thị';$('kpi-sales').textContent=fmt(total);
+  $('secondary-kpi-label').textContent='Số ô roll-up';$('kpi-budget').textContent=fmt(rollup.items.length);
+  $('tertiary-kpi-label').textContent='Giá trị lớn nhất';$('kpi-gap').textContent=fmt(maximum);$('kpi-gap').className='positive';
+  $('achievement-card').hidden=true;
+  $('scope-sentence').textContent=`Mỗi khối là một dòng kết quả GROUP BY ${rollup.dimension}; tổng ${fmt(total)} ô fact, không bung lại xuống tháng và sản phẩm.`;
+  $('selected-cell').hidden=false;$('selection-label').textContent='KẾT QUẢ SQL ĐÃ ROLL-UP';$('cell-title').textContent=rollup.title;
+  $('cell-values').textContent=`${rollup.items.length} dòng · tổng ${fmt(total)} · thấp nhất ${fmt(Math.min(...values))} · cao nhất ${fmt(maximum)}`;
+  $('clear-product').hidden=false;$('clear-product').textContent='Mở cube chi tiết';
+  $('ranking-title').textContent=`${rollup.dimension} trong kết quả`;
+  $('ranking-description').textContent=`Giá trị ${rollup.metric} của từng dòng SQL. Bốn dòng tương ứng đúng bốn khối 3D.`;
+  const scale=Math.max(...values.map(Math.abs),1);
+  $('product-ranking').replaceChildren(...rollup.items.map(item=>{
+    const row=document.createElement('div');row.className='rank-row';
+    row.innerHTML=`<div><span>${escapeHTML(item.label)}</span><strong>${fmt(Number(item.value))}</strong></div><div class="rank-track"><span style="width:${Math.max(2,Math.abs(Number(item.value))/scale*100)}%"></span></div>`;
+    return row;
+  }));
+  $('reconcile-text').textContent=`${rollup.items.length} khối khớp ${rollup.items.length} dòng kết quả đã chạy trên mart.`;
+  $('lab').hidden=true;$('state-section').hidden=true;
+}
+
 function updateRanking(){
-  const rows=filteredRows({product:''});
+  const rows=filteredRows({product:'',focusProducts:[]});
   const grouped=groupRows(rows.map(row=>({...row,Product:productOf(row)})),row=>row.Product).sort((a,b)=>a.Gap-b.Gap||a.Product.localeCompare(b.Product));
   $('ranking-title').textContent=state.level==='type'?'Nhóm sản phẩm cần xem':'Sản phẩm cần xem';
   const max=Math.max(...grouped.map(row=>Math.abs(row.Gap)),1);
@@ -147,21 +242,27 @@ function updateRanking(){
   if(state.product&&!shown.some(row=>row.Product===state.product)){
     const selected=grouped.find(row=>row.Product===state.product);if(selected)shown.push(selected);
   }
+  for(const product of state.focusProducts){
+    if(!shown.some(row=>row.Product===product)){
+      const selected=grouped.find(row=>row.Product===product);if(selected)shown.push(selected);
+    }
+  }
   for(const row of shown){
-    const button=document.createElement('button');button.className=`rank-row ${row.Gap<0?'neg':''} ${row.Product===state.product?'selected':''}`;
+    const selected=row.Product===state.product||state.focusProducts.includes(row.Product);
+    const button=document.createElement('button');button.className=`rank-row ${row.Gap<0?'neg':''} ${selected?'selected':''}`;
     button.setAttribute('aria-label',`${row.Product}, Gap ${signed(row.Gap)}. Xem chi tiết`);
     button.innerHTML=`<div><span>${escapeHTML(row.Product)}</span><strong class="${row.Gap<0?'negative':'positive'}">${signed(row.Gap)}</strong></div><div class="rank-track"><span style="width:${Math.max(2,Math.abs(row.Gap)/max*100)}%"></span></div>`;
-    button.addEventListener('click',()=>{state.product=state.product===row.Product?'':row.Product;$('product-select').value=state.product;render();});
+    button.addEventListener('click',()=>{selectSingleProduct(state.product===row.Product?'':row.Product);syncProductOptions();render();});
     $('product-ranking').append(button);
   }
   $('analysis-product-rows').replaceChildren(...grouped.map(row=>{
     const tr=document.createElement('tr');
-    tr.className=row.Product===state.product?'selected-product-row':'';
+    tr.className=row.Product===state.product||state.focusProducts.includes(row.Product)?'selected-product-row':'';
     const productCell=document.createElement('td');
     const button=document.createElement('button');button.className='product-detail-button';button.textContent=row.Product;
     button.setAttribute('aria-label',`${row.Product}, Gap ${signed(row.Gap)}. Phân rã theo State`);
-    button.setAttribute('aria-pressed',String(row.Product===state.product));
-    button.addEventListener('click',()=>{state.product=state.product===row.Product?'':row.Product;$('product-select').value=state.product;render();});
+    button.setAttribute('aria-pressed',String(row.Product===state.product||state.focusProducts.includes(row.Product)));
+    button.addEventListener('click',()=>{selectSingleProduct(state.product===row.Product?'':row.Product);syncProductOptions();render();});
     productCell.append(button);tr.append(productCell);
     for(const field of ['Sales','BudgetSales','Gap']){
       const cell=document.createElement('td');cell.textContent=field==='Gap'?signed(row[field]):fmt(row[field]);
@@ -173,8 +274,8 @@ function updateRanking(){
 }
 
 function updateMarketCards(){
-  $('drill-title').textContent=state.product?`${state.product} ở các thị trường`:'Thị trường nào cần chú ý?';
-  $('drill-caption').textContent=`${monthName(state.month)} · ${state.product||'Tất cả sản phẩm'}. Chọn Market để soi sâu hơn; các thẻ cùng kỳ và cùng phạm vi sản phẩm.`;
+  $('drill-title').textContent=state.product||state.focusProducts.length?`${productScopeLabel()} ở các thị trường`:'Thị trường nào cần chú ý?';
+  $('drill-caption').textContent=`${monthName(state.month)} · ${productScopeLabel()}. Chọn Market để soi sâu hơn; các thẻ cùng kỳ và cùng phạm vi sản phẩm.`;
   $('market-cards').replaceChildren();
   for(const market of payload.meta.markets){
     const total=sumRows(filteredRows({market}));
@@ -217,15 +318,58 @@ async function updateStateDrill(){
   }
 }
 
+let labRow, labMarket;
+function updateLabValue(value){
+  const slider=$('lab-range');
+  slider.value=value;
+  const delta=Number(value)-labRow.Sales;
+  const gap=labMarket.Gap+delta;
+  $('lab-value').textContent=fmt(Number(value));
+  $('lab-actual').textContent=signed(labMarket.Gap);
+  $('lab-gap').textContent=signed(gap);
+  $('lab-explain').textContent=`Sales thị trường ${fmt(labMarket.Sales+delta)} / ngân sách ${fmt(labMarket.BudgetSales)}. Các sản phẩm khác giữ nguyên.`;
+}
+function updateLab(){
+  const rows=payload.productPeriod.filter(r=>r.MonthStart===state.month&&r.Market===state.market);
+  const eligible=rows.filter(r=>state.product?productOf(r)===state.product:(!state.focusProducts.length||state.focusProducts.includes(productOf(r))));
+  const row=eligible.sort((a,b)=>a.Gap-b.Gap)[0];
+  $('lab').hidden=!row;
+  if(!row)return;
+  labRow=row;
+  labMarket=payload.marketPeriod.find(r=>r.MonthStart===state.month&&r.Market===state.market);
+  const other=labMarket.Gap-row.Gap;
+  const bars=[[row.ProductName,row.Gap],['Các sản phẩm khác',other],['Toàn thị trường',labMarket.Gap]];
+  const scale=Math.max(1,...bars.map(b=>Math.abs(b[1])));
+  $('lab-bars').innerHTML=bars.map(([name,value])=>`<div class="lab-bar"><span>${escapeHTML(name)}</span><b>${signed(value)}</b><div><i style="width:${Math.abs(value)/scale*49}%;${value<0?'right:50%;background:#b7593c':'left:50%;background:#247562'}"></i></div></div>`).join('');
+  $('lab-scope').textContent=`${state.market}  /  ${monthName(state.month)}`;
+  $('lab-label').textContent='Doanh số giả định · '+row.ProductName;
+  const threshold=row.Sales-labMarket.Gap;
+  const slider=$('lab-range');
+  slider.min=Math.min(0,row.Sales,row.BudgetSales);
+  slider.max=Math.max(1,row.Sales,row.BudgetSales,threshold);
+  $('lab-even').disabled=threshold<Number(slider.min);
+  $('lab-voice').hidden=state.market!=='South'||state.month!=='2013-08-01'||row.ProductName!=='Colombian';
+  const forecast=payload.publishedForecasts?.find(f=>f.Market===state.market);
+  $('lab-forecast').hidden=!forecast;
+  if(forecast){
+    const decimal=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2});
+    $('lab-forecast-title').textContent=`Dự báo đã công bố · ${state.market} · ${monthName(forecast.ForecastMonth)}`;
+    $('lab-forecast-body').textContent=`Dự báo doanh số toàn thị trường: ${decimal.format(forecast.Prediction)}. Sai số tuyệt đối trung bình trên ${forecast.N} kỳ test: ${decimal.format(forecast.MAE)}. Bản công bố cục bộ ${monthName(forecast.IssueMonth)}, ${forecast.ModelName} (${forecast.ModelVersion}). Thanh kéo chỉ tác động đến kịch bản đang xem.`;
+  }
+  updateLabValue(row.Sales);
+}
 function render(){
   if(!payload||!scene)return;
   $('error-banner').hidden=true;
-  rebuildCube();syncAnalysisFilters();updateKpis();updateRanking();updateMarketCards();updateStateDrill();
+  rebuildCube();
+  if(state.rollup){updateRollupInspector();return;}
+  updateLab();syncAnalysisFilters();updateKpis();updateRanking();updateMarketCards();updateStateDrill();
 }
 
 function selectCubeCell(row){
-  state.month=row.MonthStart;state.market=row.Market;state.product=row.Product;
-  $('market-select').value=state.market;$('product-select').value=state.product;
+  if(state.rollup){toast(`${row.Market} · ${row.RollupMetric} ${fmt(row.RollupValue)}`);return;}
+  state.month=row.MonthStart;state.market=row.Market;state.focusProducts=[];state.product=row.Product;
+  $('market-select').value=state.market;syncProductOptions();
   render();toast(`${row.Market} · ${row.Product} · ${monthName(row.MonthStart)}`);
 }
 
@@ -235,15 +379,71 @@ function changeMonth(delta){
 }
 
 function setCase(name){
-  state.level='product';state.measure='Gap';state.mode='slice';state.pivot=false;
+  state.level='product';state.measure='Gap';state.mode='slice';state.pivot=false;state.focusProducts=[];state.rollup=null;
   if(name==='south'){state.year='2013';state.month='2013-08-01';state.market='South';state.product='';}
   else{state.year='2012';state.month='2012-01-01';state.market='Central';state.product='';}
   $('year-select').value=state.year;$('market-select').value=state.market;$('measure-select').value=state.measure;syncProductOptions();
   render();showView('analysis');toast(name==='south'?'South hụt 9 ở tổng Market. Chọn Colombian để thấy phần hụt 268.':'Central vượt 376. Chọn một sản phẩm để xem phân rã theo State.');
 }
 
+function applyDeepLink(hash=window.location?.hash){
+  if(!hash||hash==='#south')return false;
+  const params=new URLSearchParams(hash.replace(/^#/,''));
+  const keys=['year','month','market','product','products','measure','mode','rollupDimension','rollupMetric','rollupItem'];
+  if(!keys.some(key=>params.has(key)))return false;
+
+  const validYears=new Set(payload.meta.months.map(month=>month.slice(0,4)));
+  const requestedMonth=params.get('month');
+  const requestedYear=params.get('year');
+  if(requestedMonth&&payload.meta.months.includes(requestedMonth)){
+    state.month=requestedMonth;state.year=requestedMonth.slice(0,4);
+  }else if(requestedYear==='all'||validYears.has(requestedYear)){
+    state.year=requestedYear;
+    if(requestedYear!=='all'&&!state.month.startsWith(requestedYear))state.month=payload.meta.months.find(month=>month.startsWith(requestedYear));
+  }
+
+  const requestedMarket=params.get('market');
+  state.market=requestedMarket&&payload.meta.markets.includes(requestedMarket)?requestedMarket:'';
+  const requestedProducts=[...new Set(params.getAll('products').filter(product=>payload.meta.products.includes(product)))];
+  const requestedProduct=params.get('product');
+  state.focusProducts=[];state.product='';
+  if(requestedProducts.length>1){
+    state.level='product';state.focusProducts=requestedProducts;
+  }else{
+    const single=requestedProducts[0]||requestedProduct;
+    if(single&&payload.meta.products.includes(single)){state.level='product';state.product=single;}
+  }
+
+  const requestedMeasure=params.get('measure');
+  if(['Sales','BudgetSales','Profit','Gap'].includes(requestedMeasure))state.measure=requestedMeasure;
+  const requestedMode=params.get('mode');
+  if(['all','slice','explode'].includes(requestedMode))state.mode=requestedMode;
+  else if(requestedMonth&&payload.meta.months.includes(requestedMonth))state.mode='slice';
+
+  state.rollup=null;
+  const rollupDimension=params.get('rollupDimension'),rollupMetric=params.get('rollupMetric');
+  if(rollupDimension==='Market'&&rollupMetric&&/^[A-Za-z][A-Za-z0-9_ ]{0,39}$/.test(rollupMetric)){
+    const items=[];
+    for(const raw of params.getAll('rollupItem').slice(0,10)){
+      try{
+        const item=JSON.parse(raw);
+        if(payload.meta.markets.includes(item.label)&&typeof item.value==='number'&&Number.isFinite(item.value))items.push({label:item.label,value:item.value});
+      }catch{}
+    }
+    if(items.length&&new Set(items.map(item=>item.label)).size===items.length){
+      const title=(params.get('rollupTitle')||`${rollupMetric} theo Market`).slice(0,80);
+      state.rollup={dimension:'Market',metric:rollupMetric,title,items};state.mode='all';state.market='';state.product='';state.focusProducts=[];
+    }
+  }
+
+  $('year-select').value=state.year;$('market-select').value=state.market;$('measure-select').value=state.measure;
+  syncProductOptions();
+  return true;
+}
+
 function showView(view){
-  const selected=view===true?'lineage':view===false?'explore':view;
+  let selected=view===true?'lineage':view===false?'explore':view;
+  if(state.rollup&&selected!=='explore'){selected='explore';toast('Kết quả roll-up được trình bày trực tiếp bằng các khối 3D. Mở cube chi tiết để dùng tab phân tích.');}
   state.view=selected;
   $('explorer').hidden=selected!=='explore';$('view-intro').hidden=selected!=='explore';
   $('drill-section').hidden=selected!=='analysis';$('lineage-section').hidden=selected!=='lineage';
@@ -265,26 +465,38 @@ function exportCsv(){
 }
 
 function wireControls(){
-  $('year-select').addEventListener('change',e=>{state.year=e.target.value;render();});
-  $('market-select').addEventListener('change',e=>{state.market=e.target.value;render();});
-  $('product-select').addEventListener('change',e=>{state.product=e.target.value;render();});
-  $('measure-select').addEventListener('change',e=>{state.measure=e.target.value;render();});
-  $('month-slider').addEventListener('input',e=>{state.month=months[Number(e.target.value)];render();});
+  $('lab-range').addEventListener('input',e=>updateLabValue(Number(e.target.value)));
+  $('lab-reset').addEventListener('click',()=>updateLabValue(labRow.Sales));
+  $('lab-even').addEventListener('click',()=>updateLabValue(labRow.Sales-labMarket.Gap));
+  $('lab-plan').addEventListener('click',()=>updateLabValue(labRow.BudgetSales));
+  const audio=$('lab-audio');
+  $('lab-voice').addEventListener('click',async()=>{
+    if(!audio.paused){audio.pause();return;}
+    try{await audio.play();}catch{toast('Phụ đề của An hiển thị ngay bên dưới.');}
+  });
+  audio.addEventListener('play',()=>$('lab-voice').textContent='Ⅱ Tạm dừng An');
+  audio.addEventListener('pause',()=>$('lab-voice').textContent='▷ Nghe An mở đầu');
+  $('year-select').addEventListener('change',e=>{state.rollup=null;state.year=e.target.value;render();});
+  $('market-select').addEventListener('change',e=>{state.rollup=null;state.market=e.target.value;render();});
+  $('product-select').addEventListener('change',e=>{selectSingleProduct(e.target.value);syncProductOptions();render();});
+  $('measure-select').addEventListener('change',e=>{state.rollup=null;state.measure=e.target.value;render();});
+  $('month-slider').addEventListener('input',e=>{state.rollup=null;state.month=months[Number(e.target.value)];render();});
   $('prev-month').addEventListener('click',()=>changeMonth(-1));$('next-month').addEventListener('click',()=>changeMonth(1));
-  for(const button of $('level-control').querySelectorAll('button'))button.addEventListener('click',()=>{state.level=button.dataset.level;state.product='';syncProductOptions();render();});
-  for(const button of $('view-control').querySelectorAll('button'))button.addEventListener('click',()=>{state.mode=button.dataset.mode;render();});
+  for(const button of $('level-control').querySelectorAll('button'))button.addEventListener('click',()=>{state.rollup=null;state.level=button.dataset.level;state.product='';state.focusProducts=[];syncProductOptions();render();});
+  for(const button of $('view-control').querySelectorAll('button'))button.addEventListener('click',()=>{if(button.disabled)return;state.rollup=null;state.mode=button.dataset.mode;render();});
   $('pivot-button').addEventListener('click',()=>{state.pivot=!state.pivot;render();toast('Đã đổi trục tháng và sản phẩm; các số đo không thay đổi.');});
   $('reset-camera').addEventListener('click',()=>scene.reset());
   $('case-south').addEventListener('click',()=>setCase('south'));$('case-central').addEventListener('click',()=>setCase('central'));
-  $('clear-product').addEventListener('click',()=>{state.product='';$('product-select').value='';render();});
+  $('clear-product').addEventListener('click',()=>{state.rollup=null;state.product='';state.focusProducts=[];syncProductOptions();render();});
   $('analysis-month-select').addEventListener('change',event=>{
+    state.rollup=null;
     state.month=event.target.value;
     if(state.year!=='all'&&!state.month.startsWith(state.year)){state.year=state.month.slice(0,4);$('year-select').value=state.year;}
     render();
   });
-  $('analysis-market-select').addEventListener('change',event=>{state.market=event.target.value;$('market-select').value=state.market;render();});
-  $('analysis-product-select').addEventListener('change',event=>{state.product=event.target.value;$('product-select').value=state.product;render();});
-  $('analysis-level-select').addEventListener('change',event=>{state.level=event.target.value;state.product='';syncProductOptions();render();});
+  $('analysis-market-select').addEventListener('change',event=>{state.rollup=null;state.market=event.target.value;$('market-select').value=state.market;render();});
+  $('analysis-product-select').addEventListener('change',event=>{selectSingleProduct(event.target.value);syncProductOptions();render();});
+  $('analysis-level-select').addEventListener('change',event=>{state.rollup=null;state.level=event.target.value;state.product='';state.focusProducts=[];syncProductOptions();render();});
   const tabNames=['explore','analysis','lineage'];
   tabNames.forEach((view,index)=>{
     const tab=$(`${view}-tab`);
@@ -327,9 +539,14 @@ async function boot(){
       wideFilters.addEventListener('change',event=>{$('filter-details').open=event.matches;});
     }else if(window.innerWidth<900)$('filter-details').open=false;
     scene=new CubeScene($('viewport'),selectCubeCell);
-    wireControls();render();$('loading-state').hidden=true;
+    wireControls();
+    if(window.location?.hash==='#south')setCase('south');
+    else{applyDeepLink();render();}
+    $('loading-state').hidden=true;
     // Compact, read-only diagnostics for repeatable technical QA of the scene.
-    window.coffeeAtlas={getState:()=>({...state}),getSummary:()=>({source:payload.meta.backend,visibleMonths:months.length,cubeCells:cubeRows.length,scopeRows:filteredRows().length,scopeTotals:sumRows(filteredRows())})};
+    window.coffeeAtlas={getState:()=>({...state}),getSummary:()=>state.rollup
+      ? {source:payload.meta.backend,visibleMonths:1,cubeCells:cubeRows.length,scopeRows:cubeRows.length,scopeTotals:{RollupValue:cubeRows.reduce((sum,row)=>sum+row.RollupValue,0)}}
+      : {source:payload.meta.backend,visibleMonths:months.length,cubeCells:cubeRows.length,scopeRows:filteredRows().length,scopeTotals:sumRows(filteredRows())}};
   }catch(error){
     $('loading-state').hidden=true;showError(`Không mở được khối dữ liệu: ${error.message}`);
     $('source-label').textContent='Chưa kết nối';

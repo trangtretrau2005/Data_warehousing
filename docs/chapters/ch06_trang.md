@@ -18,6 +18,10 @@ Tài liệu gốc chọn trung bình ba kỳ theo MAE validation, dù Ridge có 
 
 Điều kiện bàn giao: dự báo có phiên bản và mốc phát hành; không nối forecast vào fact chi tiết gây nhân dòng; chưa có actual 01/2014 để chấm sai số.
 
+## Thử nghiệm Linear Marketing–Sales — 23/11/2026
+
+[Linear Lab](../trang/linear_marketing.md) tổng hợp 96 ô MonthStart × Market từ mart, fit riêng từng Market trên 18 tháng 01/2012–06/2013 và kiểm tra 6 tháng 07–12/2013. Pearson r toàn kỳ nằm trong `0,5623–0,7234`, nhưng R² test âm ở cả bốn Market (`−9,7109` đến `−1,5295`). Vì vậy mô hình chỉ được giữ để giải thích liên hệ/what-if, không chứng minh nhân quả và không thay forecast Sales một tháng tới. Không dùng dữ liệu sinh thêm để nâng metric; hai chức năng chưa được gộp.
+
 ## Prototype thuyết minh — cập nhật 16/11/2026
 
 > Cập nhật sau phản hồi19/11: [review11 cấu hình](../../experiments/forecast_review/README.md) đã thêm SES/mùa vụ nhưng không vượt MA3 trên validation, không đổi gói phục vụ. [Bộ hình đối chiếu mới](../../results/trang_forecast_review/report.html) làm rõ36 điểm MA3 gồm24 validation/12test và từng lỗi có dấu; [FAQ bảo vệ](../trang/forecast_questions.md) giải thích horizon, actual, khoảng bất định và dữ liệu synthetic. Dashboard AI có khoảng target riêng, chọn tháng và hiển thị Prediction/Actual/Error/APE; CSV theo đúng khoảng đang xem. Đây là cải thiện khả năng đọc và thăm dò có công bố, không tăng số kỳ test hoặc sửa dữ liệu cho khớp đường dự báo.

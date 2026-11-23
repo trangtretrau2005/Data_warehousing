@@ -1,0 +1,567 @@
+{
+  "created_utc": "2026-11-21T05:56:42.110010+00:00",
+  "python": "C:\\Program Files\\WindowsApps\\OpenAI.CodexPrimaryRuntime.v26-1119-907-0_26.1119.907.0_x64__3k8sg7r9htsxt\\dependencies\\python\\python.exe",
+  "reportlab_version": "4.4.9",
+  "pdftoppm": "C:\\Program Files\\WindowsApps\\OpenAI.CodexPrimaryRuntime.v26-1119-907-0_26.1119.907.0_x64__3k8sg7r9htsxt\\dependencies\\native\\poppler\\Library\\bin\\pdftoppm.exe",
+  "drawing_width_pt": 465,
+  "intended_word_width_inches": 6.45,
+  "text_font": "Times New Roman",
+  "all_label_font_size_pt": 13,
+  "raster_dpi": 200,
+  "facts_source": {
+    "path": ".work/report_20261121/trang_facts.json",
+    "sha256": "b0cd54a8b33240d3ca6521ca8f3588b8bfae33b74a0a0c781ed623ae79d733e3"
+  },
+  "script_sha256": "7d558137bf12326d15feb0841c865e5815b19079a0179d7793e1494e554c999c",
+  "figures": [
+    {
+      "id": "trang_01_validation_mae",
+      "caption_vi": "MAE validation của ba phương pháp; N=24/phương pháp, 04–09/2013, đơn vị Sales nguồn. MA3 được chọn bằng MAE validation, không phải từ test.",
+      "claims": [
+        "F03"
+      ],
+      "drawing_height_pt": 275,
+      "png_dimensions": [
+        1292,
+        764
+      ],
+      "png_mode": "RGB",
+      "source_files": [
+        {
+          "path": "results/forecast/predictions.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\forecast\\predictions.csv",
+          "sha256": "d9c7b488ca95aca48749467741737b14cb3d287fbf30b85e7ee11122bde35558"
+        },
+        {
+          "path": "results/forecast/metrics.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\forecast\\metrics.csv",
+          "sha256": "b33c2475822f11c78d8f169df715c8ab3515d8de37b57e7b7536b30210fb980c"
+        },
+        {
+          "path": "results/forecast/summary.json",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\forecast\\summary.json",
+          "sha256": "401ee3cfb3cb695f14dc9c0471c3c2953971ac4dddc456b433fa91c8aec159d9"
+        }
+      ],
+      "data": {
+        "models": [
+          "naive_last",
+          "moving_average_3",
+          "ridge"
+        ],
+        "validation_MAE": [
+          258.8333333333333,
+          223.2777777777778,
+          292.93377038849735
+        ],
+        "N_per_model": 24
+      },
+      "files": [
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_01_validation_mae.png",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_01_validation_mae.png",
+          "sha256": "47439808afec20f916fdadd6851e44ec83b590ee91a13dcc219935ff720b28da"
+        },
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_01_validation_mae.pdf",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_01_validation_mae.pdf",
+          "sha256": "6101626a82a7b7c46c12a794082e9a4c4020cd260dc85cc6e2baeddc59f1900c"
+        },
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_01_validation_mae.svg",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_01_validation_mae.svg",
+          "sha256": "cef9db49df01dc0bdbe629818ab930bf7ccbb2a736a09600d6ba4559c9ec4d37"
+        }
+      ]
+    },
+    {
+      "id": "trang_02_test_actual_ma3",
+      "caption_vi": "Actual và MA3 tại 10–12/2013 trên bốn Market; N=3/Market. Mỗi điểm là dự báo một bước ở origin riêng, không làm mượt actual; trục Y riêng từng ô. Đơn vị Sales nguồn.",
+      "claims": [
+        "F02",
+        "F03"
+      ],
+      "drawing_height_pt": 330,
+      "png_dimensions": [
+        1292,
+        917
+      ],
+      "png_mode": "RGB",
+      "source_files": [
+        {
+          "path": "results/forecast/summary.json",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\forecast\\summary.json",
+          "sha256": "401ee3cfb3cb695f14dc9c0471c3c2953971ac4dddc456b433fa91c8aec159d9"
+        },
+        {
+          "path": "src/coffee_dw/forecast.py",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\src\\coffee_dw\\forecast.py",
+          "sha256": "af877ef941fc9555684db17b2afc031ee44333214985a20e092dedfffab8df37"
+        },
+        {
+          "path": "experiments/baseline/results/03_validation/origin_schedule.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\experiments\\baseline\\results\\03_validation\\origin_schedule.csv",
+          "sha256": "d3cfc2840f9b8e6cce4d21d06ff92749ec16403cc2013b00fb478df3abb88643"
+        },
+        {
+          "path": "results/forecast/predictions.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\forecast\\predictions.csv",
+          "sha256": "d9c7b488ca95aca48749467741737b14cb3d287fbf30b85e7ee11122bde35558"
+        },
+        {
+          "path": "results/forecast/metrics.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\forecast\\metrics.csv",
+          "sha256": "b33c2475822f11c78d8f169df715c8ab3515d8de37b57e7b7536b30210fb980c"
+        }
+      ],
+      "data": {
+        "rows": {
+          "Central": {
+            "Actual": [
+              11270.0,
+              10885.0,
+              11368.0
+            ],
+            "MA3": [
+              11417.0,
+              11345.0,
+              11195.666666666666
+            ],
+            "N": 3
+          },
+          "East": {
+            "Actual": [
+              7565.0,
+              7438.0,
+              7753.0
+            ],
+            "MA3": [
+              7767.333333333333,
+              7630.666666666667,
+              7532.0
+            ],
+            "N": 3
+          },
+          "South": {
+            "Actual": [
+              4556.0,
+              4480.0,
+              4576.0
+            ],
+            "MA3": [
+              4518.0,
+              4568.0,
+              4527.666666666667
+            ],
+            "N": 3
+          },
+          "West": {
+            "Actual": [
+              11596.0,
+              11300.0,
+              11883.0
+            ],
+            "MA3": [
+              11899.666666666666,
+              11777.333333333334,
+              11531.0
+            ],
+            "N": 3
+          }
+        },
+        "source": "results/forecast/predictions.csv",
+        "split": "test",
+        "scale": "Independent Y axes; Sales source units"
+      },
+      "files": [
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_02_test_actual_ma3.png",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_02_test_actual_ma3.png",
+          "sha256": "4981df3ae319d85e54ca6faf884e2406a713c58bdc2e22f9679a80dabc3055b9"
+        },
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_02_test_actual_ma3.pdf",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_02_test_actual_ma3.pdf",
+          "sha256": "df19415a861fba4b2f036645a1a7ae9e692169d9919876f97a2eabf1b3d94a6b"
+        },
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_02_test_actual_ma3.svg",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_02_test_actual_ma3.svg",
+          "sha256": "dfc9fdc1efb4199b2c41a459e221d5328cd36ac775be240273c93b156ebe055e"
+        }
+      ]
+    },
+    {
+      "id": "trang_03_november_actual_ma3",
+      "caption_vi": "Actual và MA3 tháng 11/2013, N=1/Market, origin 10/2013. Đơn vị Sales nguồn; trục Y từ 0; các nhãn làm tròn tối đa hai chữ số thập phân.",
+      "claims": [
+        "F04"
+      ],
+      "drawing_height_pt": 300,
+      "png_dimensions": [
+        1292,
+        834
+      ],
+      "png_mode": "RGB",
+      "source_files": [
+        {
+          "path": "results/forecast/predictions.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\forecast\\predictions.csv",
+          "sha256": "d9c7b488ca95aca48749467741737b14cb3d287fbf30b85e7ee11122bde35558"
+        },
+        {
+          "path": "results/trang_forecast_review/november_all_markets.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\trang_forecast_review\\november_all_markets.csv",
+          "sha256": "168afdd5f0fecbdd2f803201c8462a5354ff04094dacfb158745fdb321b62233"
+        }
+      ],
+      "data": {
+        "rows": [
+          {
+            "Market": "Central",
+            "ForecastMonth": "2013-11-01",
+            "IssueMonth": "2013-10-01",
+            "TrainEnd": "2013-10-01",
+            "ModelName": "moving_average_3",
+            "ModelVersion": "v1-lag123-alpha1",
+            "Prediction": 11345.0,
+            "Actual": 10885.0,
+            "Split": "test",
+            "Error": 460.0,
+            "APE_pct": 4.225999081304548
+          },
+          {
+            "Market": "East",
+            "ForecastMonth": "2013-11-01",
+            "IssueMonth": "2013-10-01",
+            "TrainEnd": "2013-10-01",
+            "ModelName": "moving_average_3",
+            "ModelVersion": "v1-lag123-alpha1",
+            "Prediction": 7630.666666666667,
+            "Actual": 7438.0,
+            "Split": "test",
+            "Error": 192.66666666666697,
+            "APE_pct": 2.5903020525230835
+          },
+          {
+            "Market": "South",
+            "ForecastMonth": "2013-11-01",
+            "IssueMonth": "2013-10-01",
+            "TrainEnd": "2013-10-01",
+            "ModelName": "moving_average_3",
+            "ModelVersion": "v1-lag123-alpha1",
+            "Prediction": 4568.0,
+            "Actual": 4480.0,
+            "Split": "test",
+            "Error": 88.0,
+            "APE_pct": 1.9642857142857142
+          },
+          {
+            "Market": "West",
+            "ForecastMonth": "2013-11-01",
+            "IssueMonth": "2013-10-01",
+            "TrainEnd": "2013-10-01",
+            "ModelName": "moving_average_3",
+            "ModelVersion": "v1-lag123-alpha1",
+            "Prediction": 11777.333333333334,
+            "Actual": 11300.0,
+            "Split": "test",
+            "Error": 477.33333333333394,
+            "APE_pct": 4.224188790560477
+          }
+        ],
+        "N_per_market": 1,
+        "origin": "2013-10-01",
+        "y_min": 0
+      },
+      "files": [
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_03_november_actual_ma3.png",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_03_november_actual_ma3.png",
+          "sha256": "a378246d78e4ff6d12592a7f2cec1da84a09b1f943d7d5681a402bd426228a75"
+        },
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_03_november_actual_ma3.pdf",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_03_november_actual_ma3.pdf",
+          "sha256": "6d39611a2835e96da18409244a5acb7f32e26d0c38024361a89f3a9034160ed4"
+        },
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_03_november_actual_ma3.svg",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_03_november_actual_ma3.svg",
+          "sha256": "5cff01c8b873cb9a8ad1c15efba1790127049501147b532ddc5d3d478c3a5edc"
+        }
+      ]
+    },
+    {
+      "id": "trang_04_native_benchmark",
+      "caption_vi": "Median elapsed server của sáu workload, N=15/phương án, warm cache, 2.124.000 dòng. A/B: TN08 đọc = GROUP BY (EXPAND VIEWS) / indexed view (NOEXPAND); TN08 ghi = INSERT 4.248 dòng không / có indexed view; TN09 = bảng thường / partition; TN10 = không / có covering NCI. 0 ms là độ phân giải, không phải không có chi phí. INSERT được rollback; không đo throughput commit.",
+      "claims": [
+        "F08"
+      ],
+      "drawing_height_pt": 430,
+      "png_dimensions": [
+        1292,
+        1195
+      ],
+      "png_mode": "RGB",
+      "source_files": [
+        {
+          "path": "results/native_trang/20261119/environment.json",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\native_trang\\20261119\\environment.json",
+          "sha256": "d6156374e4ae57510f185d7837a4adfdf6287845adb68bee24d6a5c8a0341c01"
+        },
+        {
+          "path": "results/native_trang/20261119/benchmark_runs.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\native_trang\\20261119\\benchmark_runs.csv",
+          "sha256": "7037cc3c3f856d4dd7dacca3034184105370a3cfac70a6fa702d019e36a028ca"
+        },
+        {
+          "path": "results/native_trang/20261119/benchmark_summary.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\native_trang\\20261119\\benchmark_summary.csv",
+          "sha256": "4736a1607ca41731ca37d1e7fc8411a040c36ee140aad1ace2ade7ffd75d4ce7"
+        },
+        {
+          "path": "results/native_trang/20261119/storage.csv",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\native_trang\\20261119\\storage.csv",
+          "sha256": "6eb70574350ae4584345c952b502a39e8a9ff312ab355d35d05ae567f4f966e8"
+        },
+        {
+          "path": "results/native_trang/20261119/actual_plan_summary.json",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\results\\native_trang\\20261119\\actual_plan_summary.json",
+          "sha256": "2ea3270a953b302984a1fba6d8dfde8eee432723026a5e097a3999ee7f69ce4b"
+        }
+      ],
+      "data": {
+        "rows": [
+          {
+            "experiment": "TN08_read",
+            "variant": "A",
+            "N": 15,
+            "median_ms": 898.0,
+            "Q1_ms": 861.5,
+            "Q3_ms": 1304.5,
+            "IQR_ms": 443.0,
+            "p95_ms": 4585.399999999999,
+            "median_logical_reads": 11367.0,
+            "median_cpu_ms": 895.0,
+            "median_client_elapsed_ms": 900.5159
+          },
+          {
+            "experiment": "TN08_read",
+            "variant": "B",
+            "N": 15,
+            "median_ms": 3.0,
+            "Q1_ms": 3.0,
+            "Q3_ms": 3.5,
+            "IQR_ms": 0.5,
+            "p95_ms": 5.499999999999995,
+            "median_logical_reads": 9.0,
+            "median_cpu_ms": 0.0,
+            "median_client_elapsed_ms": 5.3844
+          },
+          {
+            "experiment": "TN08_insert",
+            "variant": "A",
+            "N": 15,
+            "median_ms": 10.0,
+            "Q1_ms": 9.0,
+            "Q3_ms": 11.0,
+            "IQR_ms": 2.0,
+            "p95_ms": 11.899999999999997,
+            "median_logical_reads": 4354.0,
+            "median_cpu_ms": 10.0,
+            "median_client_elapsed_ms": 15.9786
+          },
+          {
+            "experiment": "TN08_insert",
+            "variant": "B",
+            "N": 15,
+            "median_ms": 29.0,
+            "Q1_ms": 28.0,
+            "Q3_ms": 36.5,
+            "IQR_ms": 8.5,
+            "p95_ms": 43.49999999999999,
+            "median_logical_reads": 17031.0,
+            "median_cpu_ms": 29.0,
+            "median_client_elapsed_ms": 45.5395
+          },
+          {
+            "experiment": "TN09_month",
+            "variant": "A",
+            "N": 15,
+            "median_ms": 107.0,
+            "Q1_ms": 104.5,
+            "Q3_ms": 115.5,
+            "IQR_ms": 11.0,
+            "p95_ms": 127.8,
+            "median_logical_reads": 11367.0,
+            "median_cpu_ms": 107.0,
+            "median_client_elapsed_ms": 109.4863
+          },
+          {
+            "experiment": "TN09_month",
+            "variant": "B",
+            "N": 15,
+            "median_ms": 27.0,
+            "Q1_ms": 27.0,
+            "Q3_ms": 28.0,
+            "IQR_ms": 1.0,
+            "p95_ms": 29.0,
+            "median_logical_reads": 474.0,
+            "median_cpu_ms": 27.0,
+            "median_client_elapsed_ms": 30.6866
+          },
+          {
+            "experiment": "TN09_all",
+            "variant": "A",
+            "N": 15,
+            "median_ms": 728.0,
+            "Q1_ms": 706.5,
+            "Q3_ms": 783.0,
+            "IQR_ms": 76.5,
+            "p95_ms": 835.6,
+            "median_logical_reads": 11367.0,
+            "median_cpu_ms": 728.0,
+            "median_client_elapsed_ms": 730.3653
+          },
+          {
+            "experiment": "TN09_all",
+            "variant": "B",
+            "N": 15,
+            "median_ms": 739.0,
+            "Q1_ms": 709.5,
+            "Q3_ms": 811.5,
+            "IQR_ms": 102.0,
+            "p95_ms": 909.0999999999999,
+            "median_logical_reads": 11376.0,
+            "median_cpu_ms": 739.0,
+            "median_client_elapsed_ms": 742.2239
+          },
+          {
+            "experiment": "TN10_narrow",
+            "variant": "A",
+            "N": 15,
+            "median_ms": 96.0,
+            "Q1_ms": 92.5,
+            "Q3_ms": 119.0,
+            "IQR_ms": 26.5,
+            "p95_ms": 124.3,
+            "median_logical_reads": 11367.0,
+            "median_cpu_ms": 95.0,
+            "median_client_elapsed_ms": 99.0137
+          },
+          {
+            "experiment": "TN10_narrow",
+            "variant": "B",
+            "N": 15,
+            "median_ms": 0.0,
+            "Q1_ms": 0.0,
+            "Q3_ms": 0.0,
+            "IQR_ms": 0.0,
+            "p95_ms": 0.0,
+            "median_logical_reads": 6.0,
+            "median_cpu_ms": 0.0,
+            "median_client_elapsed_ms": 3.1569
+          },
+          {
+            "experiment": "TN10_broad",
+            "variant": "A",
+            "N": 15,
+            "median_ms": 346.0,
+            "Q1_ms": 333.5,
+            "Q3_ms": 354.0,
+            "IQR_ms": 20.5,
+            "p95_ms": 368.0,
+            "median_logical_reads": 11367.0,
+            "median_cpu_ms": 346.0,
+            "median_client_elapsed_ms": 347.524
+          },
+          {
+            "experiment": "TN10_broad",
+            "variant": "B",
+            "N": 15,
+            "median_ms": 300.0,
+            "Q1_ms": 283.0,
+            "Q3_ms": 337.0,
+            "IQR_ms": 54.0,
+            "p95_ms": 389.59999999999997,
+            "median_logical_reads": 8958.0,
+            "median_cpu_ms": 297.0,
+            "median_client_elapsed_ms": 301.3918
+          }
+        ],
+        "definitions_A_B": {
+          "TN08_read": "A: GROUP BY, EXPAND VIEWS; B: indexed view, NOEXPAND",
+          "TN08_insert": "A: INSERT 4.248 rows without view; B: with indexed view; both rollback",
+          "TN09_month": "A: ordinary table; B: partitioned table, one month",
+          "TN09_all": "A: ordinary table; B: partitioned table, all 24 months",
+          "TN10_narrow": "A: heap without NCI; B: covering NCI, narrow selection",
+          "TN10_broad": "A: heap without NCI; B: covering NCI, whole table"
+        },
+        "y_axis": "workload",
+        "numeric_axis_min": 0,
+        "measure": "server elapsed median,ms",
+        "N_per_variant": 15
+      },
+      "files": [
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_04_native_benchmark.png",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_04_native_benchmark.png",
+          "sha256": "9f8e4b8f3d95dc83080b914b1a50d2ef3bf327f5cf18da728cc5658e771548dd"
+        },
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_04_native_benchmark.pdf",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_04_native_benchmark.pdf",
+          "sha256": "92ee173ea136a846b3756309d4aecfd7a9219c88a6c38a6cd178af2d58188a9b"
+        },
+        {
+          "path": "reports/assets_chi_trang_20261121/trang_04_native_benchmark.svg",
+          "absolute_path": "C:\\Users\\Lenovo\\Desktop\\HK1_năm 4\\kho dữ liệu\\BTL_datawarehousing\\reports\\assets_chi_trang_20261121\\trang_04_native_benchmark.svg",
+          "sha256": "86a0a12cb8525df2d8210d1da1a452780a30239f46433107151b4cd60496e97a"
+        }
+      ]
+    }
+  ],
+  "database_writes": false,
+  "runtime_or_results_changes": false,
+  "synthetic_observations": 0,
+  "visual_qa": {
+    "status": "passed",
+    "figures_inspected": [
+      "trang_01_validation_mae.png",
+      "trang_02_test_actual_ma3.png",
+      "trang_03_november_actual_ma3.png",
+      "trang_04_native_benchmark.png"
+    ],
+    "final_changes": "Moved numeric bar labels fully outside bar tips; inspected all four figures, with figures1,3,4 rechecked after the label adjustment.",
+    "checks": [
+      "No clipped titles, legends or annotations",
+      "TNR labels13pt at465pt width",
+      "Bar numeric baselines start at zero",
+      "Actual test data has three points per Market and is not smoothed",
+      "Benchmark0ms label identifies timer resolution;A/B definitions in caption"
+    ]
+  },
+  "pdf_font_check": {
+    "trang_01_validation_mae.pdf": {
+      "ttf_embedded": true,
+      "times_font_named": true,
+      "page_media_box": "/MediaBox [ 0 0 465 275 ]"
+    },
+    "trang_02_test_actual_ma3.pdf": {
+      "ttf_embedded": true,
+      "times_font_named": true,
+      "page_media_box": "/MediaBox [ 0 0 465 330 ]"
+    },
+    "trang_03_november_actual_ma3.pdf": {
+      "ttf_embedded": true,
+      "times_font_named": true,
+      "page_media_box": "/MediaBox [ 0 0 465 300 ]"
+    },
+    "trang_04_native_benchmark.pdf": {
+      "ttf_embedded": true,
+      "times_font_named": true,
+      "page_media_box": "/MediaBox [ 0 0 465 430 ]"
+    }
+  }
+}

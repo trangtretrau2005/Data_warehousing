@@ -17,19 +17,58 @@ import numpy as np
 import pandas as pd
 
 try:
+    from .ai_sql import answer_question
     from .data import MEASURES, load_cube, load_product_types, load_state_drill
+    from .gemini import gemini_status
+    from .query import execute_query, query_config
 except ImportError:  # `python apps/cube_explorer/server.py`
+    from ai_sql import answer_question
     from data import MEASURES, load_cube, load_product_types, load_state_drill
+    from gemini import gemini_status
+    from query import execute_query, query_config
 
-from coffee_dw.config import DB_PATH
+from coffee_dw.config import DB_PATH, RESULTS_DIR
+from coffee_dw.linear_marketing import build_linear_analysis
 
 STATIC_ROOT = Path(__file__).resolve().parent
-STATIC_FILES = {"index.html", "styles.css", "app.js", "cube.js", "favicon.ico"}
+STATIC_FILES = {
+    "index.html",
+    "styles.css",
+    "app.js",
+    "cube.js",
+    "favicon.ico",
+    "an-south.wav",
+    "triage.html",
+    "triage.json",
+    "quarter.html",
+    "quarter.js",
+    "quarter.css",
+    "query.html",
+    "query.js",
+    "query.css",
+    "linear.html",
+    "linear.js",
+    "linear.css",
+}
 
 
 def records(frame: pd.DataFrame) -> list[dict]:
     """Serialize timestamps, NumPy values and nullable ratios as strict JSON."""
     return json.loads(frame.to_json(orient="records", date_format="iso", date_unit="s").replace("T00:00:00", ""))
+
+
+def published_forecasts() -> list[dict]:
+    """Read the optional forecast publication without training in the UI."""
+    folder = RESULTS_DIR / "forecast"
+    try:
+        future = pd.read_csv(folder / "next_month.csv")
+        metrics = pd.read_csv(folder / "metrics.csv")
+        test = metrics.loc[metrics["Split"].eq("test"), ["Market", "ModelName", "N", "MAE"]]
+        joined = future.loc[future["Split"].eq("future")].merge(test, on=["Market", "ModelName"], validate="one_to_one")
+        fields = ["Market", "ForecastMonth", "IssueMonth", "ModelName", "ModelVersion", "Prediction", "N", "MAE"]
+        return records(joined[fields].dropna())
+    except (OSError, ValueError, KeyError):
+        return []
 
 
 class CubeStore:
@@ -61,9 +100,31 @@ class CubeStore:
         }
         self.payload = {
             "meta": self.meta,
+            "publishedForecasts": published_forecasts(),
             "marketPeriod": records(self.market_period),
             "productPeriod": records(self.product_period),
         }
+        linear_result = execute_query(
+            {
+                "aggregate": "SUM",
+                "measures": ["Marketing", "Sales"],
+                "groupBy": ["MonthStart", "Market"],
+                "year": None,
+                "month": None,
+                "markets": [],
+                "products": [],
+            },
+            self.meta,
+            self.backend,
+            self.db_path,
+        )
+        if linear_result["truncated"] or linear_result["rowCount"] != len(self.market_period):
+            raise ValueError("Bảng Marketing–Sales không khớp số ô Market–tháng của mart.")
+        linear_monthly = pd.DataFrame(linear_result["rows"]).rename(
+            columns={"SUM_Marketing": "Marketing", "SUM_Sales": "Sales"}
+        )
+        self.linear_payload = build_linear_analysis(linear_monthly)
+        self.linear_payload["meta"]["sourceLabel"] = self.meta["sourceLabel"]
 
     def drill(self, month: str, market: str, product: str) -> dict:
         if month not in self.meta["months"] or market not in self.meta["markets"] or product not in self.meta["products"]:
@@ -110,6 +171,23 @@ def make_handler(store: CubeStore, static_root: Path = STATIC_ROOT):
         def _json(self, code: int, data: dict) -> None:
             self._send(code, json.dumps(data, ensure_ascii=False, allow_nan=False).encode("utf-8"), "application/json; charset=utf-8")
 
+        def _read_json(self) -> dict:
+            if self.headers.get_content_type() != "application/json":
+                raise ValueError("Yêu cầu phải dùng Content-Type application/json.")
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+            except ValueError:
+                raise ValueError("Content-Length không hợp lệ.") from None
+            if length <= 0 or length > 16_384:
+                raise ValueError("Nội dung yêu cầu phải từ 1 byte đến 16 KB.")
+            try:
+                body = json.loads(self.rfile.read(length).decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError):
+                raise ValueError("Nội dung JSON không hợp lệ.") from None
+            if not isinstance(body, dict):
+                raise ValueError("Nội dung JSON phải là một object.")
+            return body
+
         def do_GET(self) -> None:
             parsed = urlsplit(self.path)
             path = unquote(parsed.path)
@@ -118,6 +196,15 @@ def make_handler(store: CubeStore, static_root: Path = STATIC_ROOT):
                 return
             if path == "/api/data":
                 self._json(200, store.payload)
+                return
+            if path == "/api/query/config":
+                self._json(200, {"config": query_config(store.meta), "source": store.meta["sourceLabel"]})
+                return
+            if path == "/api/ai/status":
+                self._json(200, gemini_status())
+                return
+            if path == "/api/linear":
+                self._json(200, store.linear_payload)
                 return
             if path == "/api/drill":
                 params = parse_qs(parsed.query, keep_blank_values=True)
@@ -142,7 +229,28 @@ def make_handler(store: CubeStore, static_root: Path = STATIC_ROOT):
             self._send(200, target.read_bytes(), content_type + ("; charset=utf-8" if target.suffix in {".js", ".css", ".html", ".txt"} else ""))
 
         def do_POST(self) -> None:
-            self._json(405, {"error": "Ứng dụng chỉ hỗ trợ đọc dữ liệu."})
+            path = unquote(urlsplit(self.path).path)
+            try:
+                body = self._read_json()
+                if path == "/api/query":
+                    result = execute_query(body, store.meta, store.backend, store.db_path)
+                    self._json(200, result)
+                    return
+                if path == "/api/ai/query":
+                    if set(body) - {"question", "model"}:
+                        raise ValueError("Yêu cầu Gemini chứa trường không được hỗ trợ.")
+                    result = answer_question(
+                        body.get("question"), store.meta, store.backend, store.db_path, body.get("model")
+                    )
+                    self._json(200, result)
+                    return
+                self._json(404, {"error": "Không tìm thấy API."})
+            except ValueError as exc:
+                self._json(400, {"error": str(exc)})
+            except RuntimeError as exc:
+                self._json(503, {"error": str(exc)})
+            except Exception:
+                self._json(503, {"error": "Chưa chạy được truy vấn trên mart. Kiểm tra nguồn dữ liệu rồi thử lại."})
 
     return CubeHandler
 

@@ -12,6 +12,7 @@ Cập nhật ngày **19/11/2026**. Đây là bộ nội dung Markdown để ghé
 | [Tái lập và bàn giao](reproduction_handoff.md) | Các lệnh, hợp đồng đầu vào/đầu ra và bước chốt Git |
 | [Nhật ký thực hiện](worklog_20261119.md) | File, lệnh, kết quả kiểm tra và giới hạn của bộ báo cáo/nghiệm thu |
 | [Câu hỏi về dự báo và dữ liệu sinh thêm](forecast_questions.md) | Actual/sai lệch từng tháng, khoảng xem so với horizon, chất lượng mô hình và cách trả lời bảo vệ |
+| [Linear Regression Marketing–Sales](linear_marketing.md) | Dữ liệu, split thời gian, metric, kết quả bốn Market, giao diện what-if và quyết định chưa gộp forecast |
 
 ## Mở tài sản đã có
 

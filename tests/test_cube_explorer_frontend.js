@@ -1,4 +1,4 @@
-// Run with a read-only Cube server available at COFFEE_CUBE_URL (default8503):
+// Run with the integrated read-only Cube server at COFFEE_CUBE_URL (default8504):
 // node --test tests/test_cube_explorer_frontend.js
 // These exercise the real app controller in a small DOM adapter, not a browser
 // or a WebGL renderer. Fixtures are fetched from the current warehouse API.
@@ -9,7 +9,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const {pathToFileURL} = require('node:url');
 
-const apiRoot = process.env.COFFEE_CUBE_URL || 'http://127.0.0.1:8503';
+const apiRoot = process.env.COFFEE_CUBE_URL || 'http://127.0.0.1:8504';
 const appSource = fs.readFileSync(path.join(__dirname, '../apps/cube_explorer/app.js'), 'utf8');
 const html = fs.readFileSync(path.join(__dirname, '../apps/cube_explorer/index.html'), 'utf8');
 let fixture;
@@ -25,7 +25,7 @@ test.before(async () => {
 
 function clone(value) { return JSON.parse(JSON.stringify(value)); }
 
-async function setup(customFixture) {
+async function setup(customFixture, hash = '') {
   const input = clone(customFixture || fixture);
   const elements = new Map(), selections = [], exports = [], events = [];
   let focusedElement = null;
@@ -101,7 +101,7 @@ async function setup(customFixture) {
     static revokeObjectURL() {}
   }
   const context = vm.createContext({
-    __CubeScene: StubCubeScene, document, window: {}, Intl, URL: TestURL, URLSearchParams, Blob,
+    __CubeScene: StubCubeScene, document, window: {location: {hash}}, Intl, URL: TestURL, URLSearchParams, Blob,
     setTimeout() {return 1;}, clearTimeout() {}, requestAnimationFrame(callback) {callback();},
     fetch: async (url) => {
       if (url === '/api/data') return {ok: true, json: async () => clone(input)};
@@ -140,6 +140,67 @@ test('boot reads real mart fixture and groups four product types without changin
   // theoretical 12×4×4=192 lattice with invented zero observations.
   assert.equal(app.summary().cubeCells, 180);
   assert.equal(app.scene.snapshots.at(-1).products.length, 4);
+});
+
+test('query deep links open either a broad year or an exact cube slice without inventing dimensions', async () => {
+  const broad = await setup(undefined, '#year=2012&measure=Profit&mode=all');
+  assert.equal(broad.state().year, '2012');
+  assert.equal(broad.state().month, '2012-01-01');
+  assert.equal(broad.state().market, '');
+  assert.equal(broad.state().product, '');
+  assert.equal(broad.state().measure, 'Profit');
+  assert.equal(broad.state().mode, 'all');
+  assert.equal(broad.summary().visibleMonths, 12);
+
+  const allTime = await setup(undefined, '#year=all&measure=Sales&mode=all');
+  assert.equal(allTime.state().year, 'all');
+  assert.equal(allTime.summary().visibleMonths, 24);
+  assert.equal(allTime.state().market, '');
+  assert.equal(allTime.state().product, '');
+
+  const exact = await setup(undefined, '#year=2013&month=2013-08-01&market=South&product=Colombian&measure=Gap&mode=slice');
+  assert.equal(exact.state().month, '2013-08-01');
+  assert.equal(exact.state().market, 'South');
+  assert.equal(exact.state().product, 'Colombian');
+  assert.equal(exact.state().level, 'product');
+  assert.equal(exact.state().mode, 'slice');
+  assert.equal(exact.summary().scopeTotals.Gap, -268);
+
+  const totals = new Map();
+  for (const row of fixture.productPeriod.filter(row => row.MonthStart.startsWith('2013-'))) {
+    totals.set(row.ProductName, (totals.get(row.ProductName) || 0) + row.Sales);
+  }
+  const topFive = [...totals].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([product]) => product);
+  const params = new URLSearchParams({year: '2013', measure: 'Sales', mode: 'all'});
+  topFive.forEach(product => params.append('products', product));
+  const group = await setup(undefined, `#${params}`);
+  assert.equal(group.state().product, '');
+  assert.deepEqual(group.state().focusProducts, topFive);
+  assert.equal(group.element('product-select').value, '__query_products__');
+  assert.equal(group.element('selection-label').textContent, 'NHÓM TỪ KẾT QUẢ TRUY VẤN');
+  assert.equal(group.element('cell-title').textContent, '5 sản phẩm từ truy vấn');
+  const expectedRows = fixture.productPeriod.filter(row => row.MonthStart === '2013-08-01' && topFive.includes(row.ProductName));
+  assert.equal(group.summary().scopeTotals.Sales, expectedRows.reduce((sum, row) => sum + row.Sales, 0));
+  assert.deepEqual(group.scene.snapshots.at(-1).state.focusProducts, topFive);
+
+  const rollupItems = [
+    {label: 'East', value: 444}, {label: 'South', value: 336},
+    {label: 'West', value: 672}, {label: 'Central', value: 672},
+  ];
+  const rollupParams = new URLSearchParams({
+    year: '2012', mode: 'all', rollupDimension: 'Market',
+    rollupMetric: 'RecordCount', rollupTitle: 'RecordCount theo Market',
+  });
+  rollupItems.forEach(item => rollupParams.append('rollupItem', JSON.stringify(item)));
+  const rollup = await setup(undefined, `#${rollupParams}`);
+  assert.equal(rollup.state().rollup.items.length, 4);
+  assert.equal(rollup.scene.snapshots.at(-1).rows.length, 4);
+  assert.equal(rollup.scene.snapshots.at(-1).state.measure, 'RollupValue');
+  assert.equal(rollup.element('cube-title').textContent, 'RecordCount theo Market · 4 ô roll-up');
+  assert.equal(rollup.element('primary-kpi-label').textContent, 'Tổng RecordCount');
+  assert.equal(rollup.element('kpi-sales').textContent, '2.124');
+  assert.equal(rollup.element('product-ranking').children.length, 4);
+  assert.deepEqual(rollup.summary().scopeTotals, {RollupValue: 2124});
 });
 
 test('South case shows exact Market totals and signed Product ranking', async () => {
@@ -239,7 +300,7 @@ test('zero Budget returns a missing ratio rather than infinity or an invented ze
 });
 
 test('static host serves only the app resources and never exposes Python or repo files', async () => {
-  for (const resource of ['/app.js', '/cube.js', '/styles.css', '/vendor/three.module.min.js']) {
+  for (const resource of ['/app.js', '/cube.js', '/styles.css', '/linear.html', '/linear.js', '/linear.css', '/vendor/three.module.min.js']) {
     assert.equal((await fetch(apiRoot + resource)).status, 200, resource);
   }
   for (const resource of ['/server.py', '/data.py', '/README.md', '/vendor/%2e%2e/server.py', '/%2e%2e/.env']) {
@@ -426,6 +487,36 @@ async function makeGeometryScene(level = 'type') {
   const snapshot = app.scene.snapshots.at(-1);
   return {cube, snapshot, THREE};
 }
+
+test('actual CubeScene emphasizes every product carried by a top-N query, not only the first row', async () => {
+  const {cube, snapshot} = await makeGeometryScene('product');
+  const focusProducts = snapshot.products.slice(0, 5);
+  cube.setData(snapshot.rows, {...snapshot.state, month: '2013-08-01', product: '', focusProducts, mode: 'all'}, snapshot.months, snapshot.markets, snapshot.products);
+  const focused = cube.rows.find(row => row.MonthStart === '2013-08-01' && focusProducts.includes(row.Product));
+  const other = cube.rows.find(row => row.MonthStart === '2013-08-01' && !focusProducts.includes(row.Product));
+  assert.ok(focused && other);
+  assert.ok(focused.scale.length() > other.scale.length(), 'Every top-N product should stay emphasized while other products are dimmed.');
+  for (const product of focusProducts) {
+    assert.ok(cube.rows.some(row => row.Product === product && row.MonthStart === '2013-08-01' && row.scale.length() > other.scale.length()));
+  }
+  const selectedLabels = cube.axes.filter(axis => axis.node.className.includes('selected-label')).map(axis => axis.node.textContent);
+  assert.ok(selectedLabels.length >= focusProducts.length);
+});
+
+test('actual CubeScene renders a Market GROUP BY as exactly four finite roll-up blocks', async () => {
+  const {cube, snapshot} = await makeGeometryScene();
+  const items = [['East', 444], ['South', 336], ['West', 672], ['Central', 672]];
+  const rows = items.map(([Market, RollupValue]) => ({
+    MonthStart: '2012-01-01', Market, Product: 'RecordCount', RollupValue,
+    RollupMetric: 'RecordCount', Sales: 0, BudgetSales: 0, Profit: 0, Gap: 0,
+  }));
+  cube.setData(rows, {...snapshot.state, rollup: {dimension: 'Market'}, month: '2012-01-01', market: '', product: '', focusProducts: [], measure: 'RollupValue', mode: 'all'}, ['2012-01-01'], items.map(([market]) => market), ['RecordCount']);
+  cube.drawMatrices(true);
+  assert.equal(cube.rows.length, 4);
+  assert.equal(new Set(cube.rows.map(row => row.position.y)).size, 4);
+  assert.ok(cube.rows.every(row => Number.isFinite(row.position.length()) && Number.isFinite(row.scale.length())));
+  assert.deepEqual(cube.rows.map(row => row.RollupValue), [444, 336, 672, 672]);
+});
 
 test('actual Three.js outer cells stay ray-pickable after explode, slice and pivot', async () => {
   const {cube, snapshot, THREE} = await makeGeometryScene();

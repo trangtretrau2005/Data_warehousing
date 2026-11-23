@@ -10,7 +10,9 @@ Bộ khung làm chung cho bài tập lớn môn Kho dữ liệu trên `Coffee.cs
 
 ## Bản tích hợp Chi và Trang
 
-Mở [Coffee Datacube 3D trên SQL Server](http://127.0.0.1:8504) để trình diễn chương 4–5. Từ thư mục gốc, khởi chạy trên máy Trang bằng lệnh sau khi SQL Server và kho nghiệm thu đã sẵn sàng.
+Mở [Coffee Datacube 3D trên SQL Server](http://127.0.0.1:8504) để trình diễn chương 4–5. Phần trình diễn chính của Trang là [Giải thích chênh lệch theo quý](http://127.0.0.1:8504/quarter.html): chọn Market và quý, sau đó drill-down theo tháng → nhóm sản phẩm → sản phẩm rồi mở đúng ô trên khối 3D. Trang [Coffee Query Studio](http://127.0.0.1:8504/query.html) có bộ chọn `SUM`/`AVG` và Gemini Text-to-SQL cho COUNT, MIN/MAX, tỷ lệ, top-N, sắp xếp và nhóm; mọi SELECT của AI phải qua parser AST, allowlist mart, giới hạn dòng và kết nối chỉ-đọc. [Linear Lab](http://127.0.0.1:8504/linear.html) thử quan hệ Marketing–Sales theo từng Market với 18 tháng train và 6 tháng test; đây là what-if giải thích được, không thay forecast một tháng tới. Xem [kịch bản drill-down](docs/trang/quarter_drilldown.md), [thiết kế Query Studio](docs/trang/query_studio.md) và [báo cáo Linear Regression](docs/trang/linear_marketing.md). Từ thư mục gốc, khởi chạy trên máy Trang bằng lệnh sau khi SQL Server và kho nghiệm thu đã sẵn sàng.
+
+**Một cổng, một lộ trình:** trên `8504`, trình bày theo thứ tự **01 Giải thích chênh lệch → 02 Cube 3D beta → 03 Truy vấn và kiểm chứng → 04 Mô hình thử nghiệm**. Phần chắc chắn để bảo vệ là ETL, mart, KPI, SQL/SSAS đã đối soát và phép drill-down số học. Cube 3D, Gemini, forecast và Linear Lab là lớp thử nghiệm đang phát triển; không dùng chúng để tuyên bố hệ thống đã dự báo chính xác, chứng minh quan hệ nhân quả hoặc sẵn sàng vận hành thật.
 
 ```powershell
 .\.venv\Scripts\python.exe apps/cube_explorer/server.py --backend sqlserver --database CoffeeDW_Trang_SSIS_TN03_20261120 --port 8504
@@ -29,21 +31,21 @@ Luồng demo trên máy Trang dùng [SSIS Data Flow](ssis/CoffeeETLTrang/README.
 
 Để trình diễn ca của Chi, chọn tháng 08/2013 và Market South trên web. Sales 4.601, BudgetSales 4.610, Gap −9. Bảy sản phẩm khớp SQL và cube ở cả bốn số Sales, BudgetSales, Profit và Gap. Riêng Colombian có Gap −268. [Kết quả đối soát và kiểm kê tệp của Chi](results/final_chi_trang_20261122/handoff.json).
 
-**Mới vào repo:** đọc [bắt đầu tại đây và prompt cho Thanh/Chi](docs/START_HERE.md). Khi làm bằng agent, yêu cầu đọc [AGENTS.md](AGENTS.md) trước.
+[Thử nghiệm chọn ba trường hợp cần kiểm tra](http://127.0.0.1:8504/triage.html) và [báo cáo metric](experiments/triage/README.md) được giữ như một nghiên cứu phụ.
 
-**Demo của Trang:** [dự báo có giải thích và người thuyết minh](apps/forecast_demo/README.md), chạy ở cổng8502 sau khi chuẩn bị dữ liệu. Đây là prototype để bấm thử, tách khỏi dashboard tổng hợp hiện tại.
+## Ứng dụng
 
-**Hồ sơ hoàn thiện Trang — 19/11/2026:** [báo cáo chương6–7, kịch bản bảo vệ, UX và tái lập](docs/trang/README.md), [TN12 West riêng](experiments/tn12_west/README.md), [benchmark SQL Server thật TN07–10/HRU](docs/TRANG_NATIVE_HANDOFF.md). Mở hai app bằng `powershell -ExecutionPolicy Bypass -File scripts/start_trang_demo.ps1`; thêm `-Backend sqlserver` khi database native đã chuẩn bị. Dashboard đọc backend được cấu hình; không huấn luyện khi xem trang. UX người thật còn cần phiên tham gia, không thay bằng AppTest.
+| Ứng dụng | Cổng | Cách chạy |
+| --- | --- | --- |
+| Giải thích chênh lệch theo quý | 8504 | [Mở phần trình diễn chính](http://127.0.0.1:8504/quarter.html) |
+| Coffee Query Studio | 8504 | [Mở bộ tạo SQL và Gemini](http://127.0.0.1:8504/query.html) |
+| Linear Lab Marketing–Sales | 8504 | [Mở thử nghiệm hồi quy](http://127.0.0.1:8504/linear.html) |
+| Coffee Datacube 3D trên SQL Server | 8504 | Dùng lệnh ở phần bản tích hợp |
+| Coffee Datacube 3D trên SQLite | 8503 | [Hướng dẫn Cube Explorer](apps/cube_explorer/README.md) |
+| Dashboard KPI và dự báo | 8501 | [Hướng dẫn dashboard](apps/dashboard/README.md) |
+| Demo thuyết minh dự báo | 8502 | [Chuẩn bị dữ liệu và chạy demo](apps/forecast_demo/README.md) |
 
-**Explore của Trang:** [EDA nguồn, phân tích và hình báo cáo](explore/README.md). Chạy `python explore/run.py`; kết quả ở `explore/results/`, làm được trước khi Chi bàn giao kho.
-
-**Bước sau EDA:** [thử nghiệm cơ sở ba phương pháp](experiments/baseline/README.md). Chạy `python experiments/baseline/run.py`; lưu bảng/hình/nhận xét cho từng bước, lựa chọn trước pha test.
-
-**Thử siêu tham số:** [7 cấu hình Naive/MA/Ridge](experiments/tuning/README.md). Chạy `python experiments/tuning/run.py`; lưu toàn bộ cấu hình, hệ số đã học, pipeline cuối, báo cáo và hình PNG/PDF/SVG. Đây là mở rộng thăm dò trên test đã biết, chọn cấu hình bằng validation.
-
-**Bước tiếp theo:** [tích hợp nghiên cứu vào bài thuyết trình](experiments/briefing/README.md). Chạy `python experiments/briefing/run.py --voice`; đối soát96 ô với kho tham chiếu, lưu16 hồ sơ MA3/hình báo cáo và cập nhật demo với công thức, kiểm chứng, bảng7 cấu hình.
-
-Xem [phân công](docs/TEAM_WORKFLOW.md), [ánh xạ toàn bộ báo cáo](docs/REPORT_MAP.md), [checklist từng chương](docs/chapters/) và [trạng thái base](docs/BASE_STATUS.md).
+Người mới xem [hướng dẫn theo vai trò](docs/START_HERE.md), [quy ước làm việc](AGENTS.md) và các bước thiết lập bên dưới.
 
 ## Chạy nhanh
 
@@ -121,6 +123,8 @@ Nguồn hiện có 24 tháng, từ 01/2012 đến 12/2013, 4 thị trường, 15
 
 Forecast so sánh tháng trước, trung bình ba tháng và Ridge ba lag. Sáu kỳ 04–09/2013 dùng chọn phương pháp theo MAE; ba kỳ 10–12/2013 dùng kiểm tra độc lập với lựa chọn. Mỗi dự báo chỉ dùng các tháng trước mục tiêu, gồm cả bước chuẩn hóa. Dự báo 01/2014 là kỳ ngoài nguồn lịch sử, chưa có actual để chấm sai số. Quy tắc tránh rò rỉ theo [tài liệu scikit-learn](https://scikit-learn.org/stable/common_pitfalls.html).
 
+Linear Marketing–Sales là thử nghiệm riêng ở grain Market–tháng: fit 18 tháng đầu, kiểm tra 6 tháng cuối. R² test âm ở cả bốn Market nên chưa gộp hoặc dùng thay forecast; chức năng được giữ như phần giải thích tương quan và kịch bản có cảnh báo. Không sinh thêm Sales để nâng metric. Xem [protocol, số liệu và quyết định tích hợp](docs/trang/linear_marketing.md).
+
 ## SQL Server và công cụ môn học
 
 1. Chạy `sql/sqlserver/00_create_database.sql`, `01_schema.sql`, `02_marts.sql`, `03_load_staging.sql` trong SSMS theo thứ tự.
@@ -130,6 +134,13 @@ Forecast so sánh tháng trước, trung bình ba tháng và Ridge ba lag. Sáu 
 5. Trang chạy `05_bench_setup.sql` đến `09_benchmark_protocol.sql` trong vùng `bench`, thu actual plans và 15 lượt đo mỗi cấu hình. Indexed view có [SET options và chi phí duy trì riêng](https://learn.microsoft.com/en-us/sql/relational-databases/views/create-indexed-views).
 
 Các script không xóa kho hiện có. Benchmark mặc định nhân nguồn 500 lần, tạo 2.124.000 dòng trong `bench`; cần đủ bộ nhớ/ổ đĩa. Tập nhân bản chỉ dùng thử tải. Dashboard mặc định dùng SQLite; chuyển sang SQL Server qua cùng hợp đồng mart là phần tích hợp tiếp theo của nhóm.
+
+## Báo cáo và thực nghiệm
+
+- **Thanh, chương 1–3.** Xem [kiến trúc và hợp đồng dữ liệu](docs/architecture.md) và checklist trong [bản đồ báo cáo](docs/REPORT_MAP.md).
+- **Chi, chương 4–5.** Xem bảng TN03–TN06 ở đầu trang, [checklist ETL](docs/chapters/ch04_chi.md) và [checklist OLAP](docs/chapters/ch05_chi.md).
+- **Trang, chương 6–7.** Xem [hồ sơ dự báo, triển khai và kịch bản bảo vệ](docs/trang/README.md), [TN12 West](experiments/tn12_west/README.md) và [benchmark SQL Server TN07–TN10/HRU](docs/TRANG_NATIVE_HANDOFF.md). Xem thêm [EDA](explore/README.md), [baseline](experiments/baseline/README.md), [tuning](experiments/tuning/README.md) và [demo tổng hợp nghiên cứu](experiments/briefing/README.md).
+- **Cả nhóm.** Theo dõi [trạng thái và giới hạn nghiệm thu](docs/BASE_STATUS.md), [quy trình phối hợp](docs/TEAM_WORKFLOW.md) và [quy ước lưu minh chứng](results/README.md).
 
 ## Làm chung trên Git
 
