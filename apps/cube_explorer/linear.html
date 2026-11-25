@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Linear Lab · Marketing và Sales</title>
+  <link rel="stylesheet" href="/linear.css">
+  <script type="module" src="/linear.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">L</span><span>Coffee <em>Linear Lab</em></span></a>
+    <nav class="project-nav" aria-label="Lộ trình demo tích hợp">
+      <a href="/quarter.html"><b>01</b><span>Chênh lệch</span></a>
+      <a href="/"><b>02</b><span>Cube 3D beta</span></a>
+      <a href="/query.html"><b>03</b><span>Truy vấn</span></a>
+      <a class="active" aria-current="page" href="/linear.html"><b>04</b><span>Mô hình thử</span></a>
+    </nav>
+    <span id="source-label" class="source-pill">Đang đọc mart…</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div><p class="eyebrow">MÔ HÌNH THỬ NGHIỆM ĐANG PHÁT TRIỂN</p><h1>Marketing liên hệ với <span>Sales</span> như thế nào?</h1><p>Thử một mô hình đơn giản để kiểm tra giả thuyết, không phải chức năng đã nghiệm thu. Mỗi Market có một đường hồi quy riêng, học trên 18 tháng đầu và kiểm tra trên 6 tháng cuối.</p></div>
+      <aside><strong>Không phải dự báo tương lai</strong><p>Feature là Marketing của chính tháng cần ước lượng. Đây là mô hình liên hệ và thử kịch bản, không chứng minh quan hệ nhân quả.</p></aside>
+    </section>
+
+    <div id="error" class="error" hidden role="alert"></div>
+    <section id="workspace" class="workspace" hidden>
+      <aside class="controls">
+        <p class="step">01 · CHỌN PHẠM VI</p>
+        <label>Thị trường<select id="market-select"></select></label>
+        <div class="protocol"><span>TRAIN</span><strong id="train-range"></strong><span>TEST</span><strong id="test-range"></strong><small>Chia theo thời gian, không xáo trộn ngẫu nhiên.</small></div>
+        <hr>
+        <p class="step">02 · THỬ KỊCH BẢN</p>
+        <div class="slider-heading"><span>Điều chỉnh Marketing</span><strong id="scenario-pct">0%</strong></div>
+        <input id="scenario-slider" type="range" min="-30" max="50" value="0" step="1">
+        <div class="range-label"><span>−30%</span><span>Hiện tại</span><span>+50%</span></div>
+        <div class="scenario-card"><span>Marketing giả định</span><strong id="scenario-marketing">—</strong><span>Sales theo đường hồi quy</span><strong id="scenario-sales">—</strong><p id="scenario-delta"></p></div>
+        <p class="warning">Kết quả này giả định các yếu tố khác không đổi và chỉ đi theo đường thẳng đã học. Không dùng để cam kết doanh thu.</p>
+      </aside>
+
+      <section class="analysis">
+        <header class="analysis-heading"><div><p class="step">03 · KIỂM TRA MÔ HÌNH</p><h2 id="market-title"></h2><p id="equation"></p></div><span id="quality-badge"></span></header>
+        <div class="metrics">
+          <article><span>Tương quan 24 tháng</span><strong id="metric-corr">—</strong><small>Pearson r · mô tả</small></article>
+          <article><span>MAE trên 6 tháng test</span><strong id="metric-mae">—</strong><small>Đơn vị Sales nguồn</small></article>
+          <article><span>RMSE trên 6 tháng test</span><strong id="metric-rmse">—</strong><small>Phạt lỗi lớn mạnh hơn</small></article>
+          <article><span>R² trên test</span><strong id="metric-r2">—</strong><small id="r2-help"></small></article>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head"><div><strong>Marketing và Sales theo tháng</strong><small>● Train &nbsp; ● Test &nbsp; ━ Đường học từ train &nbsp; ◆ Kịch bản</small></div><span id="point-count"></span></div>
+          <svg id="scatter" role="img" aria-label="Biểu đồ phân tán Marketing và Sales với đường hồi quy"></svg>
+        </div>
+        <div class="reading-grid">
+          <article><span class="number">1</span><div><strong>Hệ số nói gì?</strong><p id="coefficient-reading"></p></div></article>
+          <article><span class="number">2</span><div><strong>Test nói gì?</strong><p id="test-reading"></p></div></article>
+          <article><span class="number">3</span><div><strong>Nên dùng thế nào?</strong><p>Dùng để minh họa liên hệ và kịch bản Marketing. Giữ model Sales cũ cho dự báo một tháng tới; chưa gộp hai model khi Linear chưa chứng minh khả năng dự báo.</p></div></article>
+        </div>
+      </section>
+    </section>
+
+    <section id="comparison" class="comparison" hidden>
+      <div><p class="eyebrow">SO SÁNH BỐN MARKET</p><h2>Kết quả Linear Regression</h2><p>R² test âm không có nghĩa code sai; nó cho thấy một đường Marketing đơn biến không giải thích tốt biến động Sales của sáu tháng cuối.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Market</th><th>r</th><th>Hệ số</th><th>MAE test</th><th>MAE baseline</th><th>R² test</th><th>Kết luận</th></tr></thead><tbody id="market-table"></tbody></table></div>
+    </section>
+
+    <section class="decision">
+      <span>ĐỀ XUẤT BẢN THỬ</span><h2>Chưa thay model dự báo Sales cũ.</h2><p>Linear Regression này dễ giải thích và đẹp để demo “what-if”, nhưng feature Marketing cùng tháng chưa có sẵn khi dự báo tương lai và R² test hiện âm ở cả bốn Market. Hãy giữ hai chức năng tách biệt; chỉ cân nhắc gộp sau khi bổ sung feature có sẵn trước kỳ dự báo và kiểm chứng lại theo thời gian.</p>
+    </section>
+  </main>
+  <footer><span>Coffee DW · Trang</span><span>Linear Regression · mart chỉ đọc · không sinh dữ liệu</span></footer>
+</body>
+</html>

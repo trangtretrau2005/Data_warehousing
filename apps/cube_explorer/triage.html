@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ba lượt kiểm tra · Coffee Atlas</title><link rel="stylesheet" href="/styles.css"><style>
+body{background:#f6f4ec;color:#183c34}.triage{max-width:1000px;margin:auto;padding:24px clamp(16px,4vw,44px) 64px}.triage header{background:#183e36;color:#fff9ed;padding:clamp(20px,4vw,42px);border-radius:18px;margin:20px 0}.triage h1{font:600 clamp(28px,5vw,52px)/1.12 Georgia,serif;color:inherit;margin:12px 0}.triage header p{color:#d6eadb}.choices,.picks{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.choices button,.triage select,.reveal{padding:10px 16px;border-radius:8px;border:1px solid #79988a;background:#fff;color:#173e34;cursor:pointer;font:inherit}.choices [aria-pressed=true],.reveal{background:#175845;color:white}.picks article{flex:1 1 180px;background:white;border:1px solid #d9dfd2;border-top:4px solid #468572;border-radius:12px;padding:18px}.picks h3{margin:6px 0 12px}.outcome{background:#fff;padding:20px;border-radius:12px;margin-top:16px}.outcome meter{width:100%;height:20px}.outcome p{margin:12px 0 2px}.triage a{color:#216652}.triage details{margin:18px 0}.triage summary{cursor:pointer}.triage small{font-size:14px}
+</style></head><body><main class="triage"><a href="/">← Coffee Atlas</a><header><small>CHƯƠNG 7 · THỰC NGHIỆM ƯU TIÊN KIỂM TRA</small><h1>Chỉ được kiểm tra ba trường hợp.<br>Bạn sẽ chọn cách nào?</h1><p>Chọn ba cặp thị trường–sản phẩm đang hụt ngân sách, rồi mở số liệu thật của tháng kế tiếp.</p></header>
+<label>Tháng vừa chốt <select id="month" disabled></select></label><div class="choices"><button id="AI" aria-pressed="true">AI · bất thường nhất</button><button id="loss" aria-pressed="false">Quy tắc · hụt nhiều nhất</button></div>
+<p id="reason" role="status">Đang đọc kết quả thực nghiệm…</p><div class="picks" id="cards"></div><button class="reveal" id="reveal" disabled>Mở kết quả tháng sau</button>
+<section class="outcome" id="outcome" hidden aria-live="polite"><h2 id="out-title"></h2><div id="bars"></div><details><summary>Kết quả toàn bộ 11 lượt</summary><div id="overall"></div></details></section>
+<script type="module">
+const el=id=>document.getElementById(id), fmt=n=>n.toLocaleString('vi-VN');
+const methods={AI:'Isolation Forest',loss:'Theo tiền hụt'};
+let data,method='AI',opened=false;
+function add(parent,tag,text){const node=document.createElement(tag);node.textContent=text;parent.append(node);return node;}
+function draw(){
+ const m=data.months.find(x=>x.month===el('month').value);
+ const rows=data.alerts.filter(x=>x.MonthStart===m.month);
+ const selected=rows.filter(x=>x.method===method);
+ for(const id of Object.keys(methods))el(id).setAttribute('aria-pressed',String(id===method));
+ el('reason').textContent=m.candidates+' trường hợp đủ điều kiện. '+(method==='AI'?'Ưu tiên điểm bất thường cao theo tỷ lệ hụt, biến động Sales và biên lợi nhuận.':'Ưu tiên chênh lệch BudgetSales − Sales lớn nhất ở tháng vừa chốt.');
+ const cards=el('cards');cards.replaceChildren();
+ for(const x of selected){const card=add(cards,'article','');add(card,'small',x.Market);add(card,'h3',x.ProductName);add(card,'p','Hụt kỳ này · '+fmt(x.loss));if(method==='AI')add(card,'small','Điểm bất thường '+x.AI.toFixed(3));if(opened)add(card,'p','Thực tế kỳ sau · hụt '+fmt(x.next_loss));}
+ el('outcome').hidden=!opened;el('reveal').textContent=opened?'Ẩn kết quả':'Mở kết quả tháng sau';
+ if(!opened)return;
+ const next=new Date(m.month+'T00:00:00Z');next.setUTCMonth(next.getUTCMonth()+1);
+ el('out-title').textContent='Thực tế '+next.toISOString().slice(0,7)+' · tổng hụt của nhóm ứng viên '+fmt(m.pool_loss);
+ for(const [node,items,den] of [[el('bars'),rows,m.pool_loss],[el('overall'),data.alerts,data.months.reduce((a,b)=>a+b.pool_loss,0)]]){
+ node.replaceChildren();for(const id of Object.keys(methods)){const picks=items.filter(x=>x.method===id),sum=picks.reduce((a,b)=>a+b.next_loss,0);
+ add(node,'p',methods[id]+' · '+fmt(sum)+' / '+fmt(den)+' ('+fmt(Math.round(sum/den*1000)/10)+'%) · '+picks.filter(x=>x.next_loss>0).length+'/'+picks.length+' lượt còn hụt');
+ const bar=add(node,'meter','');bar.max=den;bar.value=sum;bar.setAttribute('aria-label','Số hụt kỳ sau được bao phủ bởi '+methods[id]);}}
+}
+try{const r=await fetch('/triage.json');if(!r.ok)throw Error();data=await r.json();
+for(const m of data.months)el('month').add(new Option(m.month.slice(0,7),m.month));
+el('month').value='2013-08-01';el('month').disabled=false;el('reveal').disabled=false;
+el('month').onchange=()=>{opened=false;draw();};for(const id of Object.keys(methods))el(id).onclick=()=>{method=id;opened=false;draw();};
+el('reveal').onclick=()=>{opened=!opened;draw();};draw();
+}catch{el('reason').textContent='Chưa đọc được bộ kết quả thực nghiệm.';}
+</script></main></body></html>

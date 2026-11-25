@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="465" height="330" preserveAspectRatio="xMinYMin meet" viewBox="0 0 465 330" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="465" height="330"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-330)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0" y="0" width="465" height="330" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="136.088623046875" y="312" style="font-family: Times New Roman Bold; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,624) scale(1,-1)">Actual và MA3 trong ba tháng test</text>
+			<path d="M 25,292 L 49,292 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 1.7;"/>
+			<text x="55" y="288" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,576) scale(1,-1)">Thực tế</text>
+			<path d="M 205,292 L 229,292 Z" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 1.7; stroke-dasharray: 5, 3;"/>
+			<text x="235" y="288" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,576) scale(1,-1)">MA3</text>
+			<g transform="">
+				<g transform="">
+					<g transform="">
+						<path d="M 51,191 L 212,191 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<path d="M 51,191 L 51,186 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 131.5,191 L 131.5,186 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 212,191 L 212,186 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,51,186)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">10</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,131.5,186)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">11</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,212,186)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">12</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 51,191 L 51,261 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<path d="M 51,191 L 46,191 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 51,226 L 46,226 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 51,261 L 46,261 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,46,191)">
+							<text x="-35.75" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">10.000</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,46,226)">
+							<text x="-35.75" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">10.750</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,46,261)">
+							<text x="-35.75" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">11.500</text>
+						</g>
+					</g>
+				</g>
+				<path d="M 51,226 L 212,226 Z" style="stroke: rgb(86%,88%,89%); stroke-linecap: butt; stroke-width: 0.5;"/>
+				<path d="M 51,261 L 212,261 Z" style="stroke: rgb(86%,88%,89%); stroke-linecap: butt; stroke-width: 0.5;"/>
+				<g transform="">
+					<polyline points="51 250.2667, 131.5 232.3, 212 254.84" style="stroke: rgb(8%,8%,8%); stroke-linecap: round; stroke-width: 1.6; fill: None; fill-rule: evenodd;"/>
+					<circle cx="51.0" cy="250.26666666666668" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<circle cx="131.5" cy="232.3" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<circle cx="212.0" cy="254.84" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<polyline points="51 257.1267, 131.5 253.7667, 212 246.7978" style="stroke: rgb(9%,49%,50%); stroke-linecap: round; stroke-width: 1.6; fill: None; fill-rule: evenodd; stroke-dasharray: 5, 3;"/>
+					<rect x="49.0" y="255.12666666666667" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+					<rect x="129.5" y="251.76666666666668" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+					<rect x="210.0" y="244.79777777777775" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+				</g>
+			</g>
+			<text x="103.700439453125" y="275" style="font-family: Times New Roman Bold; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,550) scale(1,-1)">Central</text>
+			<text x="0" y="275" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,550) scale(1,-1)">Sales</text>
+			<g transform="">
+				<g transform="">
+					<g transform="">
+						<path d="M 294,191 L 455,191 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<path d="M 294,191 L 294,186 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 374.5,191 L 374.5,186 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 455,191 L 455,186 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,294,186)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">10</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,374.5,186)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">11</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,455,186)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">12</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 294,191 L 294,261 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<path d="M 294,191 L 289,191 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 294,226 L 289,226 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 294,261 L 289,261 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,289,191)">
+							<text x="-29.250000000000004" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">7.200</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,289,226)">
+							<text x="-29.250000000000004" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">7.500</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,289,261)">
+							<text x="-29.250000000000004" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">7.800</text>
+						</g>
+					</g>
+				</g>
+				<path d="M 294,226 L 455,226 Z" style="stroke: rgb(86%,88%,89%); stroke-linecap: butt; stroke-width: 0.5;"/>
+				<path d="M 294,261 L 455,261 Z" style="stroke: rgb(86%,88%,89%); stroke-linecap: butt; stroke-width: 0.5;"/>
+				<g transform="">
+					<polyline points="294 233.5833, 374.5 218.7667, 455 255.5167" style="stroke: rgb(8%,8%,8%); stroke-linecap: round; stroke-width: 1.6; fill: None; fill-rule: evenodd;"/>
+					<circle cx="294.0" cy="233.58333333333334" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<circle cx="374.5" cy="218.76666666666665" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<circle cx="455.0" cy="255.51666666666665" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<polyline points="294 257.1889, 374.5 241.2444, 455 229.7333" style="stroke: rgb(9%,49%,50%); stroke-linecap: round; stroke-width: 1.6; fill: None; fill-rule: evenodd; stroke-dasharray: 5, 3;"/>
+					<rect x="292.0" y="255.18888888888887" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+					<rect x="372.5" y="239.24444444444447" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+					<rect x="453.0" y="227.73333333333335" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+				</g>
+			</g>
+			<text x="355.720458984375" y="275" style="font-family: Times New Roman Bold; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,550) scale(1,-1)">East</text>
+			<text x="243" y="275" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,550) scale(1,-1)">Sales</text>
+			<g transform="">
+				<g transform="">
+					<g transform="">
+						<path d="M 51,70 L 212,70 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<path d="M 51,70 L 51,65 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 131.5,70 L 131.5,65 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 212,70 L 212,65 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,51,65)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">10</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,131.5,65)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">11</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,212,65)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">12</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 51,70 L 51,140 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<path d="M 51,70 L 46,70 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 51,105 L 46,105 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 51,140 L 46,140 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,46,70)">
+							<text x="-29.250000000000004" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">4.300</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,46,105)">
+							<text x="-29.250000000000004" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">4.450</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,46,140)">
+							<text x="-29.250000000000004" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">4.600</text>
+						</g>
+					</g>
+				</g>
+				<path d="M 51,105 L 212,105 Z" style="stroke: rgb(86%,88%,89%); stroke-linecap: butt; stroke-width: 0.5;"/>
+				<path d="M 51,140 L 212,140 Z" style="stroke: rgb(86%,88%,89%); stroke-linecap: butt; stroke-width: 0.5;"/>
+				<g transform="">
+					<polyline points="51 129.7333, 131.5 112, 212 134.4" style="stroke: rgb(8%,8%,8%); stroke-linecap: round; stroke-width: 1.6; fill: None; fill-rule: evenodd;"/>
+					<circle cx="51.0" cy="129.73333333333335" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<circle cx="131.5" cy="112.0" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<circle cx="212.0" cy="134.4" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<polyline points="51 120.8667, 131.5 132.5333, 212 123.1222" style="stroke: rgb(9%,49%,50%); stroke-linecap: round; stroke-width: 1.6; fill: None; fill-rule: evenodd; stroke-dasharray: 5, 3;"/>
+					<rect x="49.0" y="118.86666666666667" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+					<rect x="129.5" y="130.53333333333333" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+					<rect x="210.0" y="121.12222222222229" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+				</g>
+			</g>
+			<text x="108.740478515625" y="154" style="font-family: Times New Roman Bold; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,308) scale(1,-1)">South</text>
+			<text x="0" y="154" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,308) scale(1,-1)">Sales</text>
+			<g transform="">
+				<g transform="">
+					<g transform="">
+						<path d="M 294,70 L 455,70 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<path d="M 294,70 L 294,65 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 374.5,70 L 374.5,65 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 455,70 L 455,65 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,294,65)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">10</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,374.5,65)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">11</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,455,65)">
+							<text x="-6.500000000000001" y="-13.0" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-26) scale(1,-1)">12</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 294,70 L 294,140 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<path d="M 294,70 L 289,70 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 294,105 L 289,105 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+						<path d="M 294,140 L 289,140 Z" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.65;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,289,70)">
+							<text x="-35.75" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">10.500</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,289,105)">
+							<text x="-35.75" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">11.250</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,289,140)">
+							<text x="-35.75" y="-5.2" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,-10) scale(1,-1)">12.000</text>
+						</g>
+					</g>
+				</g>
+				<path d="M 294,105 L 455,105 Z" style="stroke: rgb(86%,88%,89%); stroke-linecap: butt; stroke-width: 0.5;"/>
+				<path d="M 294,140 L 455,140 Z" style="stroke: rgb(86%,88%,89%); stroke-linecap: butt; stroke-width: 0.5;"/>
+				<g transform="">
+					<polyline points="294 121.1467, 374.5 107.3333, 455 134.54" style="stroke: rgb(8%,8%,8%); stroke-linecap: round; stroke-width: 1.6; fill: None; fill-rule: evenodd;"/>
+					<circle cx="294.0" cy="121.14666666666668" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<circle cx="374.5" cy="107.33333333333334" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<circle cx="455.0" cy="134.54000000000002" r="2.0" style="stroke: rgb(8%,8%,8%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(8%,8%,8%); fill-rule: evenodd;"/>
+					<polyline points="294 135.3178, 374.5 129.6089, 455 118.1133" style="stroke: rgb(9%,49%,50%); stroke-linecap: round; stroke-width: 1.6; fill: None; fill-rule: evenodd; stroke-dasharray: 5, 3;"/>
+					<rect x="292.0" y="133.31777777777774" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+					<rect x="372.5" y="127.60888888888891" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+					<rect x="453.0" y="116.11333333333334" width="4.0" height="4.0" style="stroke: rgb(9%,49%,50%); stroke-linecap: butt; stroke-width: 0.1; fill: rgb(9%,49%,50%); fill-rule: evenodd;"/>
+				</g>
+			</g>
+			<text x="353.9208984375" y="154" style="font-family: Times New Roman Bold; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,308) scale(1,-1)">West</text>
+			<text x="243" y="154" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,308) scale(1,-1)">Sales</text>
+			<text x="119.97827148437499" y="33" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,66) scale(1,-1)">Tháng 10, 11, 12 năm 2013 · N = 3/Market</text>
+			<text x="99.376953125" y="12" style="font-family: Times New Roman; font-size: 13px;fill: rgb(8%,8%,8%); stroke:none;" transform="translate(0,24) scale(1,-1)">Trục Y riêng từng ô; các điểm nối bằng đoạn thẳng</text>
+		</g>
+	</g>
+</svg>

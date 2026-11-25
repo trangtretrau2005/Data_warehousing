@@ -1,0 +1,349 @@
+{
+  "created_utc": "2026-11-21T06:06:01.738166+00:00",
+  "script": ".work/report_20261121/prepare_chi_assets.py",
+  "script_sha256": "ee45adff08029d4eb3f3b27d3201337595ac95fe194059ab4bfa11466f142b88",
+  "python_executable": "C:\\Program Files\\WindowsApps\\OpenAI.CodexPrimaryRuntime.v26-1119-907-0_26.1119.907.0_x64__3k8sg7r9htsxt\\dependencies\\python\\python.exe",
+  "pdftoppm": "C:\\Program Files\\WindowsApps\\OpenAI.CodexPrimaryRuntime.v26-1119-907-0_26.1119.907.0_x64__3k8sg7r9htsxt\\dependencies\\native\\poppler\\Library\\bin\\pdftoppm.EXE",
+  "font_regular": "C:\\Windows\\Fonts\\times.ttf",
+  "font_bold": "C:\\Windows\\Fonts\\timesbd.ttf",
+  "source_images_modified": false,
+  "imagegen_used": false,
+  "visual_qa": "APPROVED_AFTER_VIEW_IMAGE",
+  "assets": [
+    {
+      "id": "chi_01_control",
+      "kind": "authentic_screenshot_crop",
+      "original_path": "results/native_build_20261120/ui/ssis_control_flow.png",
+      "original_sha256": "80a7f87f5b5f97c5cbd0bfb25b300ec641f54a31acb4e692b4ce9087891fee68",
+      "original_size_px": [
+        1536,
+        816
+      ],
+      "crop_box_xyxy": [
+        10,
+        115,
+        280,
+        495
+      ],
+      "crop_size_px": [
+        270,
+        380
+      ],
+      "path": "reports/assets_chi_trang_20261121/chi_01_control.png",
+      "sha256": "5b205e94344aec74168890d1b1038e0a1f31ce6b423a6b558fd744cfe9b95033",
+      "size_px": [
+        700,
+        985
+      ],
+      "resampling": "uniform Pillow LANCZOS; no text/data painting",
+      "dpi": 200,
+      "display_width_in": 3.5,
+      "caption": "Control Flow SSIS: đăng ký batch, raw landing, kiểm tra và nạp sao.",
+      "limitation": "Ảnh thiết kế; không dùng để suy tổng dòng hoặc trạng thái runtime.",
+      "visual_qa": {
+        "original_reviewed": true,
+        "crop_reviewed": true,
+        "no_clipped_end_labels_from_crop": true,
+        "pixel_reproduction_match": true
+      }
+    },
+    {
+      "id": "chi_02_data",
+      "kind": "authentic_screenshot_crop",
+      "original_path": "results/native_build_20261120/ui/ssis_data_flow.png",
+      "original_sha256": "46a78ca21e9919ede488e356e10b4d1ee3a007b308b72cbe36c46a1954008a54",
+      "original_size_px": [
+        1536,
+        816
+      ],
+      "crop_box_xyxy": [
+        10,
+        150,
+        290,
+        425
+      ],
+      "crop_size_px": [
+        280,
+        275
+      ],
+      "path": "reports/assets_chi_trang_20261121/chi_02_data.png",
+      "sha256": "a155bd050b47b2a78b9c3e2ede253da2a16220641ec19ea96a0e29a19da2ba10",
+      "size_px": [
+        760,
+        746
+      ],
+      "resampling": "uniform Pillow LANCZOS; no text/data painting",
+      "dpi": 200,
+      "display_width_in": 3.8,
+      "caption": "Data Flow native: Flat File Source, Derived BatchID và OLE DB raw landing.",
+      "limitation": "Validator/ép kiểu/reject nằm ở T-SQL sau raw landing, không vẽ thêm component.",
+      "visual_qa": {
+        "original_reviewed": true,
+        "crop_reviewed": true,
+        "no_clipped_end_labels_from_crop": true,
+        "pixel_reproduction_match": true
+      }
+    },
+    {
+      "id": "chi_03_dsv",
+      "kind": "authentic_screenshot_crop",
+      "original_path": "results/native_build_20261120/ui/ssas_dsv_final.png",
+      "original_sha256": "1eb81da2e3fb593f4efa1cbb2603d79d6ac440434f0374460eae8afe3ae4ad2b",
+      "original_size_px": [
+        1373,
+        730
+      ],
+      "crop_box_xyxy": [
+        430,
+        115,
+        770,
+        685
+      ],
+      "crop_size_px": [
+        340,
+        570
+      ],
+      "path": "reports/assets_chi_trang_20261121/chi_03_dsv.png",
+      "sha256": "14dea551c0b1ead0b6aa367ad888bad378ecbe7bd73dddbc1f4dc9e36cb7c90b",
+      "size_px": [
+        680,
+        1140
+      ],
+      "resampling": "uniform Pillow LANCZOS; no text/data painting",
+      "dpi": 200,
+      "display_width_in": 3.4,
+      "caption": "DSV mô hình sao: fact và ba dimension.",
+      "limitation": "Ảnh cấu trúc trước chuyển nguồn; cấu trúc bốn bảng được giữ nguyên sau tích hợp. Tên fact trong GUI đã rút gọn sẵn; không vẽ đè để sửa nhãn.",
+      "visual_qa": {
+        "original_reviewed": true,
+        "crop_reviewed": true,
+        "no_clipped_end_labels_from_crop": true,
+        "pixel_reproduction_match": true
+      }
+    },
+    {
+      "id": "chi_04_usage",
+      "kind": "authentic_screenshot_crop",
+      "original_path": "results/native_build_20261120/ui/ssas_dimension_usage.png",
+      "original_sha256": "11aa81740faa0e194a4b5b66e069528a28e9c56997a09a96f4ba05f886306fbc",
+      "original_size_px": [
+        1536,
+        816
+      ],
+      "crop_box_xyxy": [
+        8,
+        145,
+        322,
+        310
+      ],
+      "crop_size_px": [
+        314,
+        165
+      ],
+      "path": "reports/assets_chi_trang_20261121/chi_04_usage.png",
+      "sha256": "bcae117042e72d53f86a373df23b8ce7f33246b174366549d70a774bdaae36ed",
+      "size_px": [
+        900,
+        473
+      ],
+      "resampling": "uniform Pillow LANCZOS; no text/data painting",
+      "dpi": 200,
+      "display_width_in": 4.5,
+      "caption": "Dimension Usage tại các khóa DateKey, LocationKey và ProductKey.",
+      "limitation": "Quan hệ Regular được xác nhận thêm từ cube metadata, không suy chữ khó đọc trên ảnh.",
+      "visual_qa": {
+        "original_reviewed": true,
+        "crop_reviewed": true,
+        "no_clipped_end_labels_from_crop": true,
+        "pixel_reproduction_match": true
+      }
+    },
+    {
+      "id": "chi_05_states",
+      "kind": "authentic_screenshot_crop",
+      "original_path": "results/native_build_20261120/ui/ssas_integrated_browser_central_states.png",
+      "original_sha256": "77ae311a780b6a2efa807557d8890474dc602ef8c99764be73864bfacbc847ba",
+      "original_size_px": [
+        1373,
+        730
+      ],
+      "crop_box_xyxy": [
+        296,
+        442,
+        685,
+        585
+      ],
+      "crop_size_px": [
+        389,
+        143
+      ],
+      "path": "reports/assets_chi_trang_20261121/chi_05_states.png",
+      "sha256": "880426007412952485e347ed8ab8af8999aab44cada082566661603ab0426db6",
+      "size_px": [
+        1200,
+        441
+      ],
+      "resampling": "uniform Pillow LANCZOS; no text/data painting",
+      "dpi": 200,
+      "display_width_in": 6.0,
+      "caption": "Browser sau tích hợp: Central tháng 01/2012 ở cấp State.",
+      "limitation": "Giữ nguyên con trỏ/selection và mọi số liệu; đối soát số đầy đủ bằng SQL/MDX đi kèm.",
+      "visual_qa": {
+        "original_reviewed": true,
+        "crop_reviewed": true,
+        "no_clipped_end_labels_from_crop": true,
+        "pixel_reproduction_match": true
+      }
+    },
+    {
+      "id": "chi_06_dice",
+      "kind": "authentic_screenshot_crop",
+      "original_path": "results/native_build_20261120/ui/ssas_integrated_browser_dice_coffee.png",
+      "original_sha256": "dce85f9617f2fae61369498d83aaf140660458934dc8d7c1761543486842601f",
+      "original_size_px": [
+        1373,
+        730
+      ],
+      "crop_box_xyxy": [
+        296,
+        442,
+        548,
+        505
+      ],
+      "crop_size_px": [
+        252,
+        63
+      ],
+      "path": "reports/assets_chi_trang_20261121/chi_06_dice.png",
+      "sha256": "1b66fc3d71fd7ee8c0e853833c8698de45fd190b603799eab5de395344540a10",
+      "size_px": [
+        960,
+        240
+      ],
+      "resampling": "uniform Pillow LANCZOS; no text/data painting",
+      "dpi": 200,
+      "display_width_in": 4.8,
+      "caption": "Browser sau tích hợp: Coffee tháng 01/2012 tại Central và East.",
+      "limitation": "Ảnh cắt chỉ chứa bảng kết quả; bộ lọc được xác nhận từ ảnh gốc/AX text cùng tên.",
+      "visual_qa": {
+        "original_reviewed": true,
+        "crop_reviewed": true,
+        "no_clipped_end_labels_from_crop": true,
+        "pixel_reproduction_match": true
+      }
+    },
+    {
+      "id": "chi_07_nov",
+      "kind": "authentic_screenshot_crop",
+      "original_path": "results/native_build_20261120/ui/ssas_integrated_browser_actual_201311.png",
+      "original_sha256": "8406909d3188e142fc66d20536f0b2aef7df4e3b5762abab0c7efcaae1c26924",
+      "original_size_px": [
+        1373,
+        730
+      ],
+      "crop_box_xyxy": [
+        296,
+        442,
+        642,
+        540
+      ],
+      "crop_size_px": [
+        346,
+        98
+      ],
+      "path": "reports/assets_chi_trang_20261121/chi_07_nov.png",
+      "sha256": "f467fb011bc1a82db32e8d5a8e9ca4d06004985adda3b971c0d9ffca686ed827",
+      "size_px": [
+        1160,
+        329
+      ],
+      "resampling": "uniform Pillow LANCZOS; no text/data painting",
+      "dpi": 200,
+      "display_width_in": 5.8,
+      "caption": "Browser sau tích hợp: actual tháng 11/2013 theo Market, West Sales bằng 11.300.",
+      "limitation": "Không phải ảnh dự báo; tháng và bộ lọc kiểm từ ảnh gốc/AX text.",
+      "visual_qa": {
+        "original_reviewed": true,
+        "crop_reviewed": true,
+        "no_clipped_end_labels_from_crop": true,
+        "pixel_reproduction_match": true
+      }
+    },
+    {
+      "id": "chi_08_pipeline",
+      "kind": "self_drawn_reportlab_diagram",
+      "original_path": ".work/report_20261121/prepare_chi_assets.py",
+      "crop_box_xyxy": null,
+      "path": "reports/assets_chi_trang_20261121/chi_08_pipeline.png",
+      "sha256": "0928af3da2351dbde045f849ae93d8cc3aa5f8cfca33dee195fdf0868259f1d3",
+      "pdf_path": "reports/assets_chi_trang_20261121/chi_08_pipeline.pdf",
+      "pdf_sha256": "b22a26dd2b55f5226aee164379c4749965aa11fc8595b8a3707d0fc76ef1a796",
+      "canvas_size_pt": [
+        465,
+        180
+      ],
+      "size_px": [
+        1292,
+        500
+      ],
+      "dpi": 200,
+      "display_width_in": 6.458333333333333,
+      "font": "Times New Roman",
+      "font_size_pt": 13,
+      "caption": "Sơ đồ logic nhóm tự vẽ: SSAS đọc trực tiếp star, Dashboard/Dự báo đọc mart.",
+      "limitation": "Nhóm tự vẽ theo docs/architecture.md; không phải ảnh GUI hoặc tuyên bố tất cả consumer đã chuyển cùng catalog vật lý.",
+      "visual_qa": {
+        "png_render_reviewed": true,
+        "no_clipped_or_overlapping_labels": true,
+        "two_rows_three_boxes_each": true,
+        "row_gap_30pt": true,
+        "one_page_pdf": true,
+        "width_465pt": true,
+        "height_180pt": true,
+        "font_size_13pt": true
+      },
+      "display_height_in": 2.5,
+      "row_gap_pt": 30
+    },
+    {
+      "id": "chi_09_scd",
+      "kind": "self_drawn_reportlab_diagram",
+      "original_path": ".work/report_20261121/prepare_chi_assets.py",
+      "crop_box_xyxy": null,
+      "path": "reports/assets_chi_trang_20261121/chi_09_scd.png",
+      "sha256": "d7f845bb31e297a5b351ac96bdc91930dc7412f2519daf94f1a3bcbf5377c6f7",
+      "pdf_path": "reports/assets_chi_trang_20261121/chi_09_scd.pdf",
+      "pdf_sha256": "bd6508711ed1b4ffd772a67eefa97df934faf20b4c5b6cce9013316199a522a2",
+      "canvas_size_pt": [
+        465,
+        270
+      ],
+      "size_px": [
+        1292,
+        750
+      ],
+      "dpi": 200,
+      "display_width_in": 6.458333333333333,
+      "font": "Times New Roman",
+      "font_size_pt": 13,
+      "caption": "Nhóm tự vẽ SCD Type 2 mô phỏng P01: khóa 1 trước 01/2013, khóa 2 từ 01/2013.",
+      "limitation": "Dữ liệu mô phỏng; khoảng hiệu lực nửa mở. Mốc9999 là ValidTo trong bài thử, không phải sự kiện kinh doanh thực.",
+      "visual_qa": {
+        "png_render_reviewed": true,
+        "one_page_pdf": true,
+        "width_465pt": true,
+        "vietnamese_text_extracted": true
+      }
+    }
+  ],
+  "visual_qa_utc": "2026-11-21T06:58:29.471980+00:00",
+  "verification": "All7crops exactly reproduce original.crop(box).resize(size,LANCZOS). All originalSHA256 unchanged. Both ReportLab PDFs rendered through pdftoppm200dpi and visually reviewed.",
+  "last_update": {
+    "scope": "pipeline_function_and_chi_08_only",
+    "updated_utc": "2026-11-21T06:55:32.091344+00:00",
+    "previous_script_sha256": "2cb907958639f982a6d8644b327a805453ffbbc5dc95dfef73a2569c9f66f46a",
+    "outside_pipeline_function_unchanged": true,
+    "other_assets_hashes_unchanged": true,
+    "visual_reviewed": true
+  }
+}

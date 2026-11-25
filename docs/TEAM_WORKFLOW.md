@@ -2,11 +2,11 @@
 
 Nhóm cùng làm trong repository `Data_warehousing`. Mỗi phần có một người chịu trách nhiệm cuối cùng; người khác có thể hỗ trợ qua nhánh và Pull Request.
 
-| Thành viên | Phạm vi báo cáo | Phạm vi code chính | Điểm cần bàn giao |
-| --- | --- | --- | --- |
-| Thanh | Chương 1, 2, 3 | Source profiling, mapping, DDL, sơ đồ, lý thuyết | Grain/khóa/kiểu/11 số đo và bộ đối soát cho Chi, Trang |
-| Chi | Chương 4, 5 | ETL, audit/reject, SSIS, SCD, mart, SSAS/MDX | Hợp đồng view và dữ liệu đã đối soát cho dashboard/dự báo |
-| Trang | Chương 6, 7 | Forecast, dashboard, benchmark, tích hợp và nghiệm thu | App chạy được, sai số/plan/log/UX, hướng dẫn tái lập |
+| Thành viên | Nhánh | Phạm vi báo cáo | Phạm vi code chính | Điểm cần bàn giao |
+| --- | --- | --- | --- | --- |
+| Thanh | `thanh` | Chương 1, 2, 3 | Source profiling, mapping, DDL, sơ đồ, lý thuyết | Grain/khóa/kiểu/11 số đo và bộ đối soát cho Chi, Trang |
+| Chi | `chi` | Chương 4, 5 | ETL, audit/reject, SSIS, SCD, mart, SSAS/MDX | Hợp đồng view và dữ liệu đã đối soát cho dashboard/dự báo |
+| Trang | `trang` | Chương 6, 7 | Forecast, dashboard, benchmark, tích hợp và nghiệm thu | App chạy được, sai số/plan/log/UX, hướng dẫn tái lập |
 
 Phần phân công tên không thay GitHub username. Khi biết tài khoản của Thanh và Chi, Trang thêm họ làm collaborator trên GitHub nếu cần quyền push nhánh. Mỗi thành viên bắt đầu theo [START_HERE](START_HERE.md), trong đó có prompt dành cho agent.
 
@@ -21,19 +21,21 @@ Không cần đợi xong chương trước để viết phần độc lập: Tha
 
 ## Nhánh và Pull Request
 
-Giữ `main` là bản mọi người chạy được. Nhánh gợi ý: `thanh/ch01-03-schema`, `chi/ch04-05-etl-olap`, `trang/ch06-07-app-ai`; mỗi việc lớn tiếp theo tạo nhánh mới.
+Luồng tích hợp là `thanh` / `chi` / `trang` → `dev` → `main`. Các nhánh cá nhân đã có sẵn trên GitHub. `dev` là nơi merge code của nhóm và chạy thử toàn luồng. `main` được giữ nguyên cho tới khi Trang xác nhận bản tích hợp OK và yêu cầu cập nhật.
 
 ```powershell
-git switch main
-git pull --ff-only origin main
-git switch -c thanh/ch01-03-schema
+git fetch origin
+git switch thanh
+git pull --ff-only origin thanh
 # Làm phần việc, chạy lệnh kiểm tra phù hợp, chọn rõ file cần commit.
 git add docs/chapters/ch01_thanh.md
 git commit -m "docs: clarify business questions and data grain"
-git push -u origin thanh/ch01-03-schema
+git push origin thanh
 ```
 
-Sau đó mở Pull Request trên GitHub. Chi và Trang dùng nhánh tương ứng; không chạy nguyên ví dụ Thanh cho phần việc khác. Trước khi merge, một thành viên đọc thay đổi, kiểm tra tên cột/KPI và cách tái lập. Không sửa lịch sử `main` chung bằng force push.
+Sau đó mở Pull Request trên GitHub với **base `dev`, compare `thanh`**. Chi/Trang dùng compare `chi`/`trang`. Trước khi merge vào `dev`, một thành viên đọc thay đổi, kiểm tra tên cột/KPI và cách tái lập. Chạy lại toàn luồng tích hợp trên `dev` sau khi merge.
+
+Khi cần lấy thay đổi tích hợp mới về nhánh cá nhân, bảo đảm đã lưu công việc rồi chạy `git fetch origin`, chuyển đúng nhánh và `git merge origin/dev`; xử lý conflict và kiểm tra lại nếu có. Không force push các nhánh chung. Chỉ mở/merge bản phát hành từ `dev` sang `main` sau khi Trang chấp thuận rõ ràng.
 
 ## Tránh đụng cùng file
 

@@ -23,6 +23,17 @@ METHODS = ("naive_last", "moving_average_3", "ridge")
 MODEL_VERSION = "v1-lag123-alpha1"
 
 
+def fit_ridge_model(history: pd.Series | np.ndarray):
+    """Fit the reference scaler/Ridge pipeline; shared by forecast and explanation."""
+    values = np.asarray(history, dtype=float)
+    if len(values) < 6 or not np.isfinite(values).all():
+        raise ValueError("Cần ít nhất 6 kỳ lịch sử liên tục với Sales hữu hạn.")
+    features = np.array([values[i - 3:i][::-1] for i in range(3, len(values))])
+    model = make_pipeline(StandardScaler(), Ridge(alpha=1.0))
+    model.fit(features, values[3:])
+    return model
+
+
 def monthly_sales(detail: pd.DataFrame) -> pd.DataFrame:
     """Aggregate actual sales before comparing them to a forecast fact."""
     result = detail.groupby(["MonthStart", "Market"], as_index=False)["Sales"].sum()
@@ -42,9 +53,7 @@ def predict_next(history: pd.Series, method: str) -> float:
     if method != "ridge":
         raise ValueError(f"Phương pháp không hỗ trợ: {method}")
     # For each training target t, features are observations t-1, t-2, t-3.
-    features = np.array([values[i - 3:i][::-1] for i in range(3, len(values))])
-    model = make_pipeline(StandardScaler(), Ridge(alpha=1.0))
-    model.fit(features, values[3:])
+    model = fit_ridge_model(values)
     return float(model.predict(values[-3:][::-1].reshape(1, -1))[0])
 
 

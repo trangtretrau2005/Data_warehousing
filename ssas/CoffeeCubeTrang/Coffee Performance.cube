@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Cube xmlns="http://schemas.microsoft.com/analysisservices/2003/engine" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ID>Coffee Performance</ID>
+  <Name>Coffee Performance</Name>
+  <Dimensions>
+    <Dimension>
+      <ID>Dim Date</ID>
+      <Name>Dim Date</Name>
+      <DimensionID>Dim Date</DimensionID>
+      <Attributes>
+        <Attribute>
+          <AttributeID>Date Key</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Month</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Quarter</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Year</AttributeID>
+        </Attribute>
+      </Attributes>
+      <Hierarchies>
+        <Hierarchy>
+          <HierarchyID>Calendar</HierarchyID>
+        </Hierarchy>
+      </Hierarchies>
+    </Dimension>
+    <Dimension>
+      <ID>Dim Location</ID>
+      <Name>Dim Location</Name>
+      <DimensionID>Dim Location</DimensionID>
+      <Attributes>
+        <Attribute>
+          <AttributeID>Location Key</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Area Code</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>State</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Market</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Market Size</AttributeID>
+        </Attribute>
+      </Attributes>
+      <Hierarchies>
+        <Hierarchy>
+          <HierarchyID>Geography</HierarchyID>
+        </Hierarchy>
+      </Hierarchies>
+    </Dimension>
+    <Dimension>
+      <ID>Dim Product</ID>
+      <Name>Dim Product</Name>
+      <DimensionID>Dim Product</DimensionID>
+      <Attributes>
+        <Attribute>
+          <AttributeID>Product Key</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Product Name</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Product Type</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Product Line</AttributeID>
+        </Attribute>
+        <Attribute>
+          <AttributeID>Type</AttributeID>
+        </Attribute>
+      </Attributes>
+      <Hierarchies>
+        <Hierarchy>
+          <HierarchyID>Product Hierarchy</HierarchyID>
+        </Hierarchy>
+      </Hierarchies>
+    </Dimension>
+  </Dimensions>
+  <MeasureGroups>
+    <MeasureGroup>
+      <ID>Fact Sales Performance</ID>
+      <Name>Fact Sales Performance</Name>
+      <Measures>
+        <Measure>
+          <ID>Sales</ID>
+          <Name>Sales</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>Sales</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Budget Sales</ID>
+          <Name>Budget Sales</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>BudgetSales</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Profit</ID>
+          <Name>Profit</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>Profit</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Budget Profit</ID>
+          <Name>Budget Profit</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>BudgetProfit</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>COGS</ID>
+          <Name>COGS</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>COGS</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Budget COGS</ID>
+          <Name>Budget COGS</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>BudgetCOGS</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Margin</ID>
+          <Name>Margin</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>Margin</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Budget Margin</ID>
+          <Name>Budget Margin</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>BudgetMargin</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Marketing</ID>
+          <Name>Marketing</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>Marketing</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Total Expenses</ID>
+          <Name>Total Expenses</Name>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>TotalExpenses</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+        <Measure>
+          <ID>Inventory</ID>
+          <Name>Inventory</Name>
+          <AggregateFunction>LastChild</AggregateFunction>
+          <Source>
+            <DataType>Currency</DataType>
+            <Source xsi:type="ColumnBinding">
+              <TableID>dw_FactSalesPerformance</TableID>
+              <ColumnID>Inventory</ColumnID>
+            </Source>
+          </Source>
+          <FormatString>#,##0.00</FormatString>
+        </Measure>
+      </Measures>
+      <StorageMode>Molap</StorageMode>
+      <ProcessingMode>Regular</ProcessingMode>
+      <Dimensions>
+        <Dimension xsi:type="RegularMeasureGroupDimension">
+          <CubeDimensionID>Dim Date</CubeDimensionID>
+          <Attributes>
+            <Attribute>
+              <AttributeID>Date Key</AttributeID>
+              <KeyColumns>
+                <KeyColumn>
+                  <DataType>Integer</DataType>
+                  <Source xsi:type="ColumnBinding">
+                    <TableID>dw_FactSalesPerformance</TableID>
+                    <ColumnID>DateKey</ColumnID>
+                  </Source>
+                </KeyColumn>
+              </KeyColumns>
+              <Type>Granularity</Type>
+            </Attribute>
+          </Attributes>
+        </Dimension>
+        <Dimension xsi:type="RegularMeasureGroupDimension">
+          <CubeDimensionID>Dim Location</CubeDimensionID>
+          <Attributes>
+            <Attribute>
+              <AttributeID>Location Key</AttributeID>
+              <KeyColumns>
+                <KeyColumn>
+                  <DataType>Integer</DataType>
+                  <Source xsi:type="ColumnBinding">
+                    <TableID>dw_FactSalesPerformance</TableID>
+                    <ColumnID>LocationKey</ColumnID>
+                  </Source>
+                </KeyColumn>
+              </KeyColumns>
+              <Type>Granularity</Type>
+            </Attribute>
+          </Attributes>
+        </Dimension>
+        <Dimension xsi:type="RegularMeasureGroupDimension">
+          <CubeDimensionID>Dim Product</CubeDimensionID>
+          <Attributes>
+            <Attribute>
+              <AttributeID>Product Key</AttributeID>
+              <KeyColumns>
+                <KeyColumn>
+                  <DataType>Integer</DataType>
+                  <Source xsi:type="ColumnBinding">
+                    <TableID>dw_FactSalesPerformance</TableID>
+                    <ColumnID>ProductKey</ColumnID>
+                  </Source>
+                </KeyColumn>
+              </KeyColumns>
+              <Type>Granularity</Type>
+            </Attribute>
+          </Attributes>
+        </Dimension>
+      </Dimensions>
+    </MeasureGroup>
+  </MeasureGroups>
+  <Source>
+    <DataSourceViewID>CoffeeDW</DataSourceViewID>
+  </Source>
+  <MdxScripts>
+    <MdxScript>
+      <ID>MdxScript</ID>
+      <Name>MdxScript</Name>
+      <Commands>
+        <Command>
+          <Text>CALCULATE;
+
+CREATE MEMBER CURRENTCUBE.[Measures].[Gap]
+ AS [Measures].[Sales] - [Measures].[Budget Sales],
+ FORMAT_STRING = "#,##0.00",
+ VISIBLE = 1;
+
+CREATE MEMBER CURRENTCUBE.[Measures].[Budget Achievement]
+ AS IIF(
+      IsEmpty([Measures].[Budget Sales]) OR [Measures].[Budget Sales] = 0,
+      NULL,
+      [Measures].[Sales] / [Measures].[Budget Sales]
+    ),
+ FORMAT_STRING = "Percent",
+ VISIBLE = 1;
+
+CREATE MEMBER CURRENTCUBE.[Measures].[Profit Margin]
+ AS IIF(
+      IsEmpty([Measures].[Sales]) OR [Measures].[Sales] = 0,
+      NULL,
+      [Measures].[Profit] / [Measures].[Sales]
+    ),
+ FORMAT_STRING = "Percent",
+ VISIBLE = 1;
+-- Inventory is a physical LastChild measure across the Time dimension.
+</Text>
+        </Command>
+      </Commands>
+    </MdxScript>
+  </MdxScripts>
+</Cube>

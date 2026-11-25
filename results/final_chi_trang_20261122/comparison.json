@@ -1,0 +1,195 @@
+{
+  "status": "passed",
+  "timestamp_utc": "2026-11-22T10:16:58.090925+00:00",
+  "cases": [
+    {
+      "id": "all_markets_24months",
+      "status": "passed",
+      "rows": 4,
+      "measures": 6,
+      "max_abs_difference": {
+        "Sales": 0.0,
+        "BudgetSales": 0.0,
+        "Gap": 0.0,
+        "Profit": 0.0,
+        "BudgetAchievement": 6.352121599828564e-07,
+        "ProfitMargin": 8.250101030116141e-07
+      }
+    },
+    {
+      "id": "central_201201_states",
+      "status": "passed",
+      "rows": 6,
+      "measures": 6,
+      "max_abs_difference": {
+        "Sales": 0.0,
+        "BudgetSales": 0.0,
+        "Gap": 0.0,
+        "Profit": 0.0,
+        "BudgetAchievement": 9.302325579829684e-07,
+        "ProfitMargin": 9.06866078009827e-07
+      }
+    },
+    {
+      "id": "west_201201_states",
+      "status": "passed",
+      "rows": 5,
+      "measures": 6,
+      "max_abs_difference": {
+        "Sales": 0.0,
+        "BudgetSales": 0.0,
+        "Gap": 0.0,
+        "Profit": 0.0,
+        "BudgetAchievement": 9.710144899255369e-07,
+        "ProfitMargin": 8.472142449811315e-07
+      }
+    },
+    {
+      "id": "dice_coffee_201201_central_east",
+      "status": "passed",
+      "rows": 2,
+      "measures": 3,
+      "max_abs_difference": {
+        "Sales": 0.0,
+        "BudgetSales": 0.0,
+        "Profit": 0.0
+      }
+    },
+    {
+      "id": "south_201308_signed_gap",
+      "status": "passed",
+      "rows": 7,
+      "measures": 4,
+      "max_abs_difference": {
+        "Sales": 0.0,
+        "BudgetSales": 0.0,
+        "Gap": 0.0,
+        "Profit": 0.0
+      }
+    },
+    {
+      "id": "budget_zero_preserves_null_ratio",
+      "status": "passed",
+      "rows": 1,
+      "measures": 6,
+      "max_abs_difference": {
+        "Sales": 0.0,
+        "BudgetSales": 0.0,
+        "Gap": 0.0,
+        "Profit": 0.0,
+        "BudgetAchievement": null,
+        "ProfitMargin": 4.1176469878223543e-07
+      }
+    },
+    {
+      "id": "joint_dates_markets_ratio_from_totals",
+      "status": "passed",
+      "single_all_row_caption_omitted_by_adomd": true,
+      "rows": 1,
+      "measures": 6,
+      "max_abs_difference": {
+        "Sales": 0.0,
+        "BudgetSales": 0.0,
+        "Gap": 0.0,
+        "Profit": 0.0,
+        "BudgetAchievement": 9.302325998383765e-08,
+        "ProfitMargin": 1.2952780903408012e-07
+      }
+    },
+    {
+      "id": "inventory_latest_selected_empty_no_fallback",
+      "status": "passed",
+      "rows": 1,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": null
+      }
+    },
+    {
+      "id": "inventory_all",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    },
+    {
+      "id": "inventory_month_201312",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    },
+    {
+      "id": "inventory_year_2012",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    },
+    {
+      "id": "inventory_year_2013",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    },
+    {
+      "id": "inventory_quarter_2013q2",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    },
+    {
+      "id": "inventory_range_feb_may2013",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    },
+    {
+      "id": "inventory_noncontiguous_jan_aug2013",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    },
+    {
+      "id": "inventory_where_set_jan_aug2013",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    },
+    {
+      "id": "inventory_colombian_aug_nov2013",
+      "status": "passed",
+      "rows": 4,
+      "measures": 1,
+      "max_abs_difference": {
+        "Inventory": 0.0
+      }
+    }
+  ],
+  "case_count": 17,
+  "passed": 17,
+  "database": "CoffeeCube_Trang_20261120",
+  "source_database": "CoffeeDW_Trang_SSIS_TN03_20261120",
+  "verification": "actual read-only ADOMD results versus independent SQL results; no server writes"
+}

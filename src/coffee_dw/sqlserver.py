@@ -48,6 +48,9 @@ def load_sqlserver(csv_path: str | Path = SOURCE_PATH) -> dict:
             cursor.executemany(
                 f"INSERT stg.CoffeeRaw ({','.join('['+c+']' for c in columns)}) "
                 f"VALUES ({','.join('?' for _ in columns)})", records)
+        # Commit staged rows and batch header first so a failed load procedure
+        # rolls back only DW changes while preserving the failed batch trace.
+        connection.commit()
         cursor.execute("EXEC dw.usp_LoadCoffee ?", batch_id)
         while cursor.description is None:
             if not cursor.nextset():
@@ -57,6 +60,16 @@ def load_sqlserver(csv_path: str | Path = SOURCE_PATH) -> dict:
         return summary
     except Exception:
         connection.rollback()
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                "UPDATE audit.LoadBatch SET Status='FAILED', FinishedAt=SYSUTCDATETIME() "
+                "WHERE BatchID=? AND Status='STAGED'",
+                batch_id,
+            )
+            connection.commit()
+        except Exception:
+            connection.rollback()
         raise
     finally:
         connection.close()

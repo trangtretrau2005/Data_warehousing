@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Coffee Query Studio · Truy vấn mart an toàn</title>
+  <link rel="stylesheet" href="/query.css">
+  <script type="module" src="/query.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">C</span><span>Coffee <em>Query Studio</em></span></a>
+    <nav class="project-nav" aria-label="Lộ trình demo tích hợp">
+      <a href="/quarter.html"><b>01</b><span>Chênh lệch</span></a>
+      <a href="/"><b>02</b><span>Cube 3D beta</span></a>
+      <a class="active" aria-current="page" href="/query.html"><b>03</b><span>Truy vấn</span></a>
+      <a href="/linear.html"><b>04</b><span>Mô hình thử</span></a>
+    </nav>
+    <div class="top-actions">
+      <span class="source-pill"><i></i><span id="source-label">Đang đọc nguồn…</span></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">TRUY VẤN MART · SELECT ĐƯỢC KIỂM TRA</p>
+        <h1>Từ câu hỏi đến <span>kết quả có thể kiểm chứng</span></h1>
+        <p class="hero-copy">Chọn phép tính, chỉ tiêu và góc nhìn. Hệ thống tự sinh câu <code>SELECT</code>, gắn tham số an toàn rồi chạy trực tiếp trên mart của Chi.</p>
+      </div>
+      <div class="safety-card">
+        <span class="shield">✓</span>
+        <div><strong>Chỉ đọc & có kiểm soát</strong><small>SQL của Gemini phải qua parser AST, allowlist cột/hàm và giới hạn dòng. DDL/DML bị từ chối.</small></div>
+      </div>
+    </section>
+
+    <nav class="mode-tabs" aria-label="Chọn cách đặt câu hỏi" role="tablist">
+      <button class="mode-tab active" id="builder-tab" role="tab" aria-selected="true" aria-controls="builder-panel">
+        <span class="tab-number">▦</span><span><strong>Tạo truy vấn bằng lựa chọn</strong><small>Ổn định nhất khi demo</small></span>
+      </button>
+      <button class="mode-tab" id="ai-tab" role="tab" aria-selected="false" aria-controls="ai-panel">
+        <span class="tab-number">✦</span><span><strong>Hỏi bằng Gemini AI</strong><small>Thử nghiệm đang phát triển · luôn kiểm tra lại SQL</small></span><i id="ai-dot" class="ollama-dot"></i>
+      </button>
+    </nav>
+
+    <section id="builder-panel" class="workspace" role="tabpanel" aria-labelledby="builder-tab">
+      <form id="query-form" class="query-card">
+        <div class="card-heading">
+          <div><span class="step">PHÉP TÍNH</span><h2>Chọn phép tính</h2></div>
+          <p id="aggregate-help">SUM cộng các ô fact trong cùng phạm vi.</p>
+        </div>
+        <div class="aggregate-grid">
+          <label class="aggregate-choice selected"><input type="radio" name="aggregate" value="SUM" checked><span class="symbol">Σ</span><span><strong>SUM · Tổng</strong><small>Tổng doanh số, chi phí hoặc lợi nhuận</small></span><i>✓</i></label>
+          <label class="aggregate-choice"><input type="radio" name="aggregate" value="AVG"><span class="symbol">x̄</span><span><strong>AVG · Trung bình</strong><small>Trung bình trên mỗi ô fact trong phạm vi</small></span><i>✓</i></label>
+        </div>
+
+        <div class="divider"></div>
+        <div class="card-heading compact"><div><span class="step">CHỈ TIÊU</span><h2>Chọn chỉ tiêu <small>tối đa 4</small></h2></div><span id="measure-count" class="count">0 / 4</span></div>
+        <div id="measure-options" class="choice-grid" aria-label="Chỉ tiêu"></div>
+
+        <div class="divider"></div>
+        <div class="card-heading compact"><div><span class="step">GÓC NHÌN</span><h2>Nhóm kết quả theo <small>tối đa 3 chiều</small></h2></div><span id="dimension-count" class="count">0 / 3</span></div>
+        <div id="dimension-options" class="choice-grid dimensions" aria-label="Chiều phân tích"></div>
+
+        <div class="divider"></div>
+        <div class="card-heading compact"><div><span class="step">PHẠM VI</span><h2>Giới hạn phạm vi <small>không bắt buộc</small></h2></div></div>
+        <div class="filter-grid">
+          <label><span>Năm</span><select id="year-filter"><option value="">Tất cả năm</option></select></label>
+          <label><span>Tháng</span><select id="month-filter" disabled><option value="">Tất cả tháng</option></select></label>
+        </div>
+        <fieldset class="multi-filter"><legend>Market <small>có thể chọn nhiều</small></legend><div id="market-options" class="filter-chips"></div></fieldset>
+        <fieldset class="multi-filter"><legend>Sản phẩm <small>có thể chọn nhiều</small></legend><div id="product-options" class="filter-chips scroll-chips"></div></fieldset>
+
+        <div class="presets">
+          <span>Gợi ý nhanh:</span>
+          <button type="button" data-preset="market-sales">Sales & Budget theo Market</button>
+          <button type="button" data-preset="avg-marketing">AVG Marketing theo Market</button>
+          <button type="button" data-preset="south-gap">Gap từng tháng của South</button>
+        </div>
+
+        <div id="builder-error" class="message error" role="alert" hidden></div>
+        <button id="run-query" class="run-button" type="submit"><span>Chạy truy vấn</span><small>Sinh SQL · gắn tham số · đọc mart</small><b>SQL</b></button>
+      </form>
+    </section>
+
+    <section id="ai-panel" class="workspace ollama-workspace" role="tabpanel" aria-labelledby="ai-tab" hidden>
+      <div class="ollama-card">
+        <div class="ollama-heading"><span class="ollama-icon">G</span><div><span class="step">GOOGLE AI STUDIO</span><h2>Hỏi bằng ngôn ngữ tự nhiên</h2><p>Gemini đề xuất một câu SELECT. Server parse AST, kiểm tra nguồn/cột/hàm rồi mới chạy trên kết nối chỉ-đọc.</p></div></div>
+        <div id="ai-status" class="ollama-status loading"><i></i><span>Đang kiểm tra Gemini API và danh sách model…</span></div>
+        <label class="model-row"><span>Chiến lược model</span><select id="ai-model" disabled><option value="__auto__">Tự động fallback theo quota</option></select></label>
+        <p id="fallback-order" class="fallback-order" hidden></p>
+        <label class="question-box"><span>Câu hỏi của bạn</span><textarea id="ai-question" rows="4" maxlength="600" placeholder="Ví dụ: Tổng Sales và BudgetSales năm 2013, nhóm theo Market"></textarea><small><span id="question-count">0</span>/600 ký tự</small></label>
+        <div class="example-questions"><span>Thử câu mẫu:</span><button type="button">Tổng Profit năm 2013</button><button type="button">5 sản phẩm có Sales cao nhất năm 2013</button><button type="button">Tỷ lệ đạt ngân sách của từng Market năm 2013</button><button type="button">Đếm số ô dữ liệu theo Market năm 2013</button></div>
+        <div id="ai-error" class="message error" role="alert" hidden></div>
+        <button id="ask-ai" class="run-button ollama-run" type="button" disabled><span>Nhờ Gemini tạo truy vấn</span><small>Câu hỏi · SELECT · kiểm tra AST · kết quả</small><b>AI</b></button>
+        <div class="fallback-note"><strong>Không có key hoặc hết toàn bộ quota?</strong> Bộ tạo truy vấn bằng lựa chọn vẫn chạy hoàn toàn độc lập.</div>
+      </div>
+    </section>
+
+    <section id="result-section" class="results" hidden aria-live="polite">
+      <div class="result-heading">
+        <div><span class="step">KẾT QUẢ</span><h2 id="result-title">Truy vấn đã chạy</h2><p id="result-meta"></p></div>
+        <div class="result-actions">
+          <a id="open-cube" class="cube-link" href="/" hidden>Mở trên Data Cube 3D <span aria-hidden="true">→</span></a>
+          <button id="edit-query" type="button">Sửa lựa chọn</button>
+        </div>
+      </div>
+      <p id="cube-context-note" class="cube-context-note" hidden></p>
+      <div id="result-summary" class="result-summary"></div>
+      <div class="table-card"><div class="table-top"><strong>Dữ liệu trả về</strong><span id="row-count"></span></div><div class="table-wrap"><table><thead id="result-head"></thead><tbody id="result-body"></tbody></table></div></div>
+      <details class="sql-card" open><summary><span><i>&lt;/&gt;</i><strong>SQL nghiệp vụ đã kiểm tra</strong><small>Không hiển thị giới hạn 201 dòng nội bộ của server</small></span><b>⌄</b></summary><div class="sql-content"><pre><code id="sql-output"></code></pre><div class="param-row"><strong>Tham số:</strong><code id="sql-params"></code><button id="copy-sql" type="button">Sao chép SQL</button></div></div></details>
+      <div class="meaning-card"><span>i</span><div><strong id="meaning-title">Cách đọc kết quả</strong><p id="meaning-text"></p></div></div>
+    </section>
+  </main>
+
+  <footer><span>Coffee DW · Trang × Chi</span><span>Đọc mart, không sửa dữ liệu nguồn</span></footer>
+</body>
+</html>
